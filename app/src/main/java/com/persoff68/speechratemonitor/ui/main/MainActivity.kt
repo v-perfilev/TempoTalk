@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,21 +20,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SpeechRateMonitorAppTheme {
-                MainContent()
+                Scaffold { innerPadding ->
+                    MainContent(Modifier.padding(innerPadding))
+                }
             }
         }
     }
 }
 
 @Composable
-private fun MainContent() {
+private fun MainContent(modifier: Modifier) {
     val navController = rememberNavController()
-    MainNavigation(navController)
+    MainNavigation(navController, modifier)
 }
 
 @Composable
-private fun MainNavigation(navController: NavHostController) {
+private fun MainNavigation(navController: NavHostController, modifier: Modifier) {
     NavHost(navController, startDestination = "main") {
-        composable("main") { MainScreen() }
+        composable("main") { MainScreen(modifier) }
     }
 }

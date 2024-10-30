@@ -16,13 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current as Activity
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
