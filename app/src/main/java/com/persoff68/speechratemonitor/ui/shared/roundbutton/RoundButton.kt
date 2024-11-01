@@ -18,9 +18,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,16 +63,28 @@ fun RoundButton(
     isPressed: Boolean = false,
     onClick: () -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     var showRipple by remember { mutableStateOf(false) }
+    var showPressed by remember { mutableStateOf(false) }
+
+    SideEffect {
+        coroutineScope.launch {
+            if (isPressed != showPressed) {
+                if (showRipple) delay(600)
+                showPressed = isPressed
+            }
+        }
+    }
 
     val backgroundColor by animateColorAsState(
-        targetValue = if (isPressed) pressedColor else primaryColor,
+        targetValue = if (showPressed) pressedColor else primaryColor,
         animationSpec = tween(durationMillis = 300),
         label = ""
     )
 
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.9f else 1f,
+        targetValue = if (showPressed) 0.9f else 1f,
         animationSpec = tween(durationMillis = 300),
         label = ""
     )
@@ -107,7 +121,7 @@ fun RoundButton(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = if (isPressed) pressedIcon else primaryIcon,
+                imageVector = if (showPressed) pressedIcon else primaryIcon,
                 contentDescription = description,
                 tint = settings.iconColor,
                 modifier = Modifier.size(settings.iconSize.dp)
@@ -118,10 +132,10 @@ fun RoundButton(
 
 @Composable
 private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimationEnd: () -> Unit) {
-    val rippleRadius1 = remember { Animatable(settings.buttonSize) }
+    val rippleRadius1 = remember { Animatable(settings.buttonSize * 0.9f) }
     val rippleAlpha1 = remember { Animatable(0.3f) }
 
-    val rippleRadius2 = remember { Animatable(settings.buttonSize) }
+    val rippleRadius2 = remember { Animatable(settings.buttonSize * 0.9f) }
     val rippleAlpha2 = remember { Animatable(0.3f) }
 
     LaunchedEffect(Unit) {
