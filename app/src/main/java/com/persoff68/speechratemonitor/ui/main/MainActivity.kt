@@ -37,6 +37,7 @@ private fun MainContent(modifier: Modifier) {
 @Composable
 private fun MainNavigation(navController: NavHostController, modifier: Modifier) {
     NavHost(navController, startDestination = "main") {
-        composable("main") { MainScreen(modifier) }
+//        composable("main") { MainScreen(modifier) }
+        composable("main") { GaugeScreen() }
     }
 }
