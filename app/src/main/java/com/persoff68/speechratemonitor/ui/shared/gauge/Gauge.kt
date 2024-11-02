@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -60,15 +62,25 @@ fun Gauge(value: Int, minValue: Int, maxValue: Int, onClick: () -> Unit = {}) {
     val animationState = createGaugeAnimationState()
 
     Box(
-        contentAlignment = Alignment.BottomCenter,
-        modifier = Modifier.aspectRatio(1f)
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1.3f)
+            .offset(y = 50.dp)
     ) {
-        GaugeIndicator(
-            interpolatedValue,
-            animationState,
-            onClick
-        )
-        GaugeTempoValue(value, animationState)
+        Box(
+            contentAlignment = Alignment.TopCenter,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        ) {
+            GaugeIndicator(
+                interpolatedValue,
+                animationState,
+                onClick
+            )
+            GaugeTempoValue(value, animationState)
+        }
     }
 }
 
@@ -106,7 +118,7 @@ private fun GaugeIndicator(
     Canvas(
         modifier = Modifier
             .fillMaxSize()
-            .padding(40.dp)
+            .padding(50.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { onClick() }
@@ -129,14 +141,14 @@ private fun GaugeIndicator(
 }
 
 private fun DrawScope.drawTicks(settings: GaugeSettings, animationValue: Float) {
-    val tickAngle = (settings.arcAngle - settings.tickAngle * 2) / settings.tickCount
+    val tickAngle = (settings.arcAngle + settings.tickAngle * 2) / settings.tickCount
     for (i in 0..(settings.tickCount * animationValue).toInt()) {
-        rotate(degrees = 90f + settings.tickAngle + i * tickAngle) {
+        rotate(degrees = 90f - settings.tickAngle + i * tickAngle) {
             drawLine(
                 color = settings.tickColor,
                 start = Offset(
                     settings.size.width / 2,
-                    settings.arcWidth + settings.strokeWidth / 2
+                    settings.arcWidth + settings.strokeWidth / 2 - 1f
                 ),
                 end = Offset(
                     settings.size.width / 2,

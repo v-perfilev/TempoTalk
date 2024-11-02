@@ -19,14 +19,14 @@ class GaugeSettings(val size: Size, arcBackgroundBitmap: ImageBitmap) {
 
     val glowParameter: Float = 15f
 
-    val strokeWidth: Float = 6f
-    val strokeAngle: Float = 0.5f
+    val strokeWidth: Float = 8f
+    val strokeAngle: Float = 0.6f
     val strokeColor: Color = Color(0xFFFFFFFF)
 
     val tickCount: Int = 8
     val tickLength: Float = 20f
-    val tickWidth: Float = 5f
-    val tickAngle: Float = 0f
+    val tickWidth: Float = 4f
+    val tickAngle: Float = 0.2f
     val tickColor: Color = Color(0xFFFFFFFF)
 
     val needleLength: Float = size.minDimension / 2 - arcWidth - 40f

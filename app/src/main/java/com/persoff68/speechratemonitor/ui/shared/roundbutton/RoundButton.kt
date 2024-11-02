@@ -142,11 +142,11 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
         val rippleRadius1Launch = launch {
             rippleRadius1.animateTo(
                 targetValue = settings.rippleSize,
-                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
             )
             rippleAlpha1.animateTo(
                 targetValue = 0f,
-                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
             )
         }
 
@@ -158,7 +158,7 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
             )
             rippleAlpha2.animateTo(
                 targetValue = 0f,
-                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
             )
 
         }
