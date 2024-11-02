@@ -18,11 +18,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,17 +61,13 @@ fun RoundButton(
     isPressed: Boolean = false,
     onClick: () -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     var showRipple by remember { mutableStateOf(false) }
     var showPressed by remember { mutableStateOf(false) }
 
-    SideEffect {
-        coroutineScope.launch {
-            if (isPressed != showPressed) {
-                if (showRipple) delay(600)
-                showPressed = isPressed
-            }
+    LaunchedEffect(isPressed) {
+        if (isPressed != showPressed) {
+            if (showRipple) delay(600)
+            showPressed = isPressed
         }
     }
 

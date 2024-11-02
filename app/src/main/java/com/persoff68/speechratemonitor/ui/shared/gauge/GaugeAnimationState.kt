@@ -8,7 +8,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalInspectionMode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -23,7 +22,6 @@ class GaugeAnimationState(
 
 @Composable
 fun createGaugeAnimationState(): GaugeAnimationState {
-    val coroutineScope = rememberCoroutineScope()
     val isInPreview = LocalInspectionMode.current
 
     if (isInPreview) {
@@ -41,7 +39,7 @@ fun createGaugeAnimationState(): GaugeAnimationState {
     val tempoValueAnimationParameter = remember { Animatable(0f) }
 
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
+        launch {
             val arcAnimation = launch {
                 delay(200)
                 arcAnimationParameter.animateTo(

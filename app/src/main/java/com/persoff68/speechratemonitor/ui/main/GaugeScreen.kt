@@ -7,34 +7,28 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
-import com.persoff68.speechratemonitor.ui.shared.waveform.Waveform
+import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
 import com.persoff68.speechratemonitor.ui.theme.DarkGradient
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import kotlinx.coroutines.delay
@@ -61,9 +55,24 @@ fun GaugeScreen(modifier: Modifier = Modifier) {
     var simulatedAudioData by remember { mutableStateOf(generateSimulatedAudioData()) }
 
     LaunchedEffect(Unit) {
-        while (true) {
-            simulatedAudioData = generateSimulatedAudioData()
-            delay(100)
+        launch {
+            while (true) {
+                simulatedAudioData = generateSimulatedAudioData()
+                delay(100)
+            }
+        }
+    }
+
+    var simulatedSpectrogramData by remember { mutableStateOf(generateSimulatedSpectrogramData()) }
+    var counter by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        launch {
+            while (true) {
+                counter += 20
+                simulatedSpectrogramData = generateSimulatedSpectrogramData(shift = counter)
+                delay(500)
+            }
         }
     }
 
@@ -79,7 +88,8 @@ fun GaugeScreen(modifier: Modifier = Modifier) {
             minValue = 0,
             maxValue = 20,
         )
-        Waveform(simulatedAudioData)
+//        Waveform(simulatedAudioData)
+        Spectrogram(simulatedSpectrogramData)
         RoundButton(
             primaryColor = Color(0xFF295E2B),
             primaryIcon = Icons.Default.Home,
@@ -117,5 +127,22 @@ fun generateSimulatedAudioData(size: Int = 128): FloatArray {
             -1.0,
             1.0
         ).toFloat() / 1
+    }
+}
+
+fun generateSimulatedSpectrogramData(
+    numFrames: Int = 40,
+    numFrequencies: Int = 20,
+    shift: Int = 0,
+): Array<FloatArray> {
+    return Array(numFrames) { frameIndex ->
+        FloatArray(numFrequencies) { frequencyIndex ->
+            val baseFrequency = (frequencyIndex + 1) * 0.05f
+            val amplitude = 0.1f + (numFrequencies - frequencyIndex) * 0.015f
+            val timeEffect = sin((frameIndex + shift) * 0.4f + frequencyIndex * 0.15f)
+            val randomFactor = (Random.nextFloat() - 0.5f) * 0.2f
+            (amplitude * sin(baseFrequency * frameIndex) + timeEffect + randomFactor)
+                .coerceIn(-1f, 1f)
+        }
     }
 }

@@ -27,13 +27,14 @@ import kotlin.random.Random
 fun WaveformPreview() {
     SpeechRateMonitorAppTheme {
         Surface {
-            Waveform(FloatArray(128) { Random.nextFloat() * 1.5f - 0.75f })
+            Waveform(FloatArray(128) { Random.nextFloat() * 2f - 1f })
         }
     }
 }
 
 @Composable
 fun Waveform(audioData: FloatArray) {
+
     val animatedAudioData = remember { audioData.map { Animatable(it) } }
     AnimateAudioData(audioData, animatedAudioData)
     val interpolatedAudioData = animatedAudioData.map { it.value }.toFloatArray()
