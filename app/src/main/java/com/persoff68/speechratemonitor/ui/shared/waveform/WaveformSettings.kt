@@ -10,7 +10,7 @@ class WaveformSettings(size: Size, audioData: FloatArray) {
 
     val centerY = size.height / 2
 
-    val strokeWidth = 5f
+    val strokeWidth = 10f
 
     val volumeLevel = audioData.map { abs(it) / 0.3f }.average().toFloat().coerceIn(0f, 1f)
 

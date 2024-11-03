@@ -54,7 +54,7 @@ fun Gauge(value: Int, minValue: Int, maxValue: Int, onClick: () -> Unit = {}) {
     val normalizedValue = (value.toFloat() - minValue) / (maxValue - minValue)
 
     val interpolatedValue by animateFloatAsState(
-        targetValue = normalizedValue.coerceIn(minValue.toFloat(), maxValue.toFloat()),
+        targetValue = normalizedValue.coerceIn(0f, 1f),
         animationSpec = tween(durationMillis = 500, easing = EaseOut),
         label = ""
     )

@@ -42,7 +42,7 @@ fun Waveform(audioData: FloatArray) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(2f)
+            .aspectRatio(3f)
     ) {
         WaveformIndicator(interpolatedAudioData)
     }
@@ -94,7 +94,7 @@ private fun DrawScope.drawWaveformGlow(
     settings: WaveformSettings
 ) {
     for (glowLayer in 1..5) {
-        val alpha = 0.01f * (6 - glowLayer) * settings.volumeLevel
+        val alpha = 0.005f * (6 - glowLayer) * settings.volumeLevel
         val glowWidth = settings.strokeWidth * (glowLayer * 3)
 
         drawLine(
@@ -120,6 +120,7 @@ private fun DrawScope.drawWaveformLine(
         start = Offset(startX, startY),
         end = Offset(endX, endY),
         strokeWidth = settings.strokeWidth,
-        cap = StrokeCap.Round
+        cap = StrokeCap.Round,
+        alpha = (0.4f + settings.volumeLevel).coerceIn(0f, 1f)
     )
 }
