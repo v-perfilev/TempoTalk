@@ -26,8 +26,8 @@ class AudioProcessor(
             BufferUIUpdateHandler(audioState),
             BufferAccumulationHandler(accumulatedBuffer),
             SpectrogramProcessingHandler(speechDenoiser),
-            SpectrogramAccumulationHandler(accumulatedSpectrogram),
             SpectrogramUIUpdateHandler(audioState),
+            SpectrogramAccumulationHandler(accumulatedSpectrogram),
             SyllableCountProcessingHandler(syllableCounter),
             SyllableCountUIUpdateHandler(audioState)
         )

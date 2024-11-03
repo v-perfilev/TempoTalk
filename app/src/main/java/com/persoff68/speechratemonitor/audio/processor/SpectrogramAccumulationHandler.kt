@@ -11,9 +11,9 @@ class SpectrogramAccumulationHandler(
             synchronized(accumulatedSpectrogram) {
                 accumulatedSpectrogram += request.spectrogram
                 request.spectrogram = accumulatedSpectrogram.copyOf()
-                if (accumulatedSpectrogram.size >= Config.TIME_STEPS * 6) {
-                    accumulatedSpectrogram =
-                        ArrayUtils.slice(accumulatedSpectrogram, Config.TIME_STEPS)
+                if (accumulatedSpectrogram.size > Config.TIME_STEPS * Config.FRAME_COUNT) {
+                    accumulatedSpectrogram = ArrayUtils
+                        .slice(accumulatedSpectrogram, Config.TIME_STEPS)
                 }
             }
         }

@@ -72,22 +72,22 @@ class AudioState @Inject constructor() {
     private fun scaleSpectrogramData(inputArray: Array<FloatArray>): Array<FloatArray> {
         val numRows = inputArray.size
         val numCols = inputArray[0].size
+        val length = Config.SPECTROGRAM_VIEW_LENGTH / Config.FRAME_COUNT
+        val height = Config.SPECTROGRAM_VIEW_HEIGHT
         val radius = Config.SPECTROGRAM_SCALE_PARAMETER
 
-        val result = Array(Config.SPECTROGRAM_VIEW_LENGTH) {
-            FloatArray(Config.SPECTROGRAM_VIEW_HEIGHT)
-        }
+        val result = Array(length) { FloatArray(height) }
 
-        val rowStep = (numRows - 1).toFloat() / (Config.SPECTROGRAM_VIEW_LENGTH - 1).toFloat()
-        val colStep = (numCols - 1).toFloat() / (Config.SPECTROGRAM_VIEW_HEIGHT - 1).toFloat()
+        val rowStep = (numRows - 1).toFloat() / (length - 1).toFloat()
+        val colStep = (numCols - 1).toFloat() / (height - 1).toFloat()
 
-        for (i in 0 until Config.SPECTROGRAM_VIEW_LENGTH) {
+        for (i in 0 until length) {
             val rowIndex = i * rowStep
             val lowerRowIndex = rowIndex.toInt()
             val upperRowIndex = (lowerRowIndex + 1).coerceAtMost(numRows - 1)
             val rowWeight = rowIndex - lowerRowIndex
 
-            for (j in 0 until Config.SPECTROGRAM_VIEW_HEIGHT) {
+            for (j in 0 until height) {
                 val colIndex = j * colStep
                 val lowerColIndex = colIndex.toInt()
 

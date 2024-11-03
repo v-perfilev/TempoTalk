@@ -1,6 +1,7 @@
 package com.persoff68.speechratemonitor.audio.processor
 
 import android.util.Log
+import com.persoff68.speechratemonitor.Config
 import com.persoff68.speechratemonitor.audio.ai.SyllableCounter
 import com.persoff68.speechratemonitor.audio.util.TensorUtils
 import org.pytorch.Tensor
@@ -31,6 +32,7 @@ class SyllableCountProcessingHandler(
 
     private fun extractSyllableCount(tensor: Tensor): Int {
         val array = tensor.dataAsFloatArray
-        return array[0].toInt() - 1
+        val seconds = Config.FRAME_COUNT / (Config.SAMPLE_RATE.toFloat() / Config.CHUNK_SIZE)
+        return (array[0] / seconds).toInt()
     }
 }

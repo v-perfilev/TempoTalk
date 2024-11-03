@@ -51,7 +51,7 @@ fun GaugeScreen(
         Box(Modifier)
         Waveform(buffer)
         Box(Modifier)
-        Spectrogram(spectrogram)
+        Spectrogram(spectrogram, isRecording)
         RoundButton(
             primaryColor = Color(0xFF295E2B),
             primaryIcon = Icons.Default.Home,
