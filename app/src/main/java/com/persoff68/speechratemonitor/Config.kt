@@ -9,7 +9,7 @@ object Config {
     const val WIN_LENGTH = 256
     const val FREQUENCY_BINS = 128
     const val TIME_STEPS = 64
-    const val FRAME_COUNT = 6
+    const val FRAME_COUNT = 4
     const val FRAME_SIZE_IN_MS = 1000L * CHUNK_SIZE / SAMPLE_RATE
 
     const val LOW_CUTOFF_FREQ = 200

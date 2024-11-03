@@ -53,9 +53,8 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun MainNavigation(navController: NavHostController, modifier: Modifier) {
         NavHost(navController, startDestination = "main") {
-//        composable("main") { MainScreen(modifier) }
             composable("main") {
-                GaugeScreen(
+                MainScreen(
                     modifier = modifier,
                     audioState = audioState,
                     audioModule = audioModule,

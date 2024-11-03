@@ -23,9 +23,9 @@ class GaugeSettings(val size: Size, arcBackgroundBitmap: ImageBitmap) {
     val strokeAngle: Float = 0.6f
     val strokeColor: Color = Color(0xFFFFFFFF)
 
-    val tickCount: Int = 8
+    val tickCount: Int = 10
     val tickLength: Float = 20f
-    val tickWidth: Float = 4f
+    val tickWidth: Float = 5f
     val tickAngle: Float = 0.2f
     val tickColor: Color = Color(0xFFFFFFFF)
 

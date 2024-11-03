@@ -1,46 +1,73 @@
 package com.persoff68.speechratemonitor.ui.main
 
-import android.app.Activity
-import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.persoff68.speechratemonitor.ui.settings.SettingsActivity
-import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
+import androidx.compose.ui.graphics.Color
+import com.persoff68.speechratemonitor.Config
+import com.persoff68.speechratemonitor.audio.AudioModule
+import com.persoff68.speechratemonitor.audio.manager.PermissionManager
+import com.persoff68.speechratemonitor.audio.state.AudioState
+import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
+import com.persoff68.speechratemonitor.ui.shared.label.Label
+import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
+import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
+import com.persoff68.speechratemonitor.ui.shared.waveform.Waveform
+import com.persoff68.speechratemonitor.ui.theme.DarkGradient
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    val context = LocalContext.current as Activity
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    audioState: AudioState,
+    audioModule: AudioModule,
+    permissionManager: PermissionManager
+) {
+    val isRecording by audioState.isRecordingState.collectAsState(initial = false)
+    val tempo by audioState.tempoState.collectAsState(initial = Config.DEFAULT_TEMPO)
+    val buffer by audioState.bufferState.collectAsState(initial = Config.DEFAULT_BUFFER)
+    val spectrogram by audioState.spectrogramState.collectAsState(initial = Config.DEFAULT_SPECTROGRAM)
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(DarkGradient),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Button(
-            onClick = {
-                context.startActivity(Intent(context, SettingsActivity::class.java))
-            },
-            modifier = Modifier.padding(bottom = 16.dp),
-        ) {
-            Text("To SettingsScreen")
+        Label()
+        Gauge(
+            value = tempo,
+            minValue = Config.MIN_GAUGE_VALUE,
+            maxValue = Config.MAX_GAUGE_VALUE,
+        )
+        Box(Modifier)
+        Waveform(buffer)
+        if (false) {
+            Spectrogram(spectrogram, isRecording)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    SpeechRateMonitorAppTheme {
-        MainScreen()
+        RoundButton(
+            primaryColor = Color(0xFF295E2B),
+            primaryIcon = Icons.Default.Home,
+            pressedColor = Color(0xFF701A1A),
+            pressedIcon = Icons.Default.Clear,
+            isPressed = isRecording,
+            onClick = {
+                if (!isRecording) {
+                    permissionManager.checkAndRequestPermissions({ audioModule.start() })
+                } else {
+                    audioModule.stop()
+                }
+            }
+        )
     }
 }

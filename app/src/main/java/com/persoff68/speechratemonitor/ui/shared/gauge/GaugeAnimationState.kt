@@ -3,6 +3,7 @@ package com.persoff68.speechratemonitor.ui.shared.gauge
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Ease
 import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 
 class GaugeAnimationState(
+    val scale: Float = 1f,
     val arc: Float = 1f,
     val ticks: Float = 1f,
     val needle: Float = 1f,
@@ -26,6 +28,7 @@ fun createGaugeAnimationState(): GaugeAnimationState {
 
     if (isInPreview) {
         return GaugeAnimationState(
+            scale = 1f,
             arc = 1f,
             ticks = 1f,
             needle = 1f,
@@ -33,6 +36,7 @@ fun createGaugeAnimationState(): GaugeAnimationState {
         )
     }
 
+    val scaleAnimationParameter = remember { Animatable(0f) }
     val arcAnimationParameter = remember { Animatable(0f) }
     val ticksAnimationParameter = remember { Animatable(-1f) }
     val needleAnimationParameter = remember { Animatable(0f) }
@@ -40,6 +44,13 @@ fun createGaugeAnimationState(): GaugeAnimationState {
 
     LaunchedEffect(Unit) {
         launch {
+            val scaleAnimation = launch {
+                delay(200)
+                scaleAnimationParameter.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(durationMillis = 800, easing = EaseOut)
+                )
+            }
             val arcAnimation = launch {
                 delay(200)
                 arcAnimationParameter.animateTo(
@@ -70,6 +81,7 @@ fun createGaugeAnimationState(): GaugeAnimationState {
                 )
             }
 
+            scaleAnimation.join()
             arcAnimation.join()
             ticksAnimation.join()
             needleAnimation.join()
@@ -78,6 +90,7 @@ fun createGaugeAnimationState(): GaugeAnimationState {
     }
 
     return GaugeAnimationState(
+        scale = scaleAnimationParameter.value,
         arc = arcAnimationParameter.value,
         ticks = ticksAnimationParameter.value,
         needle = needleAnimationParameter.value,

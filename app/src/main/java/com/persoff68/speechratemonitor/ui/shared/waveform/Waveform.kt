@@ -42,7 +42,7 @@ fun Waveform(audioData: FloatArray) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(3f)
+            .aspectRatio(2f)
     ) {
         WaveformIndicator(interpolatedAudioData)
     }

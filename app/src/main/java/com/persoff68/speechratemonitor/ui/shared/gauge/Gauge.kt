@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -55,7 +56,7 @@ fun Gauge(value: Int, minValue: Int, maxValue: Int, onClick: () -> Unit = {}) {
 
     val interpolatedValue by animateFloatAsState(
         targetValue = normalizedValue.coerceIn(0f, 1f),
-        animationSpec = tween(durationMillis = 500, easing = EaseOut),
+        animationSpec = tween(durationMillis = 700, easing = EaseOut),
         label = ""
     )
 
@@ -65,6 +66,7 @@ fun Gauge(value: Int, minValue: Int, maxValue: Int, onClick: () -> Unit = {}) {
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
             .fillMaxWidth()
+            .scale(animationState.scale)
             .aspectRatio(1.3f)
             .offset(y = 50.dp)
     ) {
