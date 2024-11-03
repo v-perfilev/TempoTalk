@@ -66,7 +66,7 @@ fun RoundButton(
 
     LaunchedEffect(isPressed) {
         if (isPressed != showPressed) {
-            if (showRipple) delay(600)
+            if (showRipple) delay(500)
             showPressed = isPressed
         }
     }
@@ -136,7 +136,7 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
         val rippleRadius1Launch = launch {
             rippleRadius1.animateTo(
                 targetValue = settings.rippleSize,
-                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
             )
             rippleAlpha1.animateTo(
                 targetValue = 0f,
@@ -148,7 +148,7 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
             delay(200)
             rippleRadius2.animateTo(
                 targetValue = settings.rippleSize,
-                animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
             )
             rippleAlpha2.animateTo(
                 targetValue = 0f,
@@ -159,6 +159,7 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
 
         rippleRadius1Launch.join()
         rippleRadius2Launch.join()
+        delay(500)
         onAnimationEnd()
     }
 

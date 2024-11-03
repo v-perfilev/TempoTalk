@@ -121,6 +121,6 @@ private fun DrawScope.drawWaveformLine(
         end = Offset(endX, endY),
         strokeWidth = settings.strokeWidth,
         cap = StrokeCap.Round,
-        alpha = (0.4f + settings.volumeLevel).coerceIn(0f, 1f)
+        alpha = settings.alpha
     )
 }

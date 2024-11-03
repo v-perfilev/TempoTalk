@@ -14,6 +14,8 @@ class WaveformSettings(size: Size, audioData: FloatArray) {
 
     val volumeLevel = audioData.map { abs(it) / 0.3f }.average().toFloat().coerceIn(0f, 1f)
 
+    val alpha = ((if (volumeLevel > 0) 0.4f else 0f) + volumeLevel).coerceIn(0f, 1f)
+
     val brush = Brush.verticalGradient(
         colors = listOf(
             Color.Yellow,
