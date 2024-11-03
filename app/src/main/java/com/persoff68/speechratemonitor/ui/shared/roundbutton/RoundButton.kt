@@ -88,7 +88,7 @@ fun RoundButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(settings.rippleSize.dp)
+            .size(settings.buttonSize.dp * 1.5f)
             .clickable {
                 showRipple = true
                 onClick()
