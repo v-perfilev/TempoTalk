@@ -17,7 +17,7 @@ object Config {
     const val NOISE_THRESHOLD = 0.05f
 
     const val MIN_GAUGE_VALUE = 0
-    const val MAX_GAUGE_VALUE = 5
+    const val MAX_GAUGE_VALUE = 8
 
     const val BUFFER_VIEW_LENGTH = 100
     const val SPECTROGRAM_VIEW_LENGTH = 60

@@ -5,7 +5,6 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
@@ -27,23 +26,19 @@ import kotlin.random.Random
 fun WaveformPreview() {
     SpeechRateMonitorAppTheme {
         Surface {
-            Waveform(FloatArray(128) { Random.nextFloat() * 2f - 1f })
+            Waveform(audioData = FloatArray(128) { Random.nextFloat() * 2f - 1f })
         }
     }
 }
 
 @Composable
-fun Waveform(audioData: FloatArray) {
+fun Waveform(modifier: Modifier = Modifier, audioData: FloatArray) {
 
     val animatedAudioData = remember { audioData.map { Animatable(it) } }
     AnimateAudioData(audioData, animatedAudioData)
     val interpolatedAudioData = animatedAudioData.map { it.value }.toFloatArray()
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(2f)
-    ) {
+    Box(modifier = modifier.fillMaxWidth()) {
         WaveformIndicator(interpolatedAudioData)
     }
 }

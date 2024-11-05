@@ -53,9 +53,11 @@ android {
 
 dependencies {
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
 
     implementation(libs.pytorch.android)
+    implementation(libs.runtime.livedata)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

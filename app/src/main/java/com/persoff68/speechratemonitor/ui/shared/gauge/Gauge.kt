@@ -45,13 +45,19 @@ import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 fun GaugePreview() {
     SpeechRateMonitorAppTheme {
         Surface {
-            Gauge(10, 0, 20)
+            Gauge(value = 17, minValue = 0, maxValue = 20)
         }
     }
 }
 
 @Composable
-fun Gauge(value: Int, minValue: Int, maxValue: Int, onClick: () -> Unit = {}) {
+fun Gauge(
+    modifier: Modifier = Modifier,
+    value: Int,
+    minValue: Int,
+    maxValue: Int,
+    onClick: () -> Unit = {}
+) {
     val normalizedValue = (value.toFloat() - minValue) / (maxValue - minValue)
 
     val interpolatedValue by animateFloatAsState(
@@ -63,12 +69,11 @@ fun Gauge(value: Int, minValue: Int, maxValue: Int, onClick: () -> Unit = {}) {
     val animationState = createGaugeAnimationState()
 
     Box(
-        contentAlignment = Alignment.TopCenter,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .scale(animationState.scale)
-            .aspectRatio(1.3f)
-            .offset(y = 50.dp)
+            .aspectRatio(1.5f)
+            .offset(y = 20.dp),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter,
@@ -115,7 +120,7 @@ private fun GaugeIndicator(
     animationState: GaugeAnimationState,
     onClick: () -> Unit
 ) {
-    val arcBackgroundBitmap = ImageBitmap.imageResource(id = R.drawable.gauge_arc_texture)
+    val backgroundBitmap = ImageBitmap.imageResource(id = R.drawable.display_texture)
 
     Canvas(
         modifier = Modifier
@@ -127,7 +132,7 @@ private fun GaugeIndicator(
                 )
             }
     ) {
-        val settings = GaugeSettings(size, arcBackgroundBitmap)
+        val settings = GaugeSettings(size, backgroundBitmap)
         val startAngle = 90f + (360f - settings.arcAngle) / 2
 
         rotate(startAngle) {

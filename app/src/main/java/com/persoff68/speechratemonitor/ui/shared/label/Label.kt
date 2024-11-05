@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Label() {
+fun Label(modifier: Modifier = Modifier) {
     val scale = remember { Animatable(0f) }
 
     LaunchedEffect(Unit) {
@@ -34,7 +34,7 @@ fun Label() {
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(20.dp)
     ) {
