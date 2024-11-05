@@ -86,7 +86,12 @@ fun MainScreen(
                 size = 40.dp,
                 primaryColor = Color.Gray,
                 pressedColor = Color.White,
-                onClick = { viewModel.toggleIndicator() }
+                isPressed = showWaveform == true,
+                onClick = {
+                    if (showWaveform != true) {
+                        viewModel.toggleIndicator()
+                    }
+                }
             )
 
             RoundButton(
@@ -110,8 +115,12 @@ fun MainScreen(
                 size = 40.dp,
                 primaryColor = Color.Gray,
                 pressedColor = Color.White,
-                isPressed = true,
-                onClick = { }
+                isPressed = showWaveform == false,
+                onClick = {
+                    if (showWaveform != false) {
+                        viewModel.toggleIndicator()
+                    }
+                }
             )
         }
     }

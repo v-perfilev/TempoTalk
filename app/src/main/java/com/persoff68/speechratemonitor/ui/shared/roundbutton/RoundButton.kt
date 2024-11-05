@@ -95,14 +95,14 @@ fun RoundButton(
 
         Button(
             modifier = Modifier
-                .roundShadow(color = Color.White.copy(alpha = 0.5f), blurRadius = buttonSize / 4)
+                .roundShadow(color = Color.White.copy(alpha = 0.3f), blurRadius = buttonSize / 4)
                 .size(buttonSize)
                 .background(color, shape = RoundedCornerShape(100))
                 .background(
                     Brush.linearGradient(
                         listOf(
-                            Color.DarkGray.copy(alpha = 0.1f),
-                            Color.LightGray.copy(alpha = 0.2f)
+                            Color.Transparent,
+                            Color.White.copy(alpha = 0.15f)
                         ),
                         start = Offset.Zero,
                         end = Offset.Infinite
