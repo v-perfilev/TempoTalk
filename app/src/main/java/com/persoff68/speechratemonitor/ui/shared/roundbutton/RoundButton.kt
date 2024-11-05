@@ -3,17 +3,17 @@ package com.persoff68.speechratemonitor.ui.shared.roundbutton
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -24,28 +24,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.persoff68.speechratemonitor.ui.shared.modifier.roundShadow
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
 @Composable
-fun GaugePreview() {
+fun RoundButtonPreview() {
     SpeechRateMonitorAppTheme {
         Surface {
             RoundButton(
                 primaryColor = Color(0xFF29672B),
                 primaryIcon = Icons.Default.Check,
-                pressedColor = Color(0xFF621C1C),
-                pressedIcon = Icons.Default.Close,
-                isPressed = true
+                buttonSize = 40.dp
             ) { }
         }
     }
@@ -53,10 +54,14 @@ fun GaugePreview() {
 
 @Composable
 fun RoundButton(
+    modifier: Modifier = Modifier,
+    buttonSize: Dp,
     primaryColor: Color,
-    pressedColor: Color = primaryColor,
     primaryIcon: ImageVector,
+    pressedColor: Color = primaryColor,
     pressedIcon: ImageVector = primaryIcon,
+    rippleSize: Dp = buttonSize * 1.5f,
+    iconSize: Dp = buttonSize * 0.5f,
     description: String = "",
     isPressed: Boolean = false,
     onClick: () -> Unit
@@ -71,71 +76,76 @@ fun RoundButton(
         }
     }
 
-    val backgroundColor by animateColorAsState(
+    val color by animateColorAsState(
         targetValue = if (showPressed) pressedColor else primaryColor,
         animationSpec = tween(durationMillis = 300),
         label = ""
     )
 
-    val scale by animateFloatAsState(
-        targetValue = if (showPressed) 0.9f else 1f,
-        animationSpec = tween(durationMillis = 300),
-        label = ""
-    )
-
-    val settings = RoundButtonSettings()
-
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(settings.buttonSize.dp * 1.5f)
-            .clickable {
-                showRipple = true
-                onClick()
-            }
+        modifier = modifier.size(rippleSize),
+        contentAlignment = Alignment.Center
+
     ) {
         if (showRipple) {
-            RippleEffect(backgroundColor, settings) {
+            RippleEffect(color, buttonSize, rippleSize) {
                 showRipple = false
             }
         }
 
-        Box(
+        Button(
             modifier = Modifier
-                .size(settings.buttonSize.dp)
-                .clip(CircleShape)
-                .graphicsLayer(scaleX = scale, scaleY = scale)
-                .background(backgroundColor, shape = CircleShape)
-                .clickable {
-                    if (!showRipple) {
-                        showRipple = true
-                        onClick()
-                    }
-                },
-            contentAlignment = Alignment.Center
+                .roundShadow(color = Color.White.copy(alpha = 0.5f), blurRadius = buttonSize / 4)
+                .size(buttonSize)
+                .background(color, shape = RoundedCornerShape(100))
+                .background(
+                    Brush.linearGradient(
+                        listOf(
+                            Color.DarkGray.copy(alpha = 0.1f),
+                            Color.LightGray.copy(alpha = 0.2f)
+                        ),
+                        start = Offset.Zero,
+                        end = Offset.Infinite
+                    ), shape = RoundedCornerShape(100)
+                ),
+            contentPadding = PaddingValues(0.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            shape = RoundedCornerShape(100),
+            onClick = {
+                showRipple = true
+                onClick()
+            }
         ) {
             Icon(
                 imageVector = if (showPressed) pressedIcon else primaryIcon,
                 contentDescription = description,
-                tint = settings.iconColor,
-                modifier = Modifier.size(settings.iconSize.dp)
+                tint = Color.White,
+                modifier = Modifier.size(iconSize)
             )
         }
     }
 }
 
 @Composable
-private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimationEnd: () -> Unit) {
-    val rippleRadius1 = remember { Animatable(settings.buttonSize * 0.9f) }
-    val rippleAlpha1 = remember { Animatable(0.3f) }
+private fun RippleEffect(
+    color: Color,
+    buttonSize: Dp,
+    rippleSize: Dp,
+    onAnimationEnd: () -> Unit
+) {
+    val buttonRadius = with(LocalDensity.current) { buttonSize.toPx() / 2 }
+    val rippleRadius = with(LocalDensity.current) { rippleSize.toPx() / 2 }
 
-    val rippleRadius2 = remember { Animatable(settings.buttonSize * 0.9f) }
-    val rippleAlpha2 = remember { Animatable(0.3f) }
+    val rippleRadius1 = remember { Animatable(buttonRadius) }
+    val rippleAlpha1 = remember { Animatable(0.5f) }
+
+    val rippleRadius2 = remember { Animatable(buttonRadius) }
+    val rippleAlpha2 = remember { Animatable(0.5f) }
 
     LaunchedEffect(Unit) {
         val rippleRadius1Launch = launch {
             rippleRadius1.animateTo(
-                targetValue = settings.rippleSize,
+                targetValue = rippleRadius,
                 animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing)
             )
             rippleAlpha1.animateTo(
@@ -147,7 +157,7 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
         val rippleRadius2Launch = launch {
             delay(200)
             rippleRadius2.animateTo(
-                targetValue = settings.rippleSize,
+                targetValue = rippleRadius,
                 animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
             )
             rippleAlpha2.animateTo(
@@ -159,11 +169,11 @@ private fun RippleEffect(color: Color, settings: RoundButtonSettings, onAnimatio
 
         rippleRadius1Launch.join()
         rippleRadius2Launch.join()
-        delay(500)
+        delay(200)
         onAnimationEnd()
     }
 
-    Canvas(modifier = Modifier.size(settings.rippleSize.dp)) {
+    Canvas(modifier = Modifier.size(rippleSize)) {
         drawCircle(
             color = color.copy(alpha = rippleAlpha1.value),
             radius = rippleRadius1.value,
