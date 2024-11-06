@@ -3,8 +3,6 @@ package com.persoff68.speechratemonitor.ui.shared.label
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +17,6 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -33,11 +30,7 @@ fun Label(modifier: Modifier = Modifier) {
         )
     }
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(20.dp)
-    ) {
+    Box(modifier = modifier) {
         Text(
             modifier = Modifier
                 .alpha(scale.value)

@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
@@ -72,8 +73,8 @@ fun Gauge(
         modifier = modifier
             .fillMaxWidth()
             .scale(animationState.scale)
-            .aspectRatio(1.5f)
-            .offset(y = 20.dp),
+            .aspectRatio(1.4f)
+            .offset(y = 15.dp),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter,
@@ -96,7 +97,7 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
     Column(
         Modifier
             .fillMaxSize()
-            .padding(bottom = 90.dp)
+            .padding(bottom = 70.dp)
             .alpha(animationState.tempoValue),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -105,6 +106,7 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
             text = "$value",
             style = MaterialTheme.typography.displayMedium,
             color = Color.White,
+            fontSize = 60.sp,
             fontWeight = FontWeight.Bold,
         )
         Text(

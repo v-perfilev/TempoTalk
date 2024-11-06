@@ -69,7 +69,7 @@ private fun DrawScope.drawBackground(arcBackgroundBitmap: ImageBitmap) {
         brush = arcTextureBrush,
         topLeft = Offset(0f, 0f),
         size = size,
-        alpha = 0.5f
+        alpha = 0.3f
     )
     drawRect(
         brush = arcBackgroundBrush,

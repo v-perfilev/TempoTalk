@@ -1,15 +1,16 @@
 package com.persoff68.speechratemonitor.ui.shared.iconbutton
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,13 +27,11 @@ import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 @Composable
 fun IconButtonPreview() {
     SpeechRateMonitorAppTheme {
-        Surface {
-            IconButton(
-                icon = Icons.Default.Check,
-                size = 40.dp,
-                primaryColor = Color.White
-            ) { }
-        }
+        IconButton(
+            icon = Icons.Default.Check,
+            size = 40.dp,
+            primaryColor = Color.Black
+        ) { }
     }
 }
 
@@ -53,21 +52,30 @@ fun IconButton(
         label = ""
     )
 
+    val shadowAlpha by animateFloatAsState(
+        targetValue = if (isPressed) 0.3f else 0.1f,
+        animationSpec = tween(durationMillis = 300),
+        label = ""
+    )
+
     Button(
         modifier = modifier
-            .roundShadow(color = color.copy(alpha = 0.3f), blurRadius = size)
-            .size(size),
+            .size(size)
+            .roundShadow(color = color.copy(alpha = shadowAlpha), blurRadius = size),
         contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(0.dp),
         onClick = {
             onClick()
         }
     ) {
         Icon(
+            modifier = Modifier.size(size),
             imageVector = icon,
             contentDescription = description,
             tint = color,
-            modifier = Modifier.size(size)
         )
     }
 }
