@@ -19,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import com.persoff68.speechratemonitor.ui.shared.indicatorsubtitle.IndicatorSubt
 import com.persoff68.speechratemonitor.ui.shared.label.Label
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
+import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
 import com.persoff68.speechratemonitor.ui.shared.waveform.Waveform
 import com.persoff68.speechratemonitor.ui.theme.backgroundGradientBrush
 
@@ -46,6 +48,8 @@ fun MainScreen(
     permissionManager: PermissionManager,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    SetStatusBarTheme(Color.Transparent, isLightTheme = false)
+
     val showWaveform by viewModel.showWaveform.observeAsState()
     val isRecording by audioState.isRecordingState.collectAsState(initial = false)
     val tempo by audioState.tempoState.collectAsState(initial = Config.DEFAULT_TEMPO)
