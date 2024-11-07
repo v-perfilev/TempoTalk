@@ -1,4 +1,4 @@
-package com.persoff68.speechratemonitor.ui.shared.modifier
+package com.persoff68.speechratemonitor.ui.shared.util
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.ui.Modifier

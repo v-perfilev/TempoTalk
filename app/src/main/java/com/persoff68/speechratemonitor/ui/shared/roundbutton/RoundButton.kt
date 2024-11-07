@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.persoff68.speechratemonitor.ui.shared.modifier.roundShadow
+import com.persoff68.speechratemonitor.ui.shared.util.roundShadow
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,8 +45,9 @@ fun RoundButtonPreview() {
     SpeechRateMonitorAppTheme {
         Surface {
             RoundButton(
-                primaryColor = Color(0xFF29672B),
+                primaryColor = MaterialTheme.colorScheme.primary,
                 primaryIcon = Icons.Default.Check,
+                iconColor = MaterialTheme.colorScheme.onPrimary,
                 buttonSize = 40.dp
             ) { }
         }
@@ -58,9 +60,11 @@ fun RoundButton(
     buttonSize: Dp,
     primaryColor: Color,
     primaryIcon: ImageVector,
+
     pressedColor: Color = primaryColor,
     pressedIcon: ImageVector = primaryIcon,
     rippleSize: Dp = buttonSize * 1.5f,
+    iconColor: Color,
     iconSize: Dp = buttonSize * 0.5f,
     description: String = "",
     isPressed: Boolean = false,
@@ -95,14 +99,17 @@ fun RoundButton(
 
         Button(
             modifier = Modifier
-                .roundShadow(color = Color.White.copy(alpha = 0.3f), blurRadius = buttonSize / 4)
+                .roundShadow(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                    blurRadius = buttonSize / 4
+                )
                 .size(buttonSize)
                 .background(color, shape = RoundedCornerShape(100))
                 .background(
                     Brush.linearGradient(
                         listOf(
                             Color.Transparent,
-                            Color.White.copy(alpha = 0.15f)
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
                         ),
                         start = Offset.Zero,
                         end = Offset.Infinite
@@ -119,7 +126,7 @@ fun RoundButton(
             Icon(
                 imageVector = if (showPressed) pressedIcon else primaryIcon,
                 contentDescription = description,
-                tint = Color.White,
+                tint = iconColor,
                 modifier = Modifier.size(iconSize)
             )
         }

@@ -3,6 +3,7 @@ package com.persoff68.speechratemonitor.ui.shared.label
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,17 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.persoff68.speechratemonitor.ui.theme.labelGradientBrush
 
 @Composable
 fun Label(modifier: Modifier = Modifier) {
     val scale = remember { Animatable(0f) }
+    val labelBrush = labelGradientBrush()
 
     LaunchedEffect(Unit) {
         scale.animateTo(
@@ -40,15 +41,12 @@ fun Label(modifier: Modifier = Modifier) {
                 fontSize = 30.sp,
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
-                brush = Brush.linearGradient(
-                    colors = listOf(Color.Green, Color.Yellow, Color.Red)
-                ),
+                brush = labelBrush,
                 shadow = Shadow(
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     offset = Offset(5f, 0f),
                     blurRadius = 30f,
-
-                    )
+                )
             )
         )
     }

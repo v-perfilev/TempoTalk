@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.persoff68.speechratemonitor.ui.shared.modifier.roundShadow
+import com.persoff68.speechratemonitor.ui.shared.util.roundShadow
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)

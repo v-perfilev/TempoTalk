@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -34,7 +34,7 @@ import com.persoff68.speechratemonitor.ui.shared.label.Label
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
 import com.persoff68.speechratemonitor.ui.shared.waveform.Waveform
-import com.persoff68.speechratemonitor.ui.theme.DarkGradient
+import com.persoff68.speechratemonitor.ui.theme.backgroundGradientBrush
 
 @Composable
 fun MainScreen(
@@ -49,11 +49,12 @@ fun MainScreen(
     val tempo by audioState.tempoState.collectAsState(initial = Config.DEFAULT_TEMPO)
     val buffer by audioState.bufferState.collectAsState(initial = Config.DEFAULT_BUFFER)
     val spectrogram by audioState.spectrogramState.collectAsState(initial = Config.DEFAULT_SPECTROGRAM)
+    val backgroundBrush = backgroundGradientBrush()
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(DarkGradient),
+            .background(backgroundBrush),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -73,14 +74,14 @@ fun MainScreen(
                 IconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.ic_info),
                     size = 25.dp,
-                    primaryColor = Color.LightGray,
+                    primaryColor = MaterialTheme.colorScheme.onBackground,
                     onClick = {}
                 )
                 Spacer(Modifier.width(25.dp))
                 IconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
                     size = 25.dp,
-                    primaryColor = Color.LightGray,
+                    primaryColor = MaterialTheme.colorScheme.onBackground,
                     onClick = {}
                 )
             }
@@ -115,8 +116,8 @@ fun MainScreen(
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_waveform),
                 size = 40.dp,
-                primaryColor = Color.Gray,
-                pressedColor = Color.White,
+                primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                pressedColor = MaterialTheme.colorScheme.onSurface,
                 isPressed = showWaveform == true,
                 onClick = {
                     if (showWaveform != true) {
@@ -126,10 +127,11 @@ fun MainScreen(
             )
 
             RoundButton(
-                primaryColor = Color(0xFF295E2B),
+                primaryColor = MaterialTheme.colorScheme.primary,
                 primaryIcon = ImageVector.vectorResource(id = R.drawable.ic_microphone),
-                pressedColor = Color(0xFF701A1A),
+                pressedColor = MaterialTheme.colorScheme.secondary,
                 pressedIcon = ImageVector.vectorResource(id = R.drawable.ic_stop),
+                iconColor = MaterialTheme.colorScheme.onPrimary,
                 isPressed = isRecording,
                 buttonSize = 80.dp,
                 onClick = {
@@ -144,8 +146,8 @@ fun MainScreen(
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_spectrogram),
                 size = 40.dp,
-                primaryColor = Color.Gray,
-                pressedColor = Color.White,
+                primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                pressedColor = MaterialTheme.colorScheme.onSurface,
                 isPressed = showWaveform == false,
                 onClick = {
                     if (showWaveform != false) {
