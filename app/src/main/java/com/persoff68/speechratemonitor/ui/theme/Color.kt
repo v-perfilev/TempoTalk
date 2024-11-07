@@ -11,13 +11,13 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asAndroidBitmap
 import com.persoff68.speechratemonitor.ui.theme.util.interpolateColor
 
-val GreenColor = Color(0xFF000000)
-val YellowColor = Color(0xFF000000)
-val RedColor = Color(0xFF000000)
-val LightColor1 = Color(0xFF606060)
-val LightColor2 = Color(0xFF303030)
-val DarkColor1 = Color(0xFF101522)
-val DarkColor2 = Color(0xFF202532)
+val GreenColor = Color(0xFF43A047)
+val YellowColor = Color(0xFFFFEA00)
+val RedColor = Color(0xFFC62828)
+val LightColor1 = Color(0xFFAAAAAA)
+val LightColor2 = Color(0xFF505050)
+val DarkColor1 = Color(0xFF101421)
+val DarkColor2 = Color(0xFF151925)
 val Transparent = Color(0x00000000)
 val WhiteColor = Color(0xFFFFFFFF)
 
@@ -37,10 +37,16 @@ fun textureBrush(bitmap: ImageBitmap, sx: Float = 1f, sy: Float = 1f): Brush = S
     ).apply { setLocalMatrix(Matrix().apply { setScale(sx, sy) }) }
 )
 
+fun gaugeBackgroundGradientBrush(): Brush = Brush.linearGradient(
+    colors = listOf(LightColor1, Transparent),
+    start = Offset(0f, 0f),
+    end = Offset(Float.POSITIVE_INFINITY, 0f)
+)
+
 fun indicatorBackgroundGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(LightColor1, LightColor2),
-    start = Offset(Float.POSITIVE_INFINITY, 0f),
-    end = Offset(0f, 0f)
+    colors = listOf(Transparent, LightColor1),
+    start = Offset(0f, 0f),
+    end = Offset(Float.POSITIVE_INFINITY, 0f)
 )
 
 fun gaugeGradientBrush(center: Offset, arcAngle: Float): Brush = Brush.sweepGradient(

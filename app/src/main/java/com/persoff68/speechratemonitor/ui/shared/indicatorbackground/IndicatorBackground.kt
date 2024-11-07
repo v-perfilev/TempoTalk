@@ -7,15 +7,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,17 +40,26 @@ fun IndicatorBackground(modifier: Modifier = Modifier) {
     val textureBitmap = ImageBitmap.imageResource(id = R.drawable.display_texture)
     val backgroundBrush = indicatorBackgroundGradientBrush()
     val bordersColor = MaterialTheme.colorScheme.onSurface
+    val settings by remember { mutableStateOf(IndicatorBackgroundSettings()) }
 
     Box(modifier = modifier.fillMaxWidth()) {
         Canvas(
             modifier = Modifier.fillMaxSize()
         ) {
-
+            drawStroke(settings, bordersColor)
             drawTexture(textureBitmap)
             drawBackground(backgroundBrush)
-            drawBorders(bordersColor)
         }
     }
+}
+
+private fun DrawScope.drawStroke(settings: IndicatorBackgroundSettings, color: Color) {
+    drawRect(
+        color = color,
+        topLeft = Offset(0f, -settings.strokeWidth),
+        size = Size(size.width, size.height + settings.strokeWidth * 2),
+        alpha = 0.6f
+    )
 }
 
 private fun DrawScope.drawTexture(textureBitmap: ImageBitmap) {
@@ -58,7 +68,7 @@ private fun DrawScope.drawTexture(textureBitmap: ImageBitmap) {
         brush = textureBrush,
         topLeft = Offset(0f, 0f),
         size = size,
-        alpha = 0.3f
+        alpha = 0.95f
     )
 }
 
@@ -67,16 +77,6 @@ private fun DrawScope.drawBackground(brush: Brush) {
         brush = brush,
         topLeft = Offset(0f, 0f),
         size = size,
-        alpha = 0.1f
-    )
-}
-
-private fun DrawScope.drawBorders(color: Color) {
-    drawRect(
-        color = color,
-        topLeft = Offset(-10f, 0f),
-        size = Size(size.width + 20f, size.height),
-        style = Stroke(width = 5f, cap = StrokeCap.Butt),
-        alpha = 0.8f
+        alpha = 0.05f
     )
 }

@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
-import com.persoff68.speechratemonitor.ui.theme.indicatorBackgroundGradientBrush
+import com.persoff68.speechratemonitor.ui.theme.gaugeBackgroundGradientBrush
 import com.persoff68.speechratemonitor.ui.theme.gaugeGradientBrush
 import com.persoff68.speechratemonitor.ui.theme.needleGradientBrush
 import com.persoff68.speechratemonitor.ui.theme.textureBrush
@@ -142,7 +142,7 @@ private fun GaugeIndicator(
 
     val textureBitmap = ImageBitmap.imageResource(id = R.drawable.display_texture)
     val textureBrush = textureBrush(bitmap = textureBitmap, sx = 0.8f, sy = 0.8f)
-    val backgroundBrush = indicatorBackgroundGradientBrush()
+    val backgroundBrush = gaugeBackgroundGradientBrush()
     val gaugeBrush = gaugeGradientBrush(settings.size.center, settings.arcAngle)
     val needleBrush = needleGradientBrush(settings.size.center, settings.needleLength)
 
@@ -164,10 +164,10 @@ private fun GaugeIndicator(
             drawGlowArc(settings, value, gaugeBrush)
             drawTicks(settings, animation.ticks, tickColor)
             drawStrokeArc(settings, animation.arc, strokeColor)
-            drawBackgroundArc(settings, animation.arc, textureBrush, backgroundBrush)
+            drawTextureArc(settings, animation.arc, textureBrush)
+            drawBackgroundArc(settings, animation.arc, backgroundBrush)
             drawValueArc(settings, value, gaugeBrush)
             drawNeedle(settings, animation.needle, value, needleBrush)
-
         }
     }
 }
@@ -205,7 +205,7 @@ private fun DrawScope.drawGlowArc(settings: GaugeSettings, value: Float, brush: 
                 width = settings.arcWidth + (20 - i) * settings.glowParameter,
                 cap = StrokeCap.Round
             ),
-            alpha = i / 800f,
+            alpha = i / 400f,
         )
     }
 }
@@ -222,14 +222,15 @@ private fun DrawScope.drawStrokeArc(settings: GaugeSettings, animation: Float, c
             settings.size.height - settings.arcWidth
         ),
         style = Stroke(width = settings.arcWidth + settings.strokeWidth, cap = StrokeCap.Butt),
+        alpha = 0.6f
     )
 }
 
-private fun DrawScope.drawBackgroundArc(
+
+private fun DrawScope.drawTextureArc(
     settings: GaugeSettings,
     animation: Float,
     textureBrush: Brush,
-    backgroundBrush: Brush
 ) {
     drawArc(
         brush = textureBrush,
@@ -242,7 +243,15 @@ private fun DrawScope.drawBackgroundArc(
             settings.size.height - settings.arcWidth
         ),
         style = Stroke(width = settings.arcWidth, cap = StrokeCap.Butt),
+        alpha = 0.95f
     )
+}
+
+private fun DrawScope.drawBackgroundArc(
+    settings: GaugeSettings,
+    animation: Float,
+    backgroundBrush: Brush
+) {
     drawArc(
         brush = backgroundBrush,
         startAngle = 0f,
@@ -254,7 +263,7 @@ private fun DrawScope.drawBackgroundArc(
             settings.size.height - settings.arcWidth
         ),
         style = Stroke(width = settings.arcWidth, cap = StrokeCap.Butt),
-        alpha = 0.5f
+        alpha = 0.05f
     )
 }
 
@@ -270,7 +279,7 @@ private fun DrawScope.drawValueArc(settings: GaugeSettings, value: Float, brush:
             settings.size.height - settings.arcWidth
         ),
         style = Stroke(width = settings.arcWidth, cap = StrokeCap.Butt),
-        alpha = 0.5f
+        alpha = 0.9f
     )
 }
 

@@ -60,7 +60,6 @@ fun RoundButton(
     buttonSize: Dp,
     primaryColor: Color,
     primaryIcon: ImageVector,
-
     pressedColor: Color = primaryColor,
     pressedIcon: ImageVector = primaryIcon,
     rippleSize: Dp = buttonSize * 1.5f,
@@ -144,10 +143,10 @@ private fun RippleEffect(
     val rippleRadius = with(LocalDensity.current) { rippleSize.toPx() / 2 }
 
     val rippleRadius1 = remember { Animatable(buttonRadius) }
-    val rippleAlpha1 = remember { Animatable(0.5f) }
+    val rippleAlpha1 = remember { Animatable(0.2f) }
 
     val rippleRadius2 = remember { Animatable(buttonRadius) }
-    val rippleAlpha2 = remember { Animatable(0.5f) }
+    val rippleAlpha2 = remember { Animatable(0.2f) }
 
     LaunchedEffect(Unit) {
         val rippleRadius1Launch = launch {
