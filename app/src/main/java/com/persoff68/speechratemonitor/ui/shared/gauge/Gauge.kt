@@ -8,9 +8,11 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -122,6 +124,7 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
             fontSize = 60.sp,
             fontWeight = FontWeight.Bold,
         )
+        Spacer(Modifier.height(10.dp))
         Text(
             text = "Syllables per Second",
             style = MaterialTheme.typography.headlineSmall,
