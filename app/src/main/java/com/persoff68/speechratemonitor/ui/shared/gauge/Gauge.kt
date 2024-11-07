@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -126,7 +127,7 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            text = "Syllables per Second",
+            text = stringResource(R.string.syllable_per_second),
             style = MaterialTheme.typography.headlineSmall,
             color = subtitleTextColor,
             fontSize = 21.sp,

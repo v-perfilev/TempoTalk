@@ -2,4 +2,7 @@
     <string name="app_name">SpeechRateMonitorApp</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="syllable_per_second">Syllable per Second</string>
+    <string name="waveform">Waveform</string>
+    <string name="spectrogram">Spectrogram</string>
 </resources>
