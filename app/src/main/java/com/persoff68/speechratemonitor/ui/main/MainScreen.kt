@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ import com.persoff68.speechratemonitor.audio.state.AudioState
 import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
 import com.persoff68.speechratemonitor.ui.shared.indicatorbackground.IndicatorBackground
+import com.persoff68.speechratemonitor.ui.shared.indicatorsubtitle.IndicatorSubtitle
 import com.persoff68.speechratemonitor.ui.shared.label.Label
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
@@ -51,6 +53,8 @@ fun MainScreen(
     val spectrogram by audioState.spectrogramState.collectAsState(initial = Config.DEFAULT_SPECTROGRAM)
     val backgroundBrush = backgroundGradientBrush()
 
+    val animationState = createMainScreenAnimationState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -67,26 +71,8 @@ fun MainScreen(
 
         ) {
             Label()
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    icon = ImageVector.vectorResource(id = R.drawable.ic_info),
-                    size = 25.dp,
-                    primaryColor = MaterialTheme.colorScheme.onBackground,
-                    onClick = {}
-                )
-                Spacer(Modifier.width(25.dp))
-                IconButton(
-                    icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
-                    size = 25.dp,
-                    primaryColor = MaterialTheme.colorScheme.onBackground,
-                    onClick = {}
-                )
-            }
+            MainScreenHeaderButtons(modifier = Modifier.alpha(animationState.parameter))
         }
-
 
         Gauge(
             value = tempo,
@@ -94,68 +80,140 @@ fun MainScreen(
             maxValue = Config.MAX_GAUGE_VALUE,
         )
 
+        Spacer(Modifier)
+
+        MainScreenIndicator(
+            modifier = Modifier.alpha(animationState.parameter),
+            buffer = buffer,
+            spectrogram = spectrogram,
+            showWaveform = showWaveform!!,
+            isRecording = isRecording
+        )
+
+        Spacer(Modifier)
+
+        MainScreenButtons(
+            modifier = Modifier.alpha(animationState.parameter),
+            audioModule = audioModule,
+            permissionManager = permissionManager,
+            showWaveform = showWaveform!!,
+            isRecording = isRecording
+        ) { viewModel.toggleIndicator() }
+    }
+}
+
+@Composable
+private fun MainScreenHeaderButtons(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            icon = ImageVector.vectorResource(id = R.drawable.ic_info),
+            size = 25.dp,
+            primaryColor = MaterialTheme.colorScheme.onBackground,
+            onClick = {}
+        )
+        Spacer(Modifier.width(25.dp))
+        IconButton(
+            icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
+            size = 25.dp,
+            primaryColor = MaterialTheme.colorScheme.onBackground,
+            onClick = {}
+        )
+    }
+}
+
+@Composable
+private fun MainScreenIndicator(
+    modifier: Modifier = Modifier,
+    buffer: FloatArray,
+    spectrogram: Array<FloatArray>,
+    showWaveform: Boolean,
+    isRecording: Boolean
+) {
+    Column(
+        modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Box(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(2f)
         ) {
             IndicatorBackground()
-            if (showWaveform != false) {
+            if (showWaveform) {
                 Waveform(audioData = buffer)
             } else {
                 Spectrogram(spectrogramData = spectrogram, isRecording = isRecording)
             }
+
         }
-
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-
+        Box(
+            Modifier.padding(top = 15.dp)
         ) {
-            IconButton(
-                icon = ImageVector.vectorResource(id = R.drawable.ic_waveform),
-                size = 40.dp,
-                primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                pressedColor = MaterialTheme.colorScheme.onSurface,
-                isPressed = showWaveform == true,
-                onClick = {
-                    if (showWaveform != true) {
-                        viewModel.toggleIndicator()
-                    }
-                }
-            )
-
-            RoundButton(
-                primaryColor = MaterialTheme.colorScheme.primary,
-                primaryIcon = ImageVector.vectorResource(id = R.drawable.ic_microphone),
-                pressedColor = MaterialTheme.colorScheme.secondary,
-                pressedIcon = ImageVector.vectorResource(id = R.drawable.ic_stop),
-                iconColor = MaterialTheme.colorScheme.onPrimary,
-                isPressed = isRecording,
-                buttonSize = 80.dp,
-                onClick = {
-                    if (!isRecording) {
-                        permissionManager.checkAndRequestPermissions({ audioModule.start() })
-                    } else {
-                        audioModule.stop()
-                    }
-                }
-            )
-
-            IconButton(
-                icon = ImageVector.vectorResource(id = R.drawable.ic_spectrogram),
-                size = 40.dp,
-                primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                pressedColor = MaterialTheme.colorScheme.onSurface,
-                isPressed = showWaveform == false,
-                onClick = {
-                    if (showWaveform != false) {
-                        viewModel.toggleIndicator()
-                    }
-                }
-            )
+            IndicatorSubtitle(showWaveform)
         }
     }
 }
 
+@Composable
+private fun MainScreenButtons(
+    modifier: Modifier = Modifier,
+    audioModule: AudioModule,
+    permissionManager: PermissionManager,
+    showWaveform: Boolean,
+    isRecording: Boolean,
+    toggleIndicator: () -> Unit
+) {
+    Row(
+        modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        IconButton(
+            icon = ImageVector.vectorResource(id = R.drawable.ic_waveform),
+            size = 40.dp,
+            primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            pressedColor = MaterialTheme.colorScheme.onSurface,
+            isPressed = showWaveform,
+            onClick = {
+                if (!showWaveform) {
+                    toggleIndicator()
+                }
+            }
+        )
+
+        RoundButton(
+            primaryColor = MaterialTheme.colorScheme.primary,
+            primaryIcon = ImageVector.vectorResource(id = R.drawable.ic_microphone),
+            pressedColor = MaterialTheme.colorScheme.secondary,
+            pressedIcon = ImageVector.vectorResource(id = R.drawable.ic_stop),
+            iconColor = MaterialTheme.colorScheme.onPrimary,
+            isPressed = isRecording,
+            buttonSize = 80.dp,
+            onClick = {
+                if (!isRecording) {
+                    permissionManager.checkAndRequestPermissions({ audioModule.start() })
+                } else {
+                    audioModule.stop()
+                }
+            }
+        )
+
+        IconButton(
+            icon = ImageVector.vectorResource(id = R.drawable.ic_spectrogram),
+            size = 40.dp,
+            primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            pressedColor = MaterialTheme.colorScheme.onSurface,
+            isPressed = !showWaveform,
+            onClick = {
+                if (showWaveform) {
+                    toggleIndicator()
+                }
+            }
+        )
+    }
+}

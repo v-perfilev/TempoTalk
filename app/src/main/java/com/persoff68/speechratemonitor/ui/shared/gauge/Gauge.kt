@@ -123,9 +123,11 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "syllables per second",
+            text = "Syllables per Second",
             style = MaterialTheme.typography.headlineSmall,
-            color = subtitleTextColor
+            color = subtitleTextColor,
+            fontSize = 21.sp,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }
