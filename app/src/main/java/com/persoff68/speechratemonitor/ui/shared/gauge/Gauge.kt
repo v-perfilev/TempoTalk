@@ -68,8 +68,8 @@ fun GaugePreview() {
 fun Gauge(
     modifier: Modifier = Modifier,
     value: Int,
-    minValue: Int,
     maxValue: Int,
+    minValue: Int = 0,
     onClick: () -> Unit = {}
 ) {
     val normalizedValue = (value.toFloat() - minValue) / (maxValue - minValue)
@@ -96,10 +96,9 @@ fun Gauge(
                 .aspectRatio(1f)
         ) {
             GaugeIndicator(
-                interpolatedValue,
-                animationState,
-                onClick
-            )
+                value = interpolatedValue,
+                animation = animationState,
+            ) { onClick() }
             GaugeTempoValue(value, animationState)
         }
     }
@@ -142,15 +141,15 @@ private fun GaugeIndicator(
     animation: GaugeAnimationState,
     onClick: () -> Unit
 ) {
-    var settings by remember { mutableStateOf(GaugeSettings()) }
+    var gaugeSettings by remember { mutableStateOf(GaugeSettings()) }
 
-    val startAngle = 90f + (360f - settings.arcAngle) / 2
+    val startAngle = 90f + (360f - gaugeSettings.arcAngle) / 2
 
     val textureBitmap = ImageBitmap.imageResource(id = R.drawable.display_texture)
     val textureBrush = textureBrush(bitmap = textureBitmap, sx = 0.8f, sy = 0.8f)
     val backgroundBrush = gaugeBackgroundGradientBrush()
-    val gaugeBrush = gaugeGradientBrush(settings.size.center, settings.arcAngle)
-    val needleBrush = needleGradientBrush(settings.size.center, settings.needleLength)
+    val gaugeBrush = gaugeGradientBrush(gaugeSettings.size.center, gaugeSettings.arcAngle)
+    val needleBrush = needleGradientBrush(gaugeSettings.size.center, gaugeSettings.needleLength)
 
     val tickColor = MaterialTheme.colorScheme.onSurface
     val strokeColor = MaterialTheme.colorScheme.onSurface
@@ -159,7 +158,7 @@ private fun GaugeIndicator(
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp)
-            .onSizeChanged { settings = GaugeSettings(it) }
+            .onSizeChanged { gaugeSettings = GaugeSettings(it) }
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { onClick() }
@@ -167,13 +166,13 @@ private fun GaugeIndicator(
             }
     ) {
         rotate(startAngle) {
-            drawGlowArc(settings, value, gaugeBrush)
-            drawTicks(settings, animation.ticks, tickColor)
-            drawStrokeArc(settings, animation.arc, strokeColor)
-            drawTextureArc(settings, animation.arc, textureBrush)
-            drawBackgroundArc(settings, animation.arc, backgroundBrush)
-            drawValueArc(settings, value, gaugeBrush)
-            drawNeedle(settings, animation.needle, value, needleBrush)
+            drawGlowArc(gaugeSettings, value, gaugeBrush)
+            drawTicks(gaugeSettings, animation.ticks, tickColor)
+            drawStrokeArc(gaugeSettings, animation.arc, strokeColor)
+            drawTextureArc(gaugeSettings, animation.arc, textureBrush)
+            drawBackgroundArc(gaugeSettings, animation.arc, backgroundBrush)
+            drawValueArc(gaugeSettings, value, gaugeBrush)
+            drawNeedle(gaugeSettings, animation.needle, value, needleBrush)
         }
     }
 }

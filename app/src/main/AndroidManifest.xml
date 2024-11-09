@@ -22,20 +22,20 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="false"
-            android:label="@string/title_activity_main"
-            android:theme="@style/Theme.SpeechRateMonitorApp" />
-
-        <activity
-            android:name=".ui.settings.SettingsActivity"
             android:exported="true"
-            android:label="@string/title_activity_settings"
+            android:label="@string/title_activity_main"
             android:theme="@style/Theme.SpeechRateMonitorApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.SpeechRateMonitorApp" />
 
         <service
             android:name=".audio.service.AudioService"

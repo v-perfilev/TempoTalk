@@ -31,6 +31,7 @@ import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.audio.AudioModule
 import com.persoff68.speechratemonitor.audio.manager.PermissionManager
 import com.persoff68.speechratemonitor.audio.state.AudioState
+import com.persoff68.speechratemonitor.settings.SettingsViewModel
 import com.persoff68.speechratemonitor.ui.settings.SettingsActivity
 import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
@@ -49,12 +50,14 @@ fun MainScreen(
     audioState: AudioState,
     audioModule: AudioModule,
     permissionManager: PermissionManager,
-    viewModel: MainViewModel = hiltViewModel()
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel()
+
 ) {
     val context = LocalContext.current as Activity
-    SetStatusBarTheme(Color.Transparent, isLightTheme = false)
+    val settings by settingsViewModel.settings.collectAsState()
 
-    val showWaveform by viewModel.showWaveform.observeAsState()
+    val showWaveform by mainViewModel.showWaveform.observeAsState()
     val isRecording by audioState.isRecordingState.collectAsState(initial = false)
     val tempo by audioState.tempoState.collectAsState(initial = Config.DEFAULT_TEMPO)
     val buffer by audioState.bufferState.collectAsState(initial = Config.DEFAULT_BUFFER)
@@ -68,12 +71,13 @@ fun MainScreen(
         context.startActivity(intent)
     }
 
+    SetStatusBarTheme(Color.Transparent, isLightTheme = false)
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(backgroundBrush),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(30.dp),
     ) {
         Row(
             Modifier
@@ -104,11 +108,10 @@ fun MainScreen(
 
         Gauge(
             value = tempo,
-            minValue = Config.MIN_GAUGE_VALUE,
-            maxValue = Config.MAX_GAUGE_VALUE,
+            maxValue = settings.maxSyllables,
         )
 
-        Spacer(Modifier)
+        Spacer(Modifier.weight(1f))
 
         MainScreenIndicator(
             modifier = Modifier.alpha(animationState.parameter),
@@ -118,7 +121,7 @@ fun MainScreen(
             isRecording = isRecording
         )
 
-        Spacer(Modifier)
+        Spacer(Modifier.weight(1f))
 
         MainScreenButtons(
             modifier = Modifier.alpha(animationState.parameter),
@@ -126,7 +129,7 @@ fun MainScreen(
             permissionManager = permissionManager,
             showWaveform = showWaveform!!,
             isRecording = isRecording
-        ) { viewModel.toggleIndicator() }
+        ) { mainViewModel.toggleIndicator() }
     }
 }
 

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -68,7 +67,7 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(backgroundBrush),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.spacedBy(30.dp),
     ) {
         Row(
             Modifier
@@ -118,93 +117,87 @@ private fun SettingsInputs(
             .verticalScroll(scrollState)
             .padding(horizontal = 15.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
 
-        Card(
-            Modifier
-                .padding(vertical = 15.dp)
-                .fillMaxWidth()
-        ) {
-            Spacer(Modifier.height(10.dp))
+        Card(Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.padding(vertical = 30.dp, horizontal = 15.dp),
+                verticalArrangement = Arrangement.spacedBy(25.dp)
+            ) {
+                LabeledSlider(
+                    label = stringResource(R.string.settings_max_syllables),
+                    value = settings.maxSyllables.toFloat(),
+                    onValueChange = { settingsViewModel.updateMaxSyllables(it.toInt()) },
+                    valueRange = 5f..10f,
+                    unit = stringResource(R.string.settings_syllables_per_second),
+                    isEnabled = !isRecording
+                )
 
-            LabeledSlider(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_max_syllables),
-                value = settings.maxSyllables.toFloat(),
-                onValueChange = { settingsViewModel.updateMaxSyllables(it.toInt()) },
-                valueRange = 5f..10f,
-                unit = stringResource(R.string.settings_syllables_per_second),
-                isEnabled = !isRecording
-            )
+                LabeledSlider(
+                    label = stringResource(R.string.settings_warning_threshold),
+                    value = settings.warningThreshold.toFloat(),
+                    onValueChange = { settingsViewModel.updateWarningThreshold(it.toInt()) },
+                    valueRange = 3f..10f,
+                    unit = stringResource(R.string.settings_syllables_per_second),
+                    isEnabled = !isRecording
+                )
 
-            LabeledSlider(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_warning_threshold),
-                value = settings.warningThreshold.toFloat(),
-                onValueChange = { settingsViewModel.updateWarningThreshold(it.toInt()) },
-                valueRange = 3f..10f,
-                unit = stringResource(R.string.settings_syllables_per_second),
-                isEnabled = !isRecording
-            )
+                LabeledSlider(
+                    label = stringResource(R.string.settings_auto_stop_timer),
+                    value = settings.autoStopTimer.toFloat(),
+                    onValueChange = { settingsViewModel.updateAutoStopTimer(it.toInt()) },
+                    valueRange = 0f..30f,
+                    unit = stringResource(R.string.settings_minutes),
+                    isEnabled = !isRecording
+                )
 
-            LabeledSlider(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_auto_stop_timer),
-                value = settings.autoStopTimer.toFloat(),
-                onValueChange = { settingsViewModel.updateAutoStopTimer(it.toInt()) },
-                valueRange = 0f..30f,
-                unit = stringResource(R.string.settings_minutes),
-                isEnabled = !isRecording
-            )
+                LabeledSwitch(
+                    label = stringResource(R.string.settings_sound_notification),
+                    value = settings.soundNotification,
+                    onValueChange = { settingsViewModel.updateSoundNotification(it) },
+                    isEnabled = !isRecording
+                )
 
-            LabeledSwitch(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_sound_notification),
-                value = settings.soundNotification,
-                onValueChange = { settingsViewModel.updateSoundNotification(it) },
-                isEnabled = !isRecording
-            )
+                LabeledSwitch(
+                    label = stringResource(R.string.settings_noise_suppression),
+                    value = settings.noiseSuppression,
+                    onValueChange = { settingsViewModel.updateNoiseSuppression(it) },
+                    isEnabled = !isRecording && isNoiseSuppressionAvailable
+                )
 
-            LabeledSwitch(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_noise_suppression),
-                value = settings.noiseSuppression,
-                onValueChange = { settingsViewModel.updateNoiseSuppression(it) },
-                isEnabled = !isRecording && isNoiseSuppressionAvailable
-            )
-
-            Spacer(Modifier.height(10.dp))
+            }
         }
 
-        Card(
-            Modifier
-                .padding(vertical = 15.dp)
-                .fillMaxWidth()
-        ) {
-            Spacer(Modifier.height(10.dp))
+        Card(Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.padding(vertical = 30.dp, horizontal = 15.dp),
+                verticalArrangement = Arrangement.spacedBy(25.dp)
+            ) {
+                LabeledDropdown(
+                    label = stringResource(R.string.settings_default_indicator),
+                    value = settings.defaultIndicator.toString(),
+                    values = IndicatorType.entries.map { it.toString() },
+                    onValueChange = {
+                        settingsViewModel.updateDefaultIndicator(
+                            IndicatorType.valueOf(
+                                it
+                            )
+                        )
+                    },
+                    valueFormatter = { it },
+                    isEnabled = !isRecording
+                )
 
-            LabeledDropdown(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_default_indicator),
-                value = settings.defaultIndicator.toString(),
-                values = IndicatorType.entries.map { it.toString() },
-                onValueChange = { settingsViewModel.updateDefaultIndicator(IndicatorType.valueOf(it)) },
-                valueFormatter = { it },
-                isEnabled = !isRecording
-            )
-
-            LabeledDropdown(
-                modifier = Modifier.padding(15.dp),
-                label = stringResource(R.string.settings_theme),
-                value = settings.theme.toString(),
-                values = ThemeMode.entries.map { it.toString() },
-                onValueChange = { settingsViewModel.updateTheme(ThemeMode.valueOf(it)) },
-                valueFormatter = { it },
-                isEnabled = !isRecording
-            )
-
-            Spacer(Modifier.height(10.dp))
+                LabeledDropdown(
+                    label = stringResource(R.string.settings_theme),
+                    value = settings.theme.toString(),
+                    values = ThemeMode.entries.map { it.toString() },
+                    onValueChange = { settingsViewModel.updateTheme(ThemeMode.valueOf(it)) },
+                    valueFormatter = { it },
+                    isEnabled = !isRecording
+                )
+            }
         }
     }
 }
