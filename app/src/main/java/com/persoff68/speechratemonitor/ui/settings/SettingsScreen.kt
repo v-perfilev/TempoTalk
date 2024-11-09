@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -79,9 +81,13 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun SettingsInputs(viewModel: SettingsViewModel = hiltViewModel()) {
     val settings by viewModel.settings.collectAsState()
+    val scrollState = rememberScrollState()
+
 
     Column(
-        modifier = Modifier.padding(horizontal = 15.dp),
+        modifier = Modifier
+            .verticalScroll(scrollState)
+            .padding(horizontal = 15.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
