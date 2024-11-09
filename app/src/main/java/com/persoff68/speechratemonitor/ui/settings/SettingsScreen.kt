@@ -15,9 +15,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +37,7 @@ import com.persoff68.speechratemonitor.settings.IndicatorType
 import com.persoff68.speechratemonitor.settings.SettingsViewModel
 import com.persoff68.speechratemonitor.settings.ThemeMode
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
+import com.persoff68.speechratemonitor.ui.shared.infodialog.InfoDialog
 import com.persoff68.speechratemonitor.ui.shared.labeleddropdown.LabeledDropdown
 import com.persoff68.speechratemonitor.ui.shared.labeledslider.LabeledSlider
 import com.persoff68.speechratemonitor.ui.shared.labeledswitch.LabeledSwitch
@@ -50,9 +55,13 @@ fun SettingsScreen(
 
     val backgroundBrush = backgroundGradientBrush()
 
+    var showInfoDialog by remember { mutableStateOf(false) }
+
     fun goBack() {
         context.finish()
     }
+
+    SettingsInfoDialog(show = showInfoDialog, close = { showInfoDialog = false })
 
     Column(
         modifier = modifier
@@ -77,6 +86,15 @@ fun SettingsScreen(
             )
 
             SettingsTitle(modifier = Modifier.padding(start = 30.dp))
+
+            Spacer(Modifier.weight(1f))
+
+            IconButton(
+                icon = ImageVector.vectorResource(id = R.drawable.ic_info),
+                size = 25.dp,
+                primaryColor = MaterialTheme.colorScheme.onBackground,
+                onClick = { showInfoDialog = true }
+            )
         }
 
         SettingsInputs(audioState)
@@ -88,12 +106,12 @@ private fun SettingsInputs(
     audioState: AudioState,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val settings by settingsViewModel.settings.collectAsState()
     val scrollState = rememberScrollState()
+    val settings by settingsViewModel.settings.collectAsState()
 
-//    val isRecording by audioState.isRecordingState.collectAsState(initial = false)
-    val isRecording = true
+    val isRecording by audioState.isRecordingState.collectAsState(initial = false)
     val isNoiseSuppressionAvailable = NoiseSuppressor.isAvailable()
+
 
     Column(
         modifier = Modifier
@@ -188,5 +206,18 @@ private fun SettingsInputs(
 
             Spacer(Modifier.height(10.dp))
         }
+    }
+}
+
+@Composable
+fun SettingsInfoDialog(show: Boolean, close: () -> Unit) {
+    InfoDialog(
+        show = show,
+        close = { close() },
+        title = "Info"
+    ) {
+        Text(
+            text = "Blablabla"
+        )
     }
 }
