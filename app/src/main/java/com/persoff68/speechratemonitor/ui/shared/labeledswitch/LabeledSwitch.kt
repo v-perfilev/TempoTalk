@@ -66,7 +66,13 @@ fun LabeledSwitch(
             enabled = isEnabled,
             colors = SwitchDefaults.colors(
                 uncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
-                uncheckedThumbColor = MaterialTheme.colorScheme.onBackground
+                uncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                disabledCheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                disabledUncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                disabledCheckedTrackColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledUncheckedTrackColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledCheckedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledUncheckedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         )
     }

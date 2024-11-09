@@ -83,6 +83,7 @@ fun LabeledDropdown(
             CurrentValueBox(
                 expanded = expanded,
                 value = value,
+                isEnabled = isEnabled,
                 valueFormatter = valueFormatter
             ) { if (isEnabled) expanded = true }
             DropdownBox(
@@ -99,6 +100,7 @@ fun LabeledDropdown(
 private fun CurrentValueBox(
     expanded: Boolean,
     value: String,
+    isEnabled: Boolean,
     valueFormatter: (String) -> String,
     openDropdownBox: () -> Unit
 ) {
@@ -111,19 +113,20 @@ private fun CurrentValueBox(
     Row(
         modifier = Modifier
             .border(
-                width = 3.dp,
+                width = 2.dp,
                 color = MaterialTheme.colorScheme.onBackground,
                 shape = RoundedCornerShape(10.dp)
             )
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(start = 20.dp, end = 15.dp, top = 10.dp, bottom = 10.dp)
             .clickable { openDropdownBox() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.padding(end = 15.dp),
+            modifier = Modifier.padding(end = 10.dp),
             text = valueFormatter(value),
             style = TextStyle(
-                color = MaterialTheme.colorScheme.onSurface,
+                color = if (expanded || !isEnabled) MaterialTheme.colorScheme.onBackground
+                else MaterialTheme.colorScheme.onSurface,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -134,7 +137,8 @@ private fun CurrentValueBox(
                 .rotate(iconDegree),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_down),
             contentDescription = "",
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = if (expanded || !isEnabled) MaterialTheme.colorScheme.onBackground
+            else MaterialTheme.colorScheme.onSurface,
         )
     }
 }
