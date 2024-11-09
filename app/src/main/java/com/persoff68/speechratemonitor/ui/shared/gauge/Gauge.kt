@@ -127,7 +127,7 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            text = stringResource(R.string.syllable_per_second),
+            text = stringResource(R.string.syllables_per_second),
             style = MaterialTheme.typography.headlineSmall,
             color = subtitleTextColor,
             fontSize = 21.sp,

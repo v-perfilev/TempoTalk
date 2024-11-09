@@ -2,7 +2,26 @@
     <string name="app_name">SpeechRateMonitorApp</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="syllable_per_second">Syllable per Second</string>
+
+    <!-- MainActivity -->
+    <string name="main_activity_title">SpeechRateMonitor</string>
+    <string name="syllables_per_second">Syllables per Second</string>
     <string name="waveform">Waveform</string>
     <string name="spectrogram">Spectrogram</string>
+
+    <!-- SettingsActivity -->
+    <string name="settings_activity_title">Settings</string>
+    <string name="settings_max_syllables">Max syllables</string>
+    <string name="settings_warning_threshold">Warning threshold</string>
+    <string name="settings_auto_stop_timer">Auto stop timer</string>
+    <string name="settings_sound_notification">Sound notification</string>
+    <string name="settings_noise_suppression">Noise suppression</string>
+    <string name="settings_default_indicator">Indicator</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_syllables_per_second">syl/s</string>
+    <string name="settings_minutes">min.</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">System</string>
+
 </resources>

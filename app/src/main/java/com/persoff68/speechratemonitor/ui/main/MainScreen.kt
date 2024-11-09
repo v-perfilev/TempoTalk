@@ -1,5 +1,7 @@
 package com.persoff68.speechratemonitor.ui.main
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +12,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,11 +31,12 @@ import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.audio.AudioModule
 import com.persoff68.speechratemonitor.audio.manager.PermissionManager
 import com.persoff68.speechratemonitor.audio.state.AudioState
+import com.persoff68.speechratemonitor.ui.settings.SettingsActivity
 import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
 import com.persoff68.speechratemonitor.ui.shared.indicatorbackground.IndicatorBackground
 import com.persoff68.speechratemonitor.ui.shared.indicatorsubtitle.IndicatorSubtitle
-import com.persoff68.speechratemonitor.ui.shared.label.Label
+import com.persoff68.speechratemonitor.ui.shared.maintitel.MainTitle
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
 import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
@@ -48,6 +51,7 @@ fun MainScreen(
     permissionManager: PermissionManager,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current as Activity
     SetStatusBarTheme(Color.Transparent, isLightTheme = false)
 
     val showWaveform by viewModel.showWaveform.observeAsState()
@@ -58,6 +62,11 @@ fun MainScreen(
     val backgroundBrush = backgroundGradientBrush()
 
     val animationState = createMainScreenAnimationState()
+
+    fun goToSettings() {
+        val intent = Intent(context, SettingsActivity::class.java)
+        context.startActivity(intent)
+    }
 
     Column(
         modifier = modifier
@@ -74,8 +83,23 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            Label()
-            MainScreenHeaderButtons(modifier = Modifier.alpha(animationState.parameter))
+            IconButton(
+                modifier = Modifier.alpha(animationState.parameter),
+                icon = ImageVector.vectorResource(id = R.drawable.ic_info),
+                size = 25.dp,
+                primaryColor = MaterialTheme.colorScheme.onBackground,
+                onClick = {}
+            )
+
+            MainTitle()
+
+            IconButton(
+                modifier = Modifier.alpha(animationState.parameter),
+                icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
+                size = 25.dp,
+                primaryColor = MaterialTheme.colorScheme.onBackground,
+                onClick = { goToSettings() }
+            )
         }
 
         Gauge(
@@ -103,29 +127,6 @@ fun MainScreen(
             showWaveform = showWaveform!!,
             isRecording = isRecording
         ) { viewModel.toggleIndicator() }
-    }
-}
-
-@Composable
-private fun MainScreenHeaderButtons(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            icon = ImageVector.vectorResource(id = R.drawable.ic_info),
-            size = 25.dp,
-            primaryColor = MaterialTheme.colorScheme.onBackground,
-            onClick = {}
-        )
-        Spacer(Modifier.width(25.dp))
-        IconButton(
-            icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
-            size = 25.dp,
-            primaryColor = MaterialTheme.colorScheme.onBackground,
-            onClick = {}
-        )
     }
 }
 

@@ -16,10 +16,14 @@ navigationCompose = "2.8.3"
 hilt = "2.51.1"
 pytorch_android = "1.10.0"
 runtimeLivedata = "x.y.z"
+datastorePreferencesCoreJvm = "1.1.1"
+identityDoctypesJvm = "202408.1"
 
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
@@ -43,6 +47,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 pytorch_android = { module = "org.pytorch:pytorch_android", version.ref = "pytorch_android" }
 runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
+androidx-datastore-preferences-core-jvm = { group = "androidx.datastore", name = "datastore-preferences-core-jvm", version.ref = "datastorePreferencesCoreJvm" }
+identity-doctypes-jvm = { group = "com.android.identity", name = "identity-doctypes-jvm", version.ref = "identityDoctypesJvm" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
