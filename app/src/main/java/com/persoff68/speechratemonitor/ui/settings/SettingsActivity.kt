@@ -12,11 +12,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.persoff68.speechratemonitor.audio.state.AudioState
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var audioState: AudioState
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,17 +34,23 @@ class SettingsActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-private fun SettingsContent(modifier: Modifier) {
-    val navController = rememberNavController()
-    SettingsNavigation(navController, modifier)
-}
+    @Composable
+    private fun SettingsContent(modifier: Modifier) {
+        val navController = rememberNavController()
+        SettingsNavigation(navController, modifier)
+    }
 
-@Composable
-private fun SettingsNavigation(navController: NavHostController, modifier: Modifier) {
-    NavHost(navController, startDestination = "main") {
-        composable("main") { SettingsScreen(modifier) }
+    @Composable
+    private fun SettingsNavigation(navController: NavHostController, modifier: Modifier) {
+        NavHost(navController, startDestination = "main") {
+            composable("main") {
+                SettingsScreen(
+                    modifier = modifier,
+                    audioState = audioState
+                )
+            }
+        }
     }
 }
+

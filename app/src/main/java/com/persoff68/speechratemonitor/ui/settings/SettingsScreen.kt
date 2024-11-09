@@ -1,6 +1,7 @@
 package com.persoff68.speechratemonitor.ui.settings
 
 import android.app.Activity
+import android.media.audiofx.NoiseSuppressor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.persoff68.speechratemonitor.R
+import com.persoff68.speechratemonitor.audio.state.AudioState
 import com.persoff68.speechratemonitor.settings.IndicatorType
 import com.persoff68.speechratemonitor.settings.SettingsViewModel
 import com.persoff68.speechratemonitor.settings.ThemeMode
@@ -39,7 +41,10 @@ import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
 import com.persoff68.speechratemonitor.ui.theme.backgroundGradientBrush
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(
+    modifier: Modifier = Modifier,
+    audioState: AudioState
+) {
     val context = LocalContext.current as Activity
     SetStatusBarTheme(Color.Transparent, isLightTheme = false)
 
@@ -74,15 +79,21 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             SettingsTitle(modifier = Modifier.padding(start = 30.dp))
         }
 
-        SettingsInputs()
+        SettingsInputs(audioState)
     }
 }
 
 @Composable
-private fun SettingsInputs(viewModel: SettingsViewModel = hiltViewModel()) {
-    val settings by viewModel.settings.collectAsState()
+private fun SettingsInputs(
+    audioState: AudioState,
+    settingsViewModel: SettingsViewModel = hiltViewModel()
+) {
+    val settings by settingsViewModel.settings.collectAsState()
     val scrollState = rememberScrollState()
 
+//    val isRecording by audioState.isRecordingState.collectAsState(initial = false)
+    val isRecording = true
+    val isNoiseSuppressionAvailable = NoiseSuppressor.isAvailable()
 
     Column(
         modifier = Modifier
@@ -103,41 +114,46 @@ private fun SettingsInputs(viewModel: SettingsViewModel = hiltViewModel()) {
                 modifier = Modifier.padding(15.dp),
                 label = stringResource(R.string.settings_max_syllables),
                 value = settings.maxSyllables.toFloat(),
-                onValueChange = { viewModel.updateMaxSyllables(it.toInt()) },
+                onValueChange = { settingsViewModel.updateMaxSyllables(it.toInt()) },
                 valueRange = 5f..10f,
-                unit = stringResource(R.string.settings_syllables_per_second)
+                unit = stringResource(R.string.settings_syllables_per_second),
+                isEnabled = !isRecording
             )
 
             LabeledSlider(
                 modifier = Modifier.padding(15.dp),
                 label = stringResource(R.string.settings_warning_threshold),
                 value = settings.warningThreshold.toFloat(),
-                onValueChange = { viewModel.updateWarningThreshold(it.toInt()) },
+                onValueChange = { settingsViewModel.updateWarningThreshold(it.toInt()) },
                 valueRange = 3f..10f,
-                unit = stringResource(R.string.settings_syllables_per_second)
+                unit = stringResource(R.string.settings_syllables_per_second),
+                isEnabled = !isRecording
             )
 
             LabeledSlider(
                 modifier = Modifier.padding(15.dp),
                 label = stringResource(R.string.settings_auto_stop_timer),
                 value = settings.autoStopTimer.toFloat(),
-                onValueChange = { viewModel.updateAutoStopTimer(it.toInt()) },
+                onValueChange = { settingsViewModel.updateAutoStopTimer(it.toInt()) },
                 valueRange = 0f..30f,
-                unit = stringResource(R.string.settings_minutes)
+                unit = stringResource(R.string.settings_minutes),
+                isEnabled = !isRecording
             )
 
             LabeledSwitch(
                 modifier = Modifier.padding(15.dp),
                 label = stringResource(R.string.settings_sound_notification),
                 value = settings.soundNotification,
-                onValueChange = { viewModel.updateSoundNotification(it) },
+                onValueChange = { settingsViewModel.updateSoundNotification(it) },
+                isEnabled = !isRecording
             )
 
             LabeledSwitch(
                 modifier = Modifier.padding(15.dp),
                 label = stringResource(R.string.settings_noise_suppression),
                 value = settings.noiseSuppression,
-                onValueChange = { viewModel.updateNoiseSuppression(it) },
+                onValueChange = { settingsViewModel.updateNoiseSuppression(it) },
+                isEnabled = !isRecording && isNoiseSuppressionAvailable
             )
 
             Spacer(Modifier.height(10.dp))
@@ -155,8 +171,9 @@ private fun SettingsInputs(viewModel: SettingsViewModel = hiltViewModel()) {
                 label = stringResource(R.string.settings_default_indicator),
                 value = settings.defaultIndicator.toString(),
                 values = IndicatorType.entries.map { it.toString() },
-                onValueChange = { viewModel.updateDefaultIndicator(IndicatorType.valueOf(it)) },
-                valueFormatter = { it }
+                onValueChange = { settingsViewModel.updateDefaultIndicator(IndicatorType.valueOf(it)) },
+                valueFormatter = { it },
+                isEnabled = !isRecording
             )
 
             LabeledDropdown(
@@ -164,8 +181,9 @@ private fun SettingsInputs(viewModel: SettingsViewModel = hiltViewModel()) {
                 label = stringResource(R.string.settings_theme),
                 value = settings.theme.toString(),
                 values = ThemeMode.entries.map { it.toString() },
-                onValueChange = { viewModel.updateTheme(ThemeMode.valueOf(it)) },
-                valueFormatter = { it }
+                onValueChange = { settingsViewModel.updateTheme(ThemeMode.valueOf(it)) },
+                valueFormatter = { it },
+                isEnabled = !isRecording
             )
 
             Spacer(Modifier.height(10.dp))

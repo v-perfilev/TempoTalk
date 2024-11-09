@@ -1,6 +1,7 @@
 package com.persoff68.speechratemonitor.settings
 
 import android.content.Context
+import android.media.audiofx.NoiseSuppressor
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -32,13 +33,17 @@ class SettingsRepository @Inject constructor(
 
     val settingsFlow: Flow<Settings> = dataStore.data.map { preferences ->
         val defaultSettings = Settings()
+
+
+
         Settings(
             maxSyllables = preferences[MAX_SYLLABLES] ?: defaultSettings.maxSyllables,
             warningThreshold = preferences[WARNING_THRESHOLD] ?: defaultSettings.warningThreshold,
             autoStopTimer = preferences[AUTO_STOP_TIMER] ?: defaultSettings.autoStopTimer,
             soundNotification = preferences[SOUND_NOTIFICATION]
                 ?: defaultSettings.soundNotification,
-            noiseSuppression = preferences[NOISE_SUPPRESSION] ?: defaultSettings.noiseSuppression,
+            noiseSuppression = if (NoiseSuppressor.isAvailable()) preferences[NOISE_SUPPRESSION]
+                ?: defaultSettings.noiseSuppression else false,
             defaultIndicator = IndicatorType.valueOf(
                 preferences[INDICATOR_TYPE] ?: defaultSettings.defaultIndicator.toString()
             ),
