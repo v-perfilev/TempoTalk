@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.datastore.preferences.core.jvm)
+    implementation(libs.androidx.lifecycle.process)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
