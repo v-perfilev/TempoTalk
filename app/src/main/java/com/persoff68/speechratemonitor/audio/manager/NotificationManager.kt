@@ -68,8 +68,11 @@ class NotificationManager @Inject constructor(
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("SpeechRateMonitorApp")
-            .setContentText(if (isRecording) "Recording..." else "Ready to Record")
+            .setContentText(if (isRecording) "Analysing..." else "Ready to analyse")
             .setSmallIcon(R.drawable.ic_microphone)
+            .setColor(
+                if (isRecording) context.getColor(R.color.red) else context.getColor(R.color.green)
+            )
             .setOngoing(true)
             .addAction(
                 if (isRecording) R.drawable.ic_stop else R.drawable.ic_microphone,
