@@ -7,12 +7,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.persoff68.speechratemonitor.audio.state.AudioState
+import com.persoff68.speechratemonitor.settings.Settings
+import com.persoff68.speechratemonitor.settings.SettingsRepository
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,11 +27,16 @@ class SettingsActivity : ComponentActivity() {
     @Inject
     lateinit var audioState: AudioState
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SpeechRateMonitorAppTheme {
+            val settings by settingsRepository.settingsFlow
+                .collectAsState(initial = Settings())
+            SpeechRateMonitorAppTheme(settings.theme) {
                 Scaffold { innerPadding ->
                     SettingsContent(Modifier.padding(innerPadding))
                 }

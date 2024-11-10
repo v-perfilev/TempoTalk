@@ -15,15 +15,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import com.persoff68.speechratemonitor.R
+import com.persoff68.speechratemonitor.ui.theme.Brushes
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
-import com.persoff68.speechratemonitor.ui.theme.indicatorBackgroundGradientBrush
-import com.persoff68.speechratemonitor.ui.theme.textureBrush
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
 @Composable
@@ -37,8 +34,8 @@ fun IndicatorBackgroundPreview() {
 
 @Composable
 fun IndicatorBackground(modifier: Modifier = Modifier) {
-    val textureBitmap = ImageBitmap.imageResource(id = R.drawable.display_texture)
-    val backgroundBrush = indicatorBackgroundGradientBrush()
+    val brushes = LocalBrushes.current
+    val backgroundBrush = brushes.indicatorBackgroundGradientBrush()
     val bordersColor = MaterialTheme.colorScheme.onSurface
     val settings by remember { mutableStateOf(IndicatorBackgroundSettings()) }
 
@@ -47,7 +44,7 @@ fun IndicatorBackground(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize()
         ) {
             drawStroke(settings, bordersColor)
-            drawTexture(textureBitmap)
+            drawTexture(brushes)
             drawBackground(backgroundBrush)
         }
     }
@@ -62,8 +59,8 @@ private fun DrawScope.drawStroke(settings: IndicatorBackgroundSettings, color: C
     )
 }
 
-private fun DrawScope.drawTexture(textureBitmap: ImageBitmap) {
-    val textureBrush = textureBrush(bitmap = textureBitmap, sx = 0.8f, sy = 0.8f)
+private fun DrawScope.drawTexture(brushes: Brushes) {
+    val textureBrush = brushes.textureBrush()
     drawRect(
         brush = textureBrush,
         topLeft = Offset(0f, 0f),

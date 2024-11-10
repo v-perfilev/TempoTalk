@@ -13,14 +13,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -37,12 +40,13 @@ import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
 import com.persoff68.speechratemonitor.ui.shared.indicatorbackground.IndicatorBackground
 import com.persoff68.speechratemonitor.ui.shared.indicatorsubtitle.IndicatorSubtitle
+import com.persoff68.speechratemonitor.ui.shared.infodialog.InfoDialog
 import com.persoff68.speechratemonitor.ui.shared.maintitel.MainTitle
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
 import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
 import com.persoff68.speechratemonitor.ui.shared.waveform.Waveform
-import com.persoff68.speechratemonitor.ui.theme.backgroundGradientBrush
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 
 @Composable
 fun MainScreen(
@@ -54,6 +58,7 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel()
 
 ) {
+    val brushes = LocalBrushes.current
     val context = LocalContext.current as Activity
     val settings by settingsViewModel.settings.collectAsState()
 
@@ -62,16 +67,19 @@ fun MainScreen(
     val tempo by audioState.tempoState.collectAsState(initial = Config.DEFAULT_TEMPO)
     val buffer by audioState.bufferState.collectAsState(initial = Config.DEFAULT_BUFFER)
     val spectrogram by audioState.spectrogramState.collectAsState(initial = Config.DEFAULT_SPECTROGRAM)
-    val backgroundBrush = backgroundGradientBrush()
+    val backgroundBrush = brushes.backgroundGradientBrush()
 
     val animationState = createMainScreenAnimationState()
+
+    var showInfoDialog by remember { mutableStateOf(false) }
 
     fun goToSettings() {
         val intent = Intent(context, SettingsActivity::class.java)
         context.startActivity(intent)
     }
 
-    SetStatusBarTheme(Color.Transparent, isLightTheme = false)
+    SetStatusBarTheme()
+    MainInfoDialog(show = showInfoDialog, close = { showInfoDialog = false })
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -82,7 +90,7 @@ fun MainScreen(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
+                .padding(top = 20.dp, start = 20.dp, end = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
 
@@ -91,8 +99,8 @@ fun MainScreen(
                 modifier = Modifier.alpha(animationState.parameter),
                 icon = ImageVector.vectorResource(id = R.drawable.ic_info),
                 size = 25.dp,
-                primaryColor = MaterialTheme.colorScheme.onBackground,
-                onClick = {}
+                primaryColor = MaterialTheme.colorScheme.onSurface,
+                onClick = { showInfoDialog = true }
             )
 
             MainTitle()
@@ -101,7 +109,7 @@ fun MainScreen(
                 modifier = Modifier.alpha(animationState.parameter),
                 icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
                 size = 25.dp,
-                primaryColor = MaterialTheme.colorScheme.onBackground,
+                primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { goToSettings() }
             )
         }
@@ -222,6 +230,19 @@ private fun MainScreenButtons(
                     toggleIndicator()
                 }
             }
+        )
+    }
+}
+
+@Composable
+fun MainInfoDialog(show: Boolean, close: () -> Unit) {
+    InfoDialog(
+        show = show,
+        close = { close() },
+        title = "Info"
+    ) {
+        Text(
+            text = "Blablabla"
         )
     }
 }

@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -42,17 +41,17 @@ import com.persoff68.speechratemonitor.ui.shared.labeledslider.LabeledSlider
 import com.persoff68.speechratemonitor.ui.shared.labeledswitch.LabeledSwitch
 import com.persoff68.speechratemonitor.ui.shared.settingstitle.SettingsTitle
 import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
-import com.persoff68.speechratemonitor.ui.theme.backgroundGradientBrush
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     audioState: AudioState
 ) {
+    val brushes = LocalBrushes.current
     val context = LocalContext.current as Activity
-    SetStatusBarTheme(Color.Transparent, isLightTheme = false)
 
-    val backgroundBrush = backgroundGradientBrush()
+    val backgroundBrush = brushes.backgroundGradientBrush()
 
     var showInfoDialog by remember { mutableStateOf(false) }
 
@@ -60,8 +59,8 @@ fun SettingsScreen(
         context.finish()
     }
 
+    SetStatusBarTheme()
     SettingsInfoDialog(show = showInfoDialog, close = { showInfoDialog = false })
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -72,7 +71,7 @@ fun SettingsScreen(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
+                .padding(top = 20.dp, start = 20.dp, end = 20.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
 
@@ -80,7 +79,7 @@ fun SettingsScreen(
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_back),
                 size = 25.dp,
-                primaryColor = MaterialTheme.colorScheme.onBackground,
+                primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { goBack() }
             )
 
@@ -91,7 +90,7 @@ fun SettingsScreen(
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_info),
                 size = 25.dp,
-                primaryColor = MaterialTheme.colorScheme.onBackground,
+                primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { showInfoDialog = true }
             )
         }

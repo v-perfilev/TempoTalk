@@ -32,7 +32,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -48,11 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
-import com.persoff68.speechratemonitor.ui.theme.gaugeBackgroundGradientBrush
-import com.persoff68.speechratemonitor.ui.theme.gaugeGradientBrush
-import com.persoff68.speechratemonitor.ui.theme.needleGradientBrush
-import com.persoff68.speechratemonitor.ui.theme.textureBrush
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
 @Composable
@@ -141,15 +136,16 @@ private fun GaugeIndicator(
     animation: GaugeAnimationState,
     onClick: () -> Unit
 ) {
+    val brushes = LocalBrushes.current
     var gaugeSettings by remember { mutableStateOf(GaugeSettings()) }
 
     val startAngle = 90f + (360f - gaugeSettings.arcAngle) / 2
 
-    val textureBitmap = ImageBitmap.imageResource(id = R.drawable.display_texture)
-    val textureBrush = textureBrush(bitmap = textureBitmap, sx = 0.8f, sy = 0.8f)
-    val backgroundBrush = gaugeBackgroundGradientBrush()
-    val gaugeBrush = gaugeGradientBrush(gaugeSettings.size.center, gaugeSettings.arcAngle)
-    val needleBrush = needleGradientBrush(gaugeSettings.size.center, gaugeSettings.needleLength)
+    val textureBrush = brushes.textureBrush()
+    val backgroundBrush = brushes.gaugeBackgroundGradientBrush()
+    val gaugeBrush = brushes.gaugeGradientBrush(gaugeSettings.size.center, gaugeSettings.arcAngle)
+    val needleBrush =
+        brushes.needleGradientBrush(gaugeSettings.size.center, gaugeSettings.needleLength)
 
     val tickColor = MaterialTheme.colorScheme.onSurface
     val strokeColor = MaterialTheme.colorScheme.onSurface
@@ -192,6 +188,7 @@ private fun DrawScope.drawTicks(settings: GaugeSettings, animation: Float, color
                     settings.arcWidth + settings.strokeWidth / 2 + settings.tickLength
                 ),
                 strokeWidth = settings.tickWidth,
+                alpha = 0.6f
             )
         }
     }

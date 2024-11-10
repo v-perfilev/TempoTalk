@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
-import com.persoff68.speechratemonitor.ui.theme.labelGradientBrush
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
 @Composable
@@ -37,9 +37,10 @@ fun MainTitlePreview() {
 
 @Composable
 fun MainTitle(modifier: Modifier = Modifier) {
+    val brushes = LocalBrushes.current
     val title = stringResource(R.string.main_activity_title)
     val scale = remember { Animatable(0f) }
-    val labelBrush = labelGradientBrush()
+    val labelBrush = brushes.labelGradientBrush()
 
     LaunchedEffect(Unit) {
         scale.animateTo(
@@ -62,7 +63,7 @@ fun MainTitle(modifier: Modifier = Modifier) {
                 shadow = Shadow(
                     color = MaterialTheme.colorScheme.onSurface,
                     offset = Offset(5f, 0f),
-                    blurRadius = 30f,
+                    blurRadius = 20f,
                 )
             )
         )

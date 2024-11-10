@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
-import com.persoff68.speechratemonitor.ui.theme.labelGradientBrush
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
 @Composable
@@ -32,8 +32,9 @@ fun SettingsTitlePreview() {
 
 @Composable
 fun SettingsTitle(modifier: Modifier = Modifier) {
+    val brushes = LocalBrushes.current
     val title = stringResource(R.string.settings_activity_title)
-    val labelBrush = labelGradientBrush()
+    val labelBrush = brushes.labelGradientBrush()
 
     Box(modifier = modifier) {
         Text(

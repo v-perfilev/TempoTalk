@@ -23,8 +23,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
+import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
-import com.persoff68.speechratemonitor.ui.theme.waveformGradientBrush
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.random.Random
@@ -55,10 +55,11 @@ fun Waveform(modifier: Modifier = Modifier, audioData: FloatArray) {
 private fun WaveformIndicator(
     audioData: FloatArray,
 ) {
+    val brushes = LocalBrushes.current
     var settings by remember { mutableStateOf(WaveformSettings()) }
     val volumeLevel = audioData.map { abs(it) / 0.3f }.average().toFloat().coerceIn(0f, 1f)
     val alpha = ((if (volumeLevel > 0) 0.4f else 0f) + volumeLevel).coerceIn(0f, 1f)
-    val waveformBrush = waveformGradientBrush(volumeLevel)
+    val waveformBrush = brushes.waveformGradientBrush(volumeLevel)
 
     Canvas(
         modifier = Modifier
