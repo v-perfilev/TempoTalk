@@ -43,6 +43,11 @@
             android:exported="false"
             android:foregroundServiceType="microphone" />
 
+        <receiver
+            android:name=".audio.manager.NotificationActionReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_STICKY" />
+
     </application>
 
 </manifest>

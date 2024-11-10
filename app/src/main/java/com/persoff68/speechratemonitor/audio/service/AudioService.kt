@@ -2,6 +2,7 @@ package com.persoff68.speechratemonitor.audio.service
 
 import android.app.Service
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -51,29 +52,30 @@ class AudioService : Service() {
 
     private val lifecycleObserver = LifecycleEventObserver { _, event ->
         when (event) {
-            Lifecycle.Event.ON_STOP -> {
-                if (audioState.isRecordingState.value) {
-                    startAutoStopTimer()
-                }
-            }
-
-            Lifecycle.Event.ON_START -> {
-                autoStopJob?.cancel()
-            }
-
+            Lifecycle.Event.ON_STOP -> if (audioState.isRecordingState.value) startAutoStopTimer()
+            Lifecycle.Event.ON_START -> autoStopJob?.cancel()
             else -> {}
         }
     }
 
     override fun onCreate() {
         super.onCreate()
-
         notificationManager.createNotificationChannel()
         val notificationId = notificationManager.getNotificationId()
-        val notification = notificationManager.getNotification()
+        val notification = notificationManager.getNotification(false)
         startForeground(notificationId, notification)
+    }
 
-        audioState.reset()
+    override fun onBind(intent: Intent?): IBinder {
+        return LocalBinder()
+    }
+
+    inner class LocalBinder : Binder() {
+        fun getService(): AudioService = this@AudioService
+    }
+
+    fun startRecording() {
+        notificationManager.updateNotification(true)
         audioState.setRecording(true)
 
         val audioProcessor = AudioProcessor(
@@ -90,25 +92,17 @@ class AudioService : Service() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    fun stopRecording() {
         recorder?.stop()
         recorder = null
 
         audioState.reset()
         audioState.setRecording(false)
+        notificationManager.updateNotification(false)
 
         signalController.triggerStop()
-
         autoStopJob?.cancel()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-
-        stopForeground(STOP_FOREGROUND_DETACH)
-    }
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
     }
 
     private fun startAutoStopTimer() {

@@ -212,7 +212,9 @@ private fun MainScreenButtons(
             buttonSize = 80.dp,
             onClick = {
                 if (!isRecording) {
-                    permissionManager.checkAndRequestPermissions({ audioModule.start() })
+                    permissionManager.checkAndRequestPermissions({
+                        audioModule.start()
+                    })
                 } else {
                     audioModule.stop()
                 }
