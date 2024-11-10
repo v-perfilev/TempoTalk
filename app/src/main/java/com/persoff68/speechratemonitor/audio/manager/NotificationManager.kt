@@ -35,7 +35,7 @@ class NotificationManager @Inject constructor(
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("SpeechRateMonitorApp")
             .setContentText("Recording audio in background")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_cog)
             .build()
     }
 
