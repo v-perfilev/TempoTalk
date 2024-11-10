@@ -3,6 +3,8 @@ package com.persoff68.speechratemonitor.audio.processor
 import com.persoff68.speechratemonitor.audio.ai.SpeechDenoiser
 import com.persoff68.speechratemonitor.audio.ai.SyllableCounter
 import com.persoff68.speechratemonitor.audio.state.AudioState
+import com.persoff68.speechratemonitor.settings.SettingsRepository
+import com.persoff68.speechratemonitor.signal.SignalController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -10,7 +12,9 @@ import kotlinx.coroutines.launch
 class AudioProcessor(
     audioState: AudioState,
     speechDenoiser: SpeechDenoiser,
-    syllableCounter: SyllableCounter
+    syllableCounter: SyllableCounter,
+    signalController: SignalController,
+    settingsRepository: SettingsRepository
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
@@ -29,7 +33,8 @@ class AudioProcessor(
             SpectrogramUIUpdateHandler(audioState),
             SpectrogramAccumulationHandler(accumulatedSpectrogram),
             SyllableCountProcessingHandler(syllableCounter),
-            SyllableCountUIUpdateHandler(audioState)
+            SyllableCountUIUpdateHandler(audioState),
+            SyllableCountSignalHandler(signalController, settingsRepository)
         )
     )
 

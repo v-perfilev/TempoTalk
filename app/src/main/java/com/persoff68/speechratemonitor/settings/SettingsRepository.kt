@@ -33,9 +33,6 @@ class SettingsRepository @Inject constructor(
 
     val settingsFlow: Flow<Settings> = dataStore.data.map { preferences ->
         val defaultSettings = Settings()
-
-
-
         Settings(
             maxSyllables = preferences[MAX_SYLLABLES] ?: defaultSettings.maxSyllables,
             warningThreshold = preferences[WARNING_THRESHOLD] ?: defaultSettings.warningThreshold,

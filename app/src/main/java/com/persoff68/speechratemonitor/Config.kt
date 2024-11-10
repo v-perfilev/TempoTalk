@@ -16,8 +16,7 @@ object Config {
     const val HIGH_CUTOFF_FREQ = 6000
     const val NOISE_THRESHOLD = 0.05f
 
-    const val MIN_GAUGE_VALUE = 0
-    const val MAX_GAUGE_VALUE = 6
+    const val PAUSE_BETWEEN_ALERTS_IN_SECONDS = 5
 
     const val BUFFER_VIEW_LENGTH = 100
     const val SPECTROGRAM_VIEW_LENGTH = 60

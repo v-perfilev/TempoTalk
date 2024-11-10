@@ -9,6 +9,8 @@ import com.persoff68.speechratemonitor.audio.manager.NotificationManager
 import com.persoff68.speechratemonitor.audio.processor.AudioProcessor
 import com.persoff68.speechratemonitor.audio.recorder.AudioRecorder
 import com.persoff68.speechratemonitor.audio.state.AudioState
+import com.persoff68.speechratemonitor.settings.SettingsRepository
+import com.persoff68.speechratemonitor.signal.SignalController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,6 +28,12 @@ class AudioService : Service() {
     @Inject
     lateinit var syllableCounter: SyllableCounter
 
+    @Inject
+    lateinit var signalController: SignalController
+
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
     private var recorder: AudioRecorder? = null
 
     override fun onCreate() {
@@ -39,9 +47,17 @@ class AudioService : Service() {
         audioState.reset()
         audioState.setRecording(true)
 
-        val audioProcessor = AudioProcessor(audioState, speechDenoiser, syllableCounter)
+        val audioProcessor = AudioProcessor(
+            audioState,
+            speechDenoiser,
+            syllableCounter,
+            signalController,
+            settingsRepository
+        )
         recorder = AudioRecorder(audioProcessor::run)
         recorder?.start()
+
+        signalController.triggerStart()
     }
 
     override fun onDestroy() {
@@ -52,6 +68,8 @@ class AudioService : Service() {
 
         audioState.reset()
         audioState.setRecording(false)
+
+        signalController.triggerStop()
 
         stopForeground(STOP_FOREGROUND_DETACH)
     }
