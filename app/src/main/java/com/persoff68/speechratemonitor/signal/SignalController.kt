@@ -30,11 +30,13 @@ class SignalController @Inject constructor(
 
     fun triggerStart() {
         playSound(R.raw.start)
+        playVibration(100L)
         Log.d("SignalController", "Playing start signal")
     }
 
     fun triggerStop() {
         playSound(R.raw.stop)
+        playVibration(100L)
         Log.d("SignalController", "Playing stop signal")
     }
 

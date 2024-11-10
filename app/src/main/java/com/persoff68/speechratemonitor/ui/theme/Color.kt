@@ -12,7 +12,8 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import com.persoff68.speechratemonitor.ui.theme.util.interpolateColor
 
 val GreenColor = Color(0xFF43A047)
-val YellowColor = Color(0xFFE5B400)
+val OrangeColor = Color(0xFFE5B400)
+val YellowColor = Color(0xFFFFEF00)
 val RedColor = Color(0xFFC62828)
 val GrayColor1 = Color(0xFFEEEEEE)
 val GrayColor2 = Color(0xFFDDDDDD)
@@ -38,7 +39,7 @@ fun darkBackgroundGradientBrush() = Brush.verticalGradient(
 )
 
 fun darkLabelGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(GreenColor, YellowColor, RedColor)
+    colors = listOf(GreenColor, OrangeColor, RedColor)
 )
 
 fun darkGaugeBackgroundGradientBrush(): Brush = Brush.linearGradient(
@@ -57,7 +58,7 @@ fun darkGaugeGradientBrush(center: Offset, arcAngle: Float): Brush = Brush.sweep
     colorStops = arrayOf(
         0f * arcAngle / 360f to Transparent,
         0.4f * arcAngle / 360f to GreenColor,
-        0.65f * arcAngle / 360f to YellowColor,
+        0.65f * arcAngle / 360f to OrangeColor,
         0.9f * arcAngle / 360f to RedColor,
         1f to Transparent
     ),
@@ -72,13 +73,13 @@ fun darkNeedleGradientBrush(center: Offset, needleLength: Float): Brush = Brush.
 
 fun darkWaveformGradientBrush(volumeLevel: Float): Brush = Brush.verticalGradient(
     colors = listOf(
-        YellowColor,
+        OrangeColor,
         interpolateColor(
             startColor = WhiteColor,
             endColor = GreenColor,
             fraction = volumeLevel
         ),
-        YellowColor,
+        OrangeColor,
     )
 )
 
@@ -88,7 +89,7 @@ fun lightBackgroundGradientBrush() = Brush.verticalGradient(
 )
 
 fun lightLabelGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(GreenColor, YellowColor, RedColor)
+    colors = listOf(GreenColor, OrangeColor, RedColor)
 )
 
 fun lightGaugeBackgroundGradientBrush(): Brush = Brush.linearGradient(
@@ -107,7 +108,7 @@ fun lightGaugeGradientBrush(center: Offset, arcAngle: Float): Brush = Brush.swee
     colorStops = arrayOf(
         0f * arcAngle / 360f to Transparent,
         0.4f * arcAngle / 360f to GreenColor,
-        0.65f * arcAngle / 360f to YellowColor,
+        0.65f * arcAngle / 360f to OrangeColor,
         0.9f * arcAngle / 360f to RedColor,
         1f to Transparent
     ),
@@ -122,12 +123,12 @@ fun lightNeedleGradientBrush(center: Offset, needleLength: Float): Brush = Brush
 
 fun lightWaveformGradientBrush(volumeLevel: Float): Brush = Brush.verticalGradient(
     colors = listOf(
-        YellowColor,
+        OrangeColor,
         interpolateColor(
             startColor = GrayColor5,
             endColor = GreenColor,
             fraction = volumeLevel
         ),
-        YellowColor,
+        OrangeColor,
     )
 )
