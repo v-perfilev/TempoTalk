@@ -79,7 +79,7 @@ fun Gauge(
         modifier = modifier
             .fillMaxWidth()
             .scale(animationState.scale)
-            .aspectRatio(1.4f)
+            .aspectRatio(1.3f)
             .offset(y = 15.dp),
     ) {
         Box(
@@ -143,7 +143,7 @@ private fun GaugeIndicator(
     Canvas(
         modifier = Modifier
             .fillMaxSize()
-            .padding(50.dp)
+            .padding(40.dp)
             .onSizeChanged { params = GaugeParams(it) }
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -271,7 +271,7 @@ private fun DrawScope.drawValueArc(params: GaugeParams, value: Float, brush: Bru
             params.size.height - params.arcWidth
         ),
         style = Stroke(width = params.arcWidth, cap = StrokeCap.Butt),
-        alpha = 0.9f
+        alpha = 0.95f
     )
 }
 
