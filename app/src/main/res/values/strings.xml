@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">SpeechRateMonitorApp</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="app_name">Speech Rate Monitor</string>
 
     <!-- MainActivity -->
     <string name="main_activity_title">SpeechRateMonitor</string>
