@@ -22,4 +22,11 @@
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_theme_system">System</string>
 
+    <!-- Notification-->
+    <string name="notification_title">Speech Rate Monitor</string>
+    <string name="notification_content_analysing">Analysing…</string>
+    <string name="notification_content_ready">Ready to analyse</string>
+    <string name="notification_action_start">Start</string>
+    <string name="notification_action_stop">Stop</string>
+
 </resources>

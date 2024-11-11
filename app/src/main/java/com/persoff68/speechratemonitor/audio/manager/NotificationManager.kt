@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import androidx.core.app.NotificationCompat
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.audio.manager.NotificationActionReceiver.Companion.ACTION_START
@@ -67,16 +68,22 @@ class NotificationManager @Inject constructor(
         )
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("SpeechRateMonitorApp")
-            .setContentText(if (isRecording) "Analysing..." else "Ready to analyse")
-            .setSmallIcon(R.drawable.ic_microphone)
-            .setColor(
-                if (isRecording) context.getColor(R.color.red) else context.getColor(R.color.green)
+            .setContentTitle(context.getString(R.string.app_name))
+            .setContentText(
+                if (isRecording) context.getString(R.string.notification_content_analysing)
+                else context.getString(R.string.notification_content_ready)
             )
+            .setSmallIcon(R.drawable.ic_microphone)
             .setOngoing(true)
+            .setLargeIcon(null as Icon?)
+            .setColor(
+                if (isRecording) context.getColor(R.color.red)
+                else context.getColor(R.color.green)
+            )
             .addAction(
                 if (isRecording) R.drawable.ic_stop else R.drawable.ic_microphone,
-                if (isRecording) "Stop" else "Start",
+                if (isRecording) context.getString(R.string.notification_action_stop)
+                else context.getString(R.string.notification_action_start),
                 if (isRecording) stopPendingIntent else startPendingIntent
             )
             .build()
