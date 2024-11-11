@@ -52,7 +52,7 @@ class AudioService : Service() {
 
     private val lifecycleObserver = LifecycleEventObserver { _, event ->
         when (event) {
-            Lifecycle.Event.ON_STOP -> if (audioState.isRecordingState.value) startAutoStopTimer()
+            Lifecycle.Event.ON_STOP -> startAutoStopTimer()
             Lifecycle.Event.ON_START -> autoStopJob?.cancel()
             else -> {}
         }
@@ -112,7 +112,7 @@ class AudioService : Service() {
                 autoStopJob?.cancel()
                 autoStopJob = serviceScope.launch {
                     delay(autoStopTime * 60L * 1000L)
-                    stopSelf()
+                    stopRecording()
                 }
             }
         }
