@@ -33,13 +33,13 @@ fun MainInfoDialog(show: Boolean, close: () -> Unit) {
     InfoDialog(
         show = show,
         close = { close() },
-        title = stringResource(R.string.settings_information)
+        title = stringResource(R.string.main_dialog_title)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary,
-                text = stringResource(R.string.main_dialog_title)
+                text = stringResource(R.string.main_dialog_label_1)
             )
             Text(
                 style = MaterialTheme.typography.bodySmall,
@@ -59,12 +59,12 @@ fun MainInfoDialog(show: Boolean, close: () -> Unit) {
             Text(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.secondary,
-                text = stringResource(R.string.main_warning_title)
+                text = stringResource(R.string.main_dialog_label_2)
             )
             Text(
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Justify,
-                text = stringResource(R.string.main_warning_description)
+                text = stringResource(R.string.main_dialog_content_3)
             )
         }
     }
