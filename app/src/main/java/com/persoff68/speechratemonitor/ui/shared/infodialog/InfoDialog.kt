@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
@@ -61,16 +62,23 @@ fun InfoDialog(
     val scrollState = rememberScrollState()
 
     if (show) {
-        Dialog(onDismissRequest = close) {
+        Dialog(
+            properties = DialogProperties(
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true,
+                usePlatformDefaultWidth = false
+            ),
+            onDismissRequest = close,
+        ) {
             Surface(
                 modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(20.dp),
                 shape = MaterialTheme.shapes.medium
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Row(
                         modifier = Modifier

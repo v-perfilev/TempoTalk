@@ -37,17 +37,17 @@ fun MainInfoDialog(show: Boolean, close: () -> Unit) {
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary,
                 text = stringResource(R.string.main_dialog_title)
             )
             Text(
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Justify,
                 text = stringResource(R.string.main_dialog_content_1)
             )
             Text(
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Justify,
                 text = stringResource(R.string.main_dialog_content_2)
             )
@@ -57,12 +57,12 @@ fun MainInfoDialog(show: Boolean, close: () -> Unit) {
 
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.secondary,
                 text = stringResource(R.string.main_warning_title)
             )
             Text(
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Justify,
                 text = stringResource(R.string.main_warning_description)
             )
