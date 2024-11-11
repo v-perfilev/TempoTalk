@@ -52,7 +52,7 @@ fun IconButton(
     )
 
     val shadowAlpha by animateFloatAsState(
-        targetValue = if (isPressed) 0.3f else 0.1f,
+        targetValue = if (isPressed) 0.4f else 0.1f,
         animationSpec = tween(durationMillis = 300),
         label = ""
     )
