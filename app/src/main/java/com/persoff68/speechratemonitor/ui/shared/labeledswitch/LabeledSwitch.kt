@@ -12,12 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
@@ -50,12 +47,9 @@ fun LabeledSwitch(
     ) {
         Text(
             modifier = Modifier.padding(end = 15.dp),
-            text = "$label:",
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary,
+            text = "$label:"
         )
 
         Spacer(Modifier.weight(1f))

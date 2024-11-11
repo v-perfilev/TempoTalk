@@ -3,11 +3,11 @@ package com.persoff68.speechratemonitor.ui.shared.gauge
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
 
-class GaugeSettings(intSize: IntSize = IntSize(0, 0)) {
+class GaugeParams(intSize: IntSize = IntSize(0, 0)) {
     val size = intSize.toSize()
 
     val arcAngle: Float = 210f
-    val arcWidth: Float = 120f
+    val arcWidth: Float = 130f
 
     val glowParameter: Float = 15f
 

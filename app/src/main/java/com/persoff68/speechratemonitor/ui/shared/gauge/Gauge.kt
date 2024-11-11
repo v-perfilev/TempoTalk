@@ -40,11 +40,9 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
@@ -101,9 +99,6 @@ fun Gauge(
 
 @Composable
 private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
-    val mainTextColor = MaterialTheme.colorScheme.onSurface
-    val subtitleTextColor = MaterialTheme.colorScheme.onBackground
-
     Column(
         Modifier
             .fillMaxSize()
@@ -113,19 +108,15 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$value",
             style = MaterialTheme.typography.displayMedium,
-            color = mainTextColor,
-            fontSize = 60.sp,
-            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            text = value.toString()
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            text = stringResource(R.string.syllables_per_second),
-            style = MaterialTheme.typography.headlineSmall,
-            color = subtitleTextColor,
-            fontSize = 21.sp,
-            fontWeight = FontWeight.SemiBold
+            style = MaterialTheme.typography.displaySmall,
+            color = MaterialTheme.colorScheme.onBackground,
+            text = stringResource(R.string.syllables_per_second)
         )
     }
 }
@@ -137,15 +128,14 @@ private fun GaugeIndicator(
     onClick: () -> Unit
 ) {
     val brushes = LocalBrushes.current
-    var gaugeSettings by remember { mutableStateOf(GaugeSettings()) }
+    var params by remember { mutableStateOf(GaugeParams()) }
 
-    val startAngle = 90f + (360f - gaugeSettings.arcAngle) / 2
+    val startAngle = 90f + (360f - params.arcAngle) / 2
 
     val textureBrush = brushes.textureBrush()
     val backgroundBrush = brushes.gaugeBackgroundGradientBrush()
-    val gaugeBrush = brushes.gaugeGradientBrush(gaugeSettings.size.center, gaugeSettings.arcAngle)
-    val needleBrush =
-        brushes.needleGradientBrush(gaugeSettings.size.center, gaugeSettings.needleLength)
+    val gaugeBrush = brushes.gaugeGradientBrush(params.size.center, params.arcAngle)
+    val needleBrush = brushes.needleGradientBrush(params.size.center, params.needleLength)
 
     val tickColor = MaterialTheme.colorScheme.onSurface
     val strokeColor = MaterialTheme.colorScheme.onSurface
@@ -154,7 +144,7 @@ private fun GaugeIndicator(
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp)
-            .onSizeChanged { gaugeSettings = GaugeSettings(it) }
+            .onSizeChanged { params = GaugeParams(it) }
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { onClick() }
@@ -162,49 +152,49 @@ private fun GaugeIndicator(
             }
     ) {
         rotate(startAngle) {
-            drawGlowArc(gaugeSettings, value, gaugeBrush)
-            drawTicks(gaugeSettings, animation.ticks, tickColor)
-            drawStrokeArc(gaugeSettings, animation.arc, strokeColor)
-            drawTextureArc(gaugeSettings, animation.arc, textureBrush)
-            drawBackgroundArc(gaugeSettings, animation.arc, backgroundBrush)
-            drawValueArc(gaugeSettings, value, gaugeBrush)
-            drawNeedle(gaugeSettings, animation.needle, value, needleBrush)
+            drawGlowArc(params, value, gaugeBrush)
+            drawTicks(params, animation.ticks, tickColor)
+            drawStrokeArc(params, animation.arc, strokeColor)
+            drawTextureArc(params, animation.arc, textureBrush)
+            drawBackgroundArc(params, animation.arc, backgroundBrush)
+            drawValueArc(params, value, gaugeBrush)
+            drawNeedle(params, animation.needle, value, needleBrush)
         }
     }
 }
 
-private fun DrawScope.drawTicks(settings: GaugeSettings, animation: Float, color: Color) {
-    val tickAngle = (settings.arcAngle + settings.tickAngle * 2) / settings.tickCount
-    for (i in 0..(settings.tickCount * animation).toInt()) {
-        rotate(degrees = 90f - settings.tickAngle + i * tickAngle) {
+private fun DrawScope.drawTicks(params: GaugeParams, animation: Float, color: Color) {
+    val tickAngle = (params.arcAngle + params.tickAngle * 2) / params.tickCount
+    for (i in 0..(params.tickCount * animation).toInt()) {
+        rotate(degrees = 90f - params.tickAngle + i * tickAngle) {
             drawLine(
                 color = color,
                 start = Offset(
-                    settings.size.width / 2,
-                    settings.arcWidth + settings.strokeWidth / 2 - 1f
+                    params.size.width / 2,
+                    params.arcWidth + params.strokeWidth / 2 - 1f
                 ),
                 end = Offset(
-                    settings.size.width / 2,
-                    settings.arcWidth + settings.strokeWidth / 2 + settings.tickLength
+                    params.size.width / 2,
+                    params.arcWidth + params.strokeWidth / 2 + params.tickLength
                 ),
-                strokeWidth = settings.tickWidth,
+                strokeWidth = params.tickWidth,
                 alpha = 0.6f
             )
         }
     }
 }
 
-private fun DrawScope.drawGlowArc(settings: GaugeSettings, value: Float, brush: Brush) {
+private fun DrawScope.drawGlowArc(params: GaugeParams, value: Float, brush: Brush) {
     for (i in 0..20) {
         drawArc(
             brush = brush,
             startAngle = 0f,
-            sweepAngle = value * settings.arcAngle,
+            sweepAngle = value * params.arcAngle,
             useCenter = false,
-            topLeft = Offset(settings.arcWidth / 2, settings.arcWidth / 2),
-            size = Size(size.width - settings.arcWidth, size.height - settings.arcWidth),
+            topLeft = Offset(params.arcWidth / 2, params.arcWidth / 2),
+            size = Size(size.width - params.arcWidth, size.height - params.arcWidth),
             style = Stroke(
-                width = settings.arcWidth + (20 - i) * settings.glowParameter,
+                width = params.arcWidth + (20 - i) * params.glowParameter,
                 cap = StrokeCap.Round
             ),
             alpha = i / 400f,
@@ -212,100 +202,100 @@ private fun DrawScope.drawGlowArc(settings: GaugeSettings, value: Float, brush: 
     }
 }
 
-private fun DrawScope.drawStrokeArc(settings: GaugeSettings, animation: Float, color: Color) {
+private fun DrawScope.drawStrokeArc(params: GaugeParams, animation: Float, color: Color) {
     drawArc(
         color = color,
-        startAngle = -settings.strokeAngle * animation,
-        sweepAngle = settings.arcAngle * animation + settings.strokeAngle * 2 * animation,
+        startAngle = -params.strokeAngle * animation,
+        sweepAngle = params.arcAngle * animation + params.strokeAngle * 2 * animation,
         useCenter = false,
-        topLeft = Offset(settings.arcWidth / 2, settings.arcWidth / 2),
+        topLeft = Offset(params.arcWidth / 2, params.arcWidth / 2),
         size = Size(
-            settings.size.width - settings.arcWidth,
-            settings.size.height - settings.arcWidth
+            params.size.width - params.arcWidth,
+            params.size.height - params.arcWidth
         ),
-        style = Stroke(width = settings.arcWidth + settings.strokeWidth, cap = StrokeCap.Butt),
+        style = Stroke(width = params.arcWidth + params.strokeWidth, cap = StrokeCap.Butt),
         alpha = 0.6f
     )
 }
 
 
 private fun DrawScope.drawTextureArc(
-    settings: GaugeSettings,
+    params: GaugeParams,
     animation: Float,
-    textureBrush: Brush,
+    brush: Brush,
 ) {
     drawArc(
-        brush = textureBrush,
+        brush = brush,
         startAngle = 0f,
-        sweepAngle = settings.arcAngle * animation,
+        sweepAngle = params.arcAngle * animation,
         useCenter = false,
-        topLeft = Offset(settings.arcWidth / 2, settings.arcWidth / 2),
+        topLeft = Offset(params.arcWidth / 2, params.arcWidth / 2),
         size = Size(
-            settings.size.width - settings.arcWidth,
-            settings.size.height - settings.arcWidth
+            params.size.width - params.arcWidth,
+            params.size.height - params.arcWidth
         ),
-        style = Stroke(width = settings.arcWidth, cap = StrokeCap.Butt),
+        style = Stroke(width = params.arcWidth, cap = StrokeCap.Butt),
         alpha = 0.95f
     )
 }
 
 private fun DrawScope.drawBackgroundArc(
-    settings: GaugeSettings,
+    params: GaugeParams,
     animation: Float,
-    backgroundBrush: Brush
+    brush: Brush
 ) {
     drawArc(
-        brush = backgroundBrush,
+        brush = brush,
         startAngle = 0f,
-        sweepAngle = settings.arcAngle * animation,
+        sweepAngle = params.arcAngle * animation,
         useCenter = false,
-        topLeft = Offset(settings.arcWidth / 2, settings.arcWidth / 2),
+        topLeft = Offset(params.arcWidth / 2, params.arcWidth / 2),
         size = Size(
-            settings.size.width - settings.arcWidth,
-            settings.size.height - settings.arcWidth
+            params.size.width - params.arcWidth,
+            params.size.height - params.arcWidth
         ),
-        style = Stroke(width = settings.arcWidth, cap = StrokeCap.Butt),
+        style = Stroke(width = params.arcWidth, cap = StrokeCap.Butt),
         alpha = 0.05f
     )
 }
 
-private fun DrawScope.drawValueArc(settings: GaugeSettings, value: Float, brush: Brush) {
+private fun DrawScope.drawValueArc(params: GaugeParams, value: Float, brush: Brush) {
     drawArc(
         brush = brush,
         startAngle = 0f,
-        sweepAngle = value * settings.arcAngle,
+        sweepAngle = value * params.arcAngle,
         useCenter = false,
-        topLeft = Offset(settings.arcWidth / 2, settings.arcWidth / 2),
+        topLeft = Offset(params.arcWidth / 2, params.arcWidth / 2),
         size = Size(
-            settings.size.width - settings.arcWidth,
-            settings.size.height - settings.arcWidth
+            params.size.width - params.arcWidth,
+            params.size.height - params.arcWidth
         ),
-        style = Stroke(width = settings.arcWidth, cap = StrokeCap.Butt),
+        style = Stroke(width = params.arcWidth, cap = StrokeCap.Butt),
         alpha = 0.9f
     )
 }
 
 private fun DrawScope.drawNeedle(
-    settings: GaugeSettings,
+    params: GaugeParams,
     animation: Float,
     value: Float,
     brush: Brush
 ) {
-    val needleAngle = value * settings.arcAngle
+    val needleAngle = value * params.arcAngle
 
     rotate(degrees = needleAngle) {
 
         val path = Path().apply {
-            moveTo(settings.size.center.x, center.y - settings.needleWidth / 2)
-            lineTo(settings.size.center.x, center.y + settings.needleWidth / 2)
+            moveTo(params.size.center.x, center.y - params.needleWidth / 2)
+            lineTo(params.size.center.x, center.y + params.needleWidth / 2)
             lineTo(
-                settings.size.center.x + settings.needleLength * animation - 20f * animation,
-                center.y + settings.needleWidth / 6
+                params.size.center.x + params.needleLength * animation - 20f * animation,
+                center.y + params.needleWidth / 6
             )
-            lineTo(settings.size.center.x + settings.needleLength * animation, center.y)
+            lineTo(params.size.center.x + params.needleLength * animation, center.y)
             lineTo(
-                settings.size.center.x + settings.needleLength * animation - 20f * animation,
-                center.y - settings.needleWidth / 6
+                params.size.center.x + params.needleLength * animation - 20f * animation,
+                center.y - params.needleWidth / 6
             )
             close()
         }

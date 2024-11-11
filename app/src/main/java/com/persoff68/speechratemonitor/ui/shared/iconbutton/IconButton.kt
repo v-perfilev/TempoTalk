@@ -38,10 +38,10 @@ fun IconButtonPreview() {
 @Composable
 fun IconButton(
     modifier: Modifier = Modifier,
-    size: Dp,
     icon: ImageVector,
     primaryColor: Color,
     pressedColor: Color = primaryColor,
+    size: Dp = 20.dp,
     description: String = "",
     isPressed: Boolean = false,
     onClick: () -> Unit

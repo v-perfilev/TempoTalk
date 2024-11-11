@@ -4,6 +4,7 @@ import android.app.Activity
 import android.media.audiofx.NoiseSuppressor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,7 +40,6 @@ import com.persoff68.speechratemonitor.ui.shared.infodialog.InfoDialog
 import com.persoff68.speechratemonitor.ui.shared.labeleddropdown.LabeledDropdown
 import com.persoff68.speechratemonitor.ui.shared.labeledslider.LabeledSlider
 import com.persoff68.speechratemonitor.ui.shared.labeledswitch.LabeledSwitch
-import com.persoff68.speechratemonitor.ui.shared.settingstitle.SettingsTitle
 import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
 import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 
@@ -48,9 +48,8 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     audioState: AudioState
 ) {
-    val brushes = LocalBrushes.current
     val context = LocalContext.current as Activity
-
+    val brushes = LocalBrushes.current
     val backgroundBrush = brushes.backgroundGradientBrush()
 
     var showInfoDialog by remember { mutableStateOf(false) }
@@ -78,7 +77,6 @@ fun SettingsScreen(
         ) {
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_back),
-                size = 25.dp,
                 primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { goBack() }
             )
@@ -89,13 +87,26 @@ fun SettingsScreen(
 
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_info),
-                size = 25.dp,
                 primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { showInfoDialog = true }
             )
         }
 
         SettingsInputs(audioState)
+    }
+}
+
+@Composable
+fun SettingsTitle(modifier: Modifier = Modifier) {
+    val brushes = LocalBrushes.current
+    val labelBrush = brushes.labelGradientBrush()
+
+    Box(modifier = modifier) {
+        Text(
+            modifier = Modifier.align(Alignment.CenterStart),
+            style = MaterialTheme.typography.displayLarge.copy(brush = labelBrush),
+            text = stringResource(R.string.settings_activity_title)
+        )
     }
 }
 
@@ -122,7 +133,7 @@ private fun SettingsInputs(
         Card(Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(vertical = 30.dp, horizontal = 15.dp),
-                verticalArrangement = Arrangement.spacedBy(25.dp)
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 LabeledSlider(
                     label = stringResource(R.string.settings_max_syllables),
@@ -171,7 +182,7 @@ private fun SettingsInputs(
         Card(Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(vertical = 30.dp, horizontal = 15.dp),
-                verticalArrangement = Arrangement.spacedBy(25.dp)
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 LabeledDropdown(
                     label = stringResource(R.string.settings_default_indicator),
@@ -179,9 +190,7 @@ private fun SettingsInputs(
                     values = IndicatorType.entries.map { it.toString() },
                     onValueChange = {
                         settingsViewModel.updateDefaultIndicator(
-                            IndicatorType.valueOf(
-                                it
-                            )
+                            IndicatorType.valueOf(it)
                         )
                     },
                     valueFormatter = { it },

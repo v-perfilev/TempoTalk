@@ -26,12 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
@@ -69,12 +66,9 @@ fun LabeledDropdown(
     ) {
         Text(
             modifier = Modifier.padding(start = 10.dp, end = 15.dp),
-            text = "$label:",
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary,
+            text = "$label:"
         )
 
         Spacer(Modifier.weight(1f))
@@ -123,13 +117,10 @@ private fun CurrentValueBox(
     ) {
         Text(
             modifier = Modifier.padding(end = 10.dp),
-            text = valueFormatter(value),
-            style = TextStyle(
-                color = if (expanded || !isEnabled) MaterialTheme.colorScheme.onBackground
-                else MaterialTheme.colorScheme.onSurface,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
+            style = MaterialTheme.typography.labelMedium,
+            color = if (expanded || !isEnabled) MaterialTheme.colorScheme.onBackground
+            else MaterialTheme.colorScheme.onSurface,
+            text = valueFormatter(value)
         )
         Icon(
             modifier = Modifier
@@ -154,7 +145,7 @@ private fun DropdownBox(
     DropdownMenu(
         modifier = Modifier
             .border(
-                1.dp,
+                2.dp,
                 MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(10.dp)
             ),
@@ -167,7 +158,12 @@ private fun DropdownBox(
                     onValueChange(v)
                     closeDropdownBox()
                 },
-                text = { Text(text = valueFormatter(v)) }
+                text = {
+                    Text(
+                        style = MaterialTheme.typography.labelMedium,
+                        text = valueFormatter(v)
+                    )
+                }
             )
         }
     }

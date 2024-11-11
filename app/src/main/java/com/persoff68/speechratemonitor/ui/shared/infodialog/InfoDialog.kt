@@ -34,7 +34,18 @@ fun InfoDialogPreview() {
                 close = {},
                 title = "Dialog title"
             ) {
-                Text(text = "Dialog content")
+                Text(
+                    style = MaterialTheme.typography.bodyMedium,
+                    text = "Default text 1"
+                )
+                Text(
+                    style = MaterialTheme.typography.bodyMedium,
+                    text = "Default text 2"
+                )
+                Text(
+                    style = MaterialTheme.typography.bodySmall,
+                    text = "Small text"
+                )
             }
         }
     }
@@ -53,12 +64,12 @@ fun InfoDialog(
         Dialog(onDismissRequest = close) {
             Surface(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(15.dp)
                     .fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Row(
@@ -69,13 +80,12 @@ fun InfoDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            title,
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.primary
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            text = title
                         )
                         IconButton(
                             icon = ImageVector.vectorResource(id = R.drawable.ic_close),
-                            size = 20.dp,
                             primaryColor = MaterialTheme.colorScheme.onSurface,
                             onClick = { close() }
                         )
@@ -83,9 +93,9 @@ fun InfoDialog(
 
                     Column(
                         modifier = Modifier
-                            .padding(top = 15.dp, bottom = 5.dp)
+                            .padding(top = 10.dp, bottom = 5.dp)
                             .verticalScroll(scrollState),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
 
                         ) {
                         content()

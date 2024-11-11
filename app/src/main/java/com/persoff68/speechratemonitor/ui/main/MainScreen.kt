@@ -2,6 +2,8 @@ package com.persoff68.speechratemonitor.ui.main
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -26,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,9 +43,7 @@ import com.persoff68.speechratemonitor.ui.settings.SettingsActivity
 import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
 import com.persoff68.speechratemonitor.ui.shared.indicatorbackground.IndicatorBackground
-import com.persoff68.speechratemonitor.ui.shared.indicatorsubtitle.IndicatorSubtitle
 import com.persoff68.speechratemonitor.ui.shared.infodialog.InfoDialog
-import com.persoff68.speechratemonitor.ui.shared.maintitel.MainTitle
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
 import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
@@ -56,7 +58,6 @@ fun MainScreen(
     permissionManager: PermissionManager,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     mainViewModel: MainViewModel = hiltViewModel()
-
 ) {
     val brushes = LocalBrushes.current
     val context = LocalContext.current as Activity
@@ -98,7 +99,6 @@ fun MainScreen(
             IconButton(
                 modifier = Modifier.alpha(animationState.parameter),
                 icon = ImageVector.vectorResource(id = R.drawable.ic_info),
-                size = 25.dp,
                 primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { showInfoDialog = true }
             )
@@ -108,7 +108,6 @@ fun MainScreen(
             IconButton(
                 modifier = Modifier.alpha(animationState.parameter),
                 icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
-                size = 25.dp,
                 primaryColor = MaterialTheme.colorScheme.onSurface,
                 onClick = { goToSettings() }
             )
@@ -121,7 +120,7 @@ fun MainScreen(
 
         Spacer(Modifier.weight(1f))
 
-        MainScreenIndicator(
+        Indicator(
             modifier = Modifier.alpha(animationState.parameter),
             buffer = buffer,
             spectrogram = spectrogram,
@@ -142,7 +141,7 @@ fun MainScreen(
 }
 
 @Composable
-private fun MainScreenIndicator(
+private fun Indicator(
     modifier: Modifier = Modifier,
     buffer: FloatArray,
     spectrogram: Array<FloatArray>,
@@ -169,8 +168,45 @@ private fun MainScreenIndicator(
         Box(
             Modifier.padding(top = 15.dp)
         ) {
-            IndicatorSubtitle(showWaveform)
+            if (showWaveform) {
+                Text(
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    text = stringResource(R.string.waveform)
+                )
+            } else {
+                Text(
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    text = stringResource(R.string.spectrogram)
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun MainTitle(modifier: Modifier = Modifier) {
+    val brushes = LocalBrushes.current
+    val labelBrush = brushes.labelGradientBrush()
+
+    val scale = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        scale.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 1000)
+        )
+    }
+
+    Box(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .alpha(scale.value)
+                .align(Alignment.CenterStart),
+            style = MaterialTheme.typography.displayLarge.copy(brush = labelBrush),
+            text = stringResource(R.string.main_activity_title)
+        )
     }
 }
 
@@ -195,11 +231,7 @@ private fun MainScreenButtons(
             primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
             pressedColor = MaterialTheme.colorScheme.onSurface,
             isPressed = showWaveform,
-            onClick = {
-                if (!showWaveform) {
-                    toggleIndicator()
-                }
-            }
+            onClick = { if (!showWaveform) toggleIndicator() }
         )
 
         RoundButton(
@@ -227,11 +259,7 @@ private fun MainScreenButtons(
             primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
             pressedColor = MaterialTheme.colorScheme.onSurface,
             isPressed = !showWaveform,
-            onClick = {
-                if (showWaveform) {
-                    toggleIndicator()
-                }
-            }
+            onClick = { if (showWaveform) toggleIndicator() }
         )
     }
 }
@@ -244,6 +272,7 @@ fun MainInfoDialog(show: Boolean, close: () -> Unit) {
         title = "Info"
     ) {
         Text(
+            style = MaterialTheme.typography.bodyMedium,
             text = "Blablabla"
         )
     }
