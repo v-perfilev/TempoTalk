@@ -20,12 +20,12 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = WhiteColor,
     secondary = RedColor,
     onSecondary = WhiteColor,
-    surface = GrayColor2,
-    surfaceVariant = GrayColor2,
-    onSurface = GrayColor4,
-    onSurfaceVariant = GrayColor3,
-    background = GrayColor1,
-    onBackground = GrayColor4
+    background = GrayColor100,
+    onBackground = GrayColor800,
+    surface = GrayColor200,
+    onSurface = GrayColor600,
+    surfaceVariant = GrayColor300,
+    onSurfaceVariant = GrayColor700
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -33,13 +33,14 @@ private val DarkColorScheme = darkColorScheme(
     onPrimary = WhiteColor,
     secondary = RedColor,
     onSecondary = WhiteColor,
-    surface = GrayColor5,
-    onSurface = GrayColor2,
-    surfaceVariant = GrayColor5,
-    onSurfaceVariant = GrayColor4,
-    background = GrayColor6,
-    onBackground = GrayColor2,
-)
+    background = GrayColor900,
+    onBackground = GrayColor200,
+    surface = GrayColor900,
+    onSurface = GrayColor500,
+    surfaceVariant = GrayColor800,
+    onSurfaceVariant = GrayColor300,
+
+    )
 
 fun darkBrushes(imageBitmap: ImageBitmap): Brushes = Brushes(
     textureBrush = { textureBrush(imageBitmap, 0.8f, 0.8f) },

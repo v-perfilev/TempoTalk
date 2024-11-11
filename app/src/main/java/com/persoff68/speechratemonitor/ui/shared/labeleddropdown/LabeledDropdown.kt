@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.persoff68.speechratemonitor.R
+import com.persoff68.speechratemonitor.ui.shared.util.NoRippleInteractionSource
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
 @Preview(showBackground = true, device = Devices.PIXEL, apiLevel = 34)
@@ -112,14 +113,16 @@ private fun CurrentValueBox(
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(start = 20.dp, end = 15.dp, top = 10.dp, bottom = 10.dp)
-            .clickable { openDropdownBox() },
+            .clickable(
+                NoRippleInteractionSource(), null
+            ) { openDropdownBox() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             modifier = Modifier.padding(end = 10.dp),
             style = MaterialTheme.typography.labelMedium,
-            color = if (expanded || !isEnabled) MaterialTheme.colorScheme.onBackground
-            else MaterialTheme.colorScheme.onSurface,
+            color = if (expanded || !isEnabled) MaterialTheme.colorScheme.onSurfaceVariant
+            else MaterialTheme.colorScheme.onBackground,
             text = valueFormatter(value)
         )
         Icon(
@@ -128,8 +131,8 @@ private fun CurrentValueBox(
                 .rotate(iconDegree),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_down),
             contentDescription = "",
-            tint = if (expanded || !isEnabled) MaterialTheme.colorScheme.onBackground
-            else MaterialTheme.colorScheme.onSurface,
+            tint = if (expanded || !isEnabled) MaterialTheme.colorScheme.onSurfaceVariant
+            else MaterialTheme.colorScheme.onBackground,
         )
     }
 }
@@ -161,6 +164,7 @@ private fun DropdownBox(
                 text = {
                     Text(
                         style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         text = valueFormatter(v)
                     )
                 }

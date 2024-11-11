@@ -66,7 +66,6 @@ fun LabeledSlider(
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
                     text = unit
                 )
             }
@@ -79,7 +78,7 @@ fun LabeledSlider(
             enabled = isEnabled,
             steps = steps,
             colors = SliderDefaults.colors(
-                inactiveTrackColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                inactiveTrackColor = MaterialTheme.colorScheme.onSurface,
             )
         )
 

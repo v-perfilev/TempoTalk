@@ -171,13 +171,13 @@ private fun Indicator(
             if (showWaveform) {
                 Text(
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onSurface,
                     text = stringResource(R.string.waveform)
                 )
             } else {
                 Text(
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onSurface,
                     text = stringResource(R.string.spectrogram)
                 )
             }
@@ -228,8 +228,8 @@ private fun MainScreenButtons(
         IconButton(
             icon = ImageVector.vectorResource(id = R.drawable.ic_waveform),
             size = 40.dp,
-            primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            pressedColor = MaterialTheme.colorScheme.onSurface,
+            primaryColor = MaterialTheme.colorScheme.onSurface,
+            pressedColor = MaterialTheme.colorScheme.onBackground,
             isPressed = showWaveform,
             onClick = { if (!showWaveform) toggleIndicator() }
         )
@@ -256,8 +256,8 @@ private fun MainScreenButtons(
         IconButton(
             icon = ImageVector.vectorResource(id = R.drawable.ic_spectrogram),
             size = 40.dp,
-            primaryColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            pressedColor = MaterialTheme.colorScheme.onSurface,
+            primaryColor = MaterialTheme.colorScheme.onSurface,
+            pressedColor = MaterialTheme.colorScheme.onBackground,
             isPressed = !showWaveform,
             onClick = { if (showWaveform) toggleIndicator() }
         )

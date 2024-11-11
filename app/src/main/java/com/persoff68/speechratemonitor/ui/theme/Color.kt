@@ -11,18 +11,25 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.asAndroidBitmap
 import com.persoff68.speechratemonitor.ui.theme.util.interpolateColor
 
-val GreenColor = Color(0xFF43A047)
-val OrangeColor = Color(0xFFE5B400)
+val GreenColor = Color(0xFF32BD37)
+val OrangeColor = Color(0xFFFFC600)
 val YellowColor = Color(0xFFFFEF00)
 val RedColor = Color(0xFFC62828)
-val GrayColor1 = Color(0xFFEEEEEE)
-val GrayColor2 = Color(0xFFDDDDDD)
-val GrayColor3 = Color(0xFFAAAAAA)
-val GrayColor4 = Color(0xFF505050)
-val GrayColor5 = Color(0xFF151925)
-val GrayColor6 = Color(0xFF101421)
-val Transparent = Color(0x00000000)
 val WhiteColor = Color(0xFFFFFFFF)
+val GrayColor100 = Color(0xFFF5F5F5)
+val GrayColor200 = Color(0xFFEEEEEE)
+val GrayColor300 = Color(0xFFE0E0E0)
+val GrayColor400 = Color(0xFFBDBDBD)
+val GrayColor500 = Color(0xFF9E9E9E)
+val GrayColor600 = Color(0xFF757575)
+val GrayColor700 = Color(0xFF616161)
+val GrayColor800 = Color(0xFF424242)
+val GrayColor900 = Color(0xFF212121)
+val LightColor1 = Color(0xFFF3F3F3)
+val LightColor2 = Color(0xFFEEEEEE)
+val DarkColor1 = Color(0xFF151925)
+val DarkColor2 = Color(0xFF101421)
+val Transparent = Color(0x00000000)
 
 
 fun textureBrush(bitmap: ImageBitmap, sx: Float = 1f, sy: Float = 1f): Brush = ShaderBrush(
@@ -35,7 +42,7 @@ fun textureBrush(bitmap: ImageBitmap, sx: Float = 1f, sy: Float = 1f): Brush = S
 
 
 fun darkBackgroundGradientBrush() = Brush.verticalGradient(
-    colors = listOf(GrayColor5, GrayColor6)
+    colors = listOf(DarkColor1, DarkColor2)
 )
 
 fun darkLabelGradientBrush(): Brush = Brush.linearGradient(
@@ -43,13 +50,13 @@ fun darkLabelGradientBrush(): Brush = Brush.linearGradient(
 )
 
 fun darkGaugeBackgroundGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(GrayColor3, Transparent),
+    colors = listOf(GrayColor400, Transparent),
     start = Offset(0f, 0f),
     end = Offset(Float.POSITIVE_INFINITY, 0f)
 )
 
 fun darkIndicatorBackgroundGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(Transparent, GrayColor3),
+    colors = listOf(Transparent, GrayColor400),
     start = Offset(0f, 0f),
     end = Offset(Float.POSITIVE_INFINITY, 0f)
 )
@@ -66,7 +73,7 @@ fun darkGaugeGradientBrush(center: Offset, arcAngle: Float): Brush = Brush.sweep
 )
 
 fun darkNeedleGradientBrush(center: Offset, needleLength: Float): Brush = Brush.linearGradient(
-    colors = listOf(Transparent, GrayColor3, WhiteColor),
+    colors = listOf(Transparent, GrayColor500, WhiteColor),
     start = Offset(center.x, 0f),
     end = Offset(center.x + needleLength, 0f)
 )
@@ -85,7 +92,7 @@ fun darkWaveformGradientBrush(volumeLevel: Float): Brush = Brush.verticalGradien
 
 
 fun lightBackgroundGradientBrush() = Brush.verticalGradient(
-    colors = listOf(GrayColor1, GrayColor2)
+    colors = listOf(LightColor1, LightColor2)
 )
 
 fun lightLabelGradientBrush(): Brush = Brush.linearGradient(
@@ -93,13 +100,13 @@ fun lightLabelGradientBrush(): Brush = Brush.linearGradient(
 )
 
 fun lightGaugeBackgroundGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(GrayColor4, Transparent),
+    colors = listOf(GrayColor500, Transparent),
     start = Offset(0f, 0f),
     end = Offset(Float.POSITIVE_INFINITY, 0f)
 )
 
 fun lightIndicatorBackgroundGradientBrush(): Brush = Brush.linearGradient(
-    colors = listOf(Transparent, GrayColor3),
+    colors = listOf(Transparent, GrayColor500),
     start = Offset(0f, 0f),
     end = Offset(Float.POSITIVE_INFINITY, 0f)
 )
@@ -125,7 +132,7 @@ fun lightWaveformGradientBrush(volumeLevel: Float): Brush = Brush.verticalGradie
     colors = listOf(
         OrangeColor,
         interpolateColor(
-            startColor = GrayColor5,
+            startColor = GrayColor800,
             endColor = GreenColor,
             fraction = volumeLevel
         ),

@@ -109,13 +109,13 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
     ) {
         Text(
             style = MaterialTheme.typography.displayMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onBackground,
             text = value.toString()
         )
         Spacer(Modifier.height(10.dp))
         Text(
             style = MaterialTheme.typography.displaySmall,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onSurface,
             text = stringResource(R.string.syllables_per_second)
         )
     }

@@ -3,13 +3,11 @@ package com.persoff68.speechratemonitor.ui.shared.iconbutton
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.persoff68.speechratemonitor.ui.shared.util.NoRippleInteractionSource
 import com.persoff68.speechratemonitor.ui.shared.util.roundShadow
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 
@@ -58,18 +57,13 @@ fun IconButton(
         label = ""
     )
 
-    Button(
+    Box(
         modifier = modifier
             .size(size)
-            .roundShadow(color = color.copy(alpha = shadowAlpha), blurRadius = size),
-        contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        shape = RoundedCornerShape(0.dp),
-        onClick = {
-            onClick()
-        }
+            .roundShadow(color = color.copy(alpha = shadowAlpha), blurRadius = size)
+            .clickable(
+                NoRippleInteractionSource(), null
+            ) { onClick() },
     ) {
         Icon(
             modifier = Modifier.size(size),
