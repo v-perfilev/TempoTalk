@@ -43,7 +43,6 @@ import com.persoff68.speechratemonitor.ui.settings.SettingsActivity
 import com.persoff68.speechratemonitor.ui.shared.gauge.Gauge
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
 import com.persoff68.speechratemonitor.ui.shared.indicatorbackground.IndicatorBackground
-import com.persoff68.speechratemonitor.ui.shared.infodialog.InfoDialog
 import com.persoff68.speechratemonitor.ui.shared.roundbutton.RoundButton
 import com.persoff68.speechratemonitor.ui.shared.spectrogram.Spectrogram
 import com.persoff68.speechratemonitor.ui.shared.util.SetStatusBarTheme
@@ -260,20 +259,6 @@ private fun MainScreenButtons(
             pressedColor = MaterialTheme.colorScheme.onBackground,
             isPressed = !showWaveform,
             onClick = { if (showWaveform) toggleIndicator() }
-        )
-    }
-}
-
-@Composable
-fun MainInfoDialog(show: Boolean, close: () -> Unit) {
-    InfoDialog(
-        show = show,
-        close = { close() },
-        title = "Info"
-    ) {
-        Text(
-            style = MaterialTheme.typography.bodyMedium,
-            text = "Blablabla"
         )
     }
 }
