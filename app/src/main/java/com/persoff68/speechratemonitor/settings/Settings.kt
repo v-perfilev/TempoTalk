@@ -1,9 +1,11 @@
 package com.persoff68.speechratemonitor.settings
 
+import com.persoff68.speechratemonitor.Config
+
 data class Settings(
-    val maxSyllables: Int = 7,
-    val warningThreshold: Int = 5,
-    val autoStopTimer: Int = 10,
+    val maxSyllables: Int = Config.DEFAULT_MAX_SYLLABLES_VALUE,
+    val warningThreshold: Int = Config.DEFAULT_WARNING_THRESHOLD_VALUE,
+    val autoStopTimer: Int = Config.DEFAULT_AUTO_STOP_TIMEOUT,
     val soundNotification: Boolean = true,
     val noiseSuppression: Boolean = true,
     val defaultIndicator: IndicatorType = IndicatorType.Waveform,

@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.persoff68.speechratemonitor.Config
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.audio.state.AudioState
 import com.persoff68.speechratemonitor.settings.IndicatorType
@@ -139,7 +140,7 @@ private fun SettingsInputs(
                     label = stringResource(R.string.settings_max_syllables),
                     value = settings.maxSyllables.toFloat(),
                     onValueChange = { settingsViewModel.updateMaxSyllables(it.toInt()) },
-                    valueRange = 5f..10f,
+                    valueRange = Config.BOTTOM_MAX_SYLLABLES_VALUE..Config.TOP_MAX_SYLLABLES_VALUE,
                     unit = stringResource(R.string.settings_syllables_per_second),
                     isEnabled = !isRecording
                 )
@@ -148,18 +149,25 @@ private fun SettingsInputs(
                     label = stringResource(R.string.settings_warning_threshold),
                     value = settings.warningThreshold.toFloat(),
                     onValueChange = { settingsViewModel.updateWarningThreshold(it.toInt()) },
-                    valueRange = 3f..10f,
+                    valueRange = Config.BOTTOM_WARNING_THRESHOLD_VALUE..Config.TOP_WARNING_THRESHOLD_VALUE,
                     unit = stringResource(R.string.settings_syllables_per_second),
                     isEnabled = !isRecording
                 )
 
                 LabeledSlider(
-                    label = stringResource(R.string.settings_auto_stop_timer),
+                    label = stringResource(R.string.settings_auto_stop_timeout),
                     value = settings.autoStopTimer.toFloat(),
                     onValueChange = { settingsViewModel.updateAutoStopTimer(it.toInt()) },
-                    valueRange = 0f..30f,
-                    unit = stringResource(R.string.settings_minutes),
-                    isEnabled = !isRecording
+                    valueRange = Config.BOTTOM_AUTO_STOP_TIMEOUT..Config.TOP_AUTO_STOP_TIMEOUT,
+                    isEnabled = !isRecording,
+                    valueFormatter = {
+                        if (it == 0f) stringResource(R.string.settings_auto_stop_timeout_off)
+                        else it.toInt().toString()
+                    },
+                    unitFormatter = {
+                        if (it == 0f) ""
+                        else stringResource(R.string.settings_minutes)
+                    }
                 )
 
                 LabeledSwitch(

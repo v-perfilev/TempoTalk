@@ -16,8 +16,6 @@ object Config {
     const val HIGH_CUTOFF_FREQ = 6000
     const val NOISE_THRESHOLD = 0.05f
 
-    const val PAUSE_BETWEEN_ALERTS_IN_SECONDS = 5
-
     const val BUFFER_VIEW_LENGTH = 100
     const val SPECTROGRAM_VIEW_LENGTH = 60
     const val SPECTROGRAM_VIEW_HEIGHT = 30
@@ -28,4 +26,18 @@ object Config {
     val DEFAULT_SPECTROGRAM = Array(SPECTROGRAM_VIEW_LENGTH) {
         FloatArray(SPECTROGRAM_VIEW_HEIGHT) { 0f }
     }
+
+    const val PAUSE_BETWEEN_ALERTS_IN_SECONDS = 3000L
+    const val SHORT_VIBRATION_DURATION = 200L
+    const val LONG_VIBRATION_DURATION = 1000L
+
+    const val DEFAULT_MAX_SYLLABLES_VALUE = 7
+    const val BOTTOM_MAX_SYLLABLES_VALUE = 5f
+    const val TOP_MAX_SYLLABLES_VALUE = 10f
+    const val DEFAULT_WARNING_THRESHOLD_VALUE = 5
+    const val BOTTOM_WARNING_THRESHOLD_VALUE = 3f
+    const val TOP_WARNING_THRESHOLD_VALUE = 10f
+    const val DEFAULT_AUTO_STOP_TIMEOUT = 10
+    const val BOTTOM_AUTO_STOP_TIMEOUT = 0f
+    const val TOP_AUTO_STOP_TIMEOUT = 30f
 }

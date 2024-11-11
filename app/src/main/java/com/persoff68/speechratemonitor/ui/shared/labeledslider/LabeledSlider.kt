@@ -43,6 +43,8 @@ fun LabeledSlider(
     steps: Int = 0,
     isEnabled: Boolean = true,
     unit: String? = null,
+    valueFormatter: @Composable ((Float) -> String)? = null,
+    unitFormatter: @Composable ((Float) -> String)? = null
 ) {
 
     Column(
@@ -60,13 +62,20 @@ fun LabeledSlider(
             )
             Text(
                 style = MaterialTheme.typography.labelMedium,
-                text = value.toInt().toString()
+                text = valueFormatter?.invoke(value) ?: value.toInt().toString()
             )
             unit?.let {
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
                     style = MaterialTheme.typography.labelSmall,
                     text = unit
+                )
+            }
+            unitFormatter?.let {
+                Text(
+                    modifier = Modifier.padding(start = 5.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    text = unitFormatter.invoke(value)
                 )
             }
         }

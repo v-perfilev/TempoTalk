@@ -1,6 +1,7 @@
 package com.persoff68.speechratemonitor.ui.settings
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.audio.state.AudioState
 import com.persoff68.speechratemonitor.settings.Settings
 import com.persoff68.speechratemonitor.settings.SettingsRepository
@@ -41,6 +43,14 @@ class SettingsActivity : ComponentActivity() {
                     SettingsContent(Modifier.padding(innerPadding))
                 }
             }
+        }
+
+        if (audioState.isRecordingState.value) {
+            Toast.makeText(
+                applicationContext,
+                applicationContext.getString(R.string.settings_active_analysing_toast),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

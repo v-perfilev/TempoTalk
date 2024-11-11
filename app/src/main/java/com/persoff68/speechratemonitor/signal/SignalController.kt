@@ -30,23 +30,23 @@ class SignalController @Inject constructor(
 
     fun triggerStart() {
         playSound(R.raw.start)
-        playVibration(100L)
+        playVibration(Config.SHORT_VIBRATION_DURATION)
         Log.d("SignalController", "Playing start signal")
     }
 
     fun triggerStop() {
         playSound(R.raw.stop)
-        playVibration(100L)
+        playVibration(Config.SHORT_VIBRATION_DURATION)
         Log.d("SignalController", "Playing stop signal")
     }
 
     fun triggerAlert() {
         val currentTime = System.currentTimeMillis()
-        if (currentTime - lastNotificationTime < Config.PAUSE_BETWEEN_ALERTS_IN_SECONDS * 1000) return
+        if (currentTime - lastNotificationTime < Config.PAUSE_BETWEEN_ALERTS_IN_SECONDS) return
         lastNotificationTime = currentTime
 
         playSound(R.raw.notification)
-        playVibration(500L)
+        playVibration(Config.LONG_VIBRATION_DURATION)
         Log.d("SignalController", "Playing alert signal")
     }
 
