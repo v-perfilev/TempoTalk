@@ -23,6 +23,14 @@
     <string name="settings_theme_system">System</string>
     <string name="settings_active_analysing_toast">Stop the analysis to change settings</string>
     <string name="settings_auto_stop_timeout_off">OFF</string>
+    <string name="settings_information">Information</string>
+    <string name="settings_max_syllables_description">Maximum value displayed on the Gauge indicator.</string>
+    <string name="settings_warning_threshold_description">The level at which the system alerts you with sound and vibration signals when the speech rate is exceeded.</string>
+    <string name="settings_auto_stop_timeout_description">Timeout for automatically stopping monitoring when the app is in the background. If set to 0, this feature is disabled.</string>
+    <string name="settings_sound_notification_description">Enable or disable sound notifications.</string>
+    <string name="settings_noise_suppression_description">Additional noise reduction (if supported by the device).</string>
+    <string name="settings_default_indicator_description">Choose the default indicator (waveform or spectrogram).</string>
+    <string name="settings_theme_description">Select the app theme (light, dark, or system default).</string>
 
     <!-- Notification-->
     <string name="notification_title">Speech Rate Monitor</string>

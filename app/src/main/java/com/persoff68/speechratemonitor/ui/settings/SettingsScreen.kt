@@ -37,7 +37,6 @@ import com.persoff68.speechratemonitor.settings.IndicatorType
 import com.persoff68.speechratemonitor.settings.SettingsViewModel
 import com.persoff68.speechratemonitor.settings.ThemeMode
 import com.persoff68.speechratemonitor.ui.shared.iconbutton.IconButton
-import com.persoff68.speechratemonitor.ui.shared.infodialog.InfoDialog
 import com.persoff68.speechratemonitor.ui.shared.labeleddropdown.LabeledDropdown
 import com.persoff68.speechratemonitor.ui.shared.labeledslider.LabeledSlider
 import com.persoff68.speechratemonitor.ui.shared.labeledswitch.LabeledSwitch
@@ -215,18 +214,5 @@ private fun SettingsInputs(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun SettingsInfoDialog(show: Boolean, close: () -> Unit) {
-    InfoDialog(
-        show = show,
-        close = { close() },
-        title = "Info"
-    ) {
-        Text(
-            text = "Blablabla"
-        )
     }
 }
