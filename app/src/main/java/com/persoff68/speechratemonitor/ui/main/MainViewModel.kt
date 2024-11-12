@@ -8,28 +8,24 @@ import androidx.lifecycle.viewModelScope
 import com.persoff68.speechratemonitor.settings.IndicatorType
 import com.persoff68.speechratemonitor.settings.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val repository: SettingsRepository
 ) : ViewModel() {
-
-    private val _showWaveform: MutableLiveData<Boolean> = MutableLiveData<Boolean>(true)
+    private val _showWaveform: MutableLiveData<Boolean> =
+        savedStateHandle.getLiveData("showWaveform", true)
     val showWaveform: LiveData<Boolean> = _showWaveform
 
     init {
         viewModelScope.launch {
-            repository.settingsFlow.collect { settings ->
-                val savedValue = savedStateHandle.get<Boolean>("showWaveform")
-                if (savedValue != null) {
-                    _showWaveform.value = savedValue!!
-                } else {
-                    _showWaveform.value = settings.defaultIndicator == IndicatorType.Waveform
-                }
-            }
+            val settings = repository.settingsFlow.first()
+            val isWaveform = settings.defaultIndicator == IndicatorType.Waveform
+            _showWaveform.value = isWaveform
         }
     }
 

@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.audio.manager.NotificationActionReceiver.Companion.ACTION_START
 import com.persoff68.speechratemonitor.audio.manager.NotificationActionReceiver.Companion.ACTION_STOP
+import com.persoff68.speechratemonitor.ui.main.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -47,6 +48,19 @@ class NotificationManager @Inject constructor(
     fun getNotificationId() = NOTIFICATION_ID
 
     fun getNotification(isRecording: Boolean): Notification {
+        val openAppIntent = Intent(context, MainActivity::class.java).apply {
+            action = Intent.ACTION_MAIN
+            addCategory(Intent.CATEGORY_LAUNCHER)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        val openAppPendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            openAppIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val startIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = ACTION_START
         }
@@ -76,6 +90,7 @@ class NotificationManager @Inject constructor(
             .setSmallIcon(R.drawable.ic_microphone)
             .setOngoing(true)
             .setLargeIcon(null as Icon?)
+            .setContentIntent(openAppPendingIntent)
             .setColor(
                 if (isRecording) context.getColor(R.color.red)
                 else context.getColor(R.color.green)
