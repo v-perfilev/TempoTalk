@@ -23,7 +23,7 @@
     <string name="settings_noise_suppression">Noise suppression</string>
     <string name="settings_default_indicator">Indicator</string>
     <string name="settings_theme">Theme</string>
-    <string name="settings_syllables_per_second">syl./s.</string>
+    <string name="settings_syllables_per_second">syl./sec.</string>
     <string name="settings_minutes">min.</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
