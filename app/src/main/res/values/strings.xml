@@ -9,7 +9,7 @@
 
     <string name="main_dialog_title">About the app</string>
     <string name="main_dialog_label_1">Hi!</string>
-    <string name="main_dialog_content_1">I designed this app to help me track and optimize my speaking pace, and I hope it will be just as helpful for you! Whether you\'re preparing for a presentation, practicing public speaking, or simply looking to monitor your speech rate, this tool provides precise, real-time feedback.</string>
+    <string name="main_dialog_content_1">Originally, I created this app to improve my own speaking pace, but I truly hope it proves just as helpful for you too! It can be a great companion whether you are preparing for a presentation, refining your public speaking, or simply tracking your speech rate. I have put my best effort into ensuring it offers precise, real-time feedback to support you on your journey.</string>
     <string name="main_dialog_content_2">Happy speaking! 😊</string>
     <string name="main_dialog_label_2">IMPORTANT</string>
     <string name="main_dialog_content_3">The app does NOT collect any personal data. All analysis is performed entirely on your device and works seamlessly, even without an internet connection.</string>
