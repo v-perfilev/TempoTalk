@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -77,7 +78,8 @@ fun Gauge(
 
     Box(
         modifier = modifier
-            .aspectRatio(1.3f)
+            .widthIn(max = 500.dp)
+            .aspectRatio(1.4f)
             .scale(animationState.scale)
     ) {
         GaugeIndicator(
@@ -138,7 +140,7 @@ private fun GaugeIndicator(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .offset(y = (params.arcWidth / 2).dp)
+                .offset(y = (params.arcWidth / 3).dp)
         ) {
             Canvas(
                 modifier = Modifier

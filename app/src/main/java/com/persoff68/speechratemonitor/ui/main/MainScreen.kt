@@ -97,6 +97,7 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
+            Spacer(Modifier.weight(0.2f))
 
             Gauge(
                 value = tempo,
