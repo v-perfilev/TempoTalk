@@ -52,7 +52,7 @@ import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 fun GaugePreview() {
     SpeechRateMonitorAppTheme {
         Surface {
-            Gauge(value = 17, minValue = 0, maxValue = 20)
+            Gauge(value = 20, minValue = 0, maxValue = 20)
         }
     }
 }
@@ -77,23 +77,14 @@ fun Gauge(
 
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .scale(animationState.scale)
             .aspectRatio(1.3f)
-            .offset(y = 15.dp),
+            .scale(animationState.scale)
     ) {
-        Box(
-            contentAlignment = Alignment.TopCenter,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-        ) {
-            GaugeIndicator(
-                value = interpolatedValue,
-                animation = animationState,
-            ) { onClick() }
-            GaugeTempoValue(value, animationState)
-        }
+        GaugeIndicator(
+            value = interpolatedValue,
+            animation = animationState
+        ) { onClick() }
+        GaugeTempoValue(value, animationState)
     }
 }
 
@@ -102,7 +93,6 @@ private fun GaugeTempoValue(value: Int, animationState: GaugeAnimationState) {
     Column(
         Modifier
             .fillMaxSize()
-            .padding(bottom = 70.dp)
             .alpha(animationState.tempoValue),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -139,26 +129,38 @@ private fun GaugeIndicator(
 
     val tickColor = MaterialTheme.colorScheme.onSurface
     val strokeColor = MaterialTheme.colorScheme.onSurface
-
-    Canvas(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(40.dp)
-            .onSizeChanged { params = GaugeParams(it) }
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onTap = { onClick() }
-                )
-            }
+            .fillMaxWidth()
+            .aspectRatio(1.5f)
     ) {
-        rotate(startAngle) {
-            drawGlowArc(params, value, gaugeBrush)
-            drawTicks(params, animation.ticks, tickColor)
-            drawStrokeArc(params, animation.arc, strokeColor)
-            drawTextureArc(params, animation.arc, textureBrush)
-            drawBackgroundArc(params, animation.arc, backgroundBrush)
-            drawValueArc(params, value, gaugeBrush)
-            drawNeedle(params, animation.needle, value, needleBrush)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .offset(y = (params.arcWidth / 2).dp)
+        ) {
+            Canvas(
+                modifier = Modifier
+                    .padding(40.dp)
+                    .fillMaxSize()
+                    .onSizeChanged { params = GaugeParams(it) }
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = { onClick() }
+                        )
+                    }
+            ) {
+                rotate(startAngle) {
+                    drawGlowArc(params, value, gaugeBrush)
+                    drawTicks(params, animation.ticks, tickColor)
+                    drawStrokeArc(params, animation.arc, strokeColor)
+                    drawTextureArc(params, animation.arc, textureBrush)
+                    drawBackgroundArc(params, animation.arc, backgroundBrush)
+                    drawValueArc(params, value, gaugeBrush)
+                    drawNeedle(params, animation.needle, value, needleBrush)
+                }
+            }
         }
     }
 }
@@ -197,7 +199,7 @@ private fun DrawScope.drawGlowArc(params: GaugeParams, value: Float, brush: Brus
                 width = params.arcWidth + (20 - i) * params.glowParameter,
                 cap = StrokeCap.Round
             ),
-            alpha = i / 400f,
+            alpha = i / 400f
         )
     }
 }

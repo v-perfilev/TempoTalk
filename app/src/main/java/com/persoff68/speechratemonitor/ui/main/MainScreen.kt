@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,8 +62,8 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
     val brushes = LocalBrushes.current
-    val context = LocalContext.current as Activity
     val settings by settingsViewModel.settings.collectAsState()
+    val scrollState = rememberScrollState()
 
     val showWaveform by mainViewModel.showWaveform.observeAsState()
     val isRecording by audioState.isRecordingState.collectAsState(initial = false)
@@ -73,10 +76,6 @@ fun MainScreen(
 
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    fun goToSettings() {
-        val intent = Intent(context, SettingsActivity::class.java)
-        context.startActivity(intent)
-    }
 
     SetStatusBarTheme()
     MainInfoDialog(show = showInfoDialog, close = { showInfoDialog = false })
@@ -84,50 +83,38 @@ fun MainScreen(
         modifier = modifier
             .fillMaxSize()
             .background(backgroundBrush),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, start = 20.dp, end = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        MainScreenHeader(
+            animationState = animationState,
+            openInfoDialog = { showInfoDialog = true }
+        )
 
+        Column(
+            modifier = modifier
+                .weight(1f)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            IconButton(
-                modifier = Modifier.alpha(animationState.parameter),
-                icon = ImageVector.vectorResource(id = R.drawable.ic_info),
-                primaryColor = MaterialTheme.colorScheme.onSurface,
-                onClick = { showInfoDialog = true }
+
+            Gauge(
+                value = tempo,
+                maxValue = settings.maxSyllables,
             )
 
-            MainTitle()
+            Spacer(Modifier.weight(1f))
 
-            IconButton(
+            Indicator(
                 modifier = Modifier.alpha(animationState.parameter),
-                icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
-                primaryColor = MaterialTheme.colorScheme.onSurface,
-                onClick = { goToSettings() }
+                buffer = buffer,
+                spectrogram = spectrogram,
+                showWaveform = showWaveform!!,
+                isRecording = isRecording
             )
+
+            Spacer(Modifier.weight(1f))
         }
-
-        Gauge(
-            value = tempo,
-            maxValue = settings.maxSyllables,
-        )
-
-        Spacer(Modifier.weight(1f))
-
-        Indicator(
-            modifier = Modifier.alpha(animationState.parameter),
-            buffer = buffer,
-            spectrogram = spectrogram,
-            showWaveform = showWaveform!!,
-            isRecording = isRecording
-        )
-
-        Spacer(Modifier.weight(1f))
 
         MainScreenButtons(
             modifier = Modifier.alpha(animationState.parameter),
@@ -136,6 +123,45 @@ fun MainScreen(
             showWaveform = showWaveform!!,
             isRecording = isRecording
         ) { mainViewModel.toggleIndicator() }
+    }
+}
+
+@Composable
+private fun MainScreenHeader(
+    modifier: Modifier = Modifier,
+    animationState: MainScreenAnimationState,
+    openInfoDialog: () -> Unit
+) {
+    val context = LocalContext.current as Activity
+
+    fun goToSettings() {
+        val intent = Intent(context, SettingsActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    Row(
+        modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        IconButton(
+            modifier = Modifier.alpha(animationState.parameter),
+            icon = ImageVector.vectorResource(id = R.drawable.ic_info),
+            primaryColor = MaterialTheme.colorScheme.onSurface,
+            onClick = { openInfoDialog() }
+        )
+
+        MainTitle()
+
+        IconButton(
+            modifier = Modifier.alpha(animationState.parameter),
+            icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
+            primaryColor = MaterialTheme.colorScheme.onSurface,
+            onClick = { goToSettings() }
+        )
     }
 }
 
@@ -219,7 +245,9 @@ private fun MainScreenButtons(
     toggleIndicator: () -> Unit
 ) {
     Row(
-        modifier.fillMaxWidth(),
+        modifier
+            .fillMaxWidth()
+            .height(90.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
 
