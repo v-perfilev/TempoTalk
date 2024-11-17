@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Speech Rate Monitor</string>
+    <string name="app_name">TempoTalk</string>
 
     <!-- MainActivity -->
-    <string name="main_activity_title">SpeechRateMonitor</string>
+    <string name="main_activity_title">TempoTalk</string>
     <string name="syllables_per_second">Syllables per Second</string>
     <string name="waveform">Waveform</string>
     <string name="spectrogram">Spectrogram</string>
