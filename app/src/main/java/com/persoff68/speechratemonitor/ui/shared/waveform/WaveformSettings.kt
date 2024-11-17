@@ -4,5 +4,5 @@ import androidx.compose.ui.geometry.Size
 
 class WaveformSettings(size: Size = Size(0f, 0f)) {
     val centerY = size.height / 2
-    val strokeWidth = 7f
+    val strokeWidth = 8f
 }

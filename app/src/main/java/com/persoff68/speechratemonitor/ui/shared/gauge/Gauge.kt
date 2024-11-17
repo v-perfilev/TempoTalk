@@ -140,7 +140,7 @@ private fun GaugeIndicator(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .offset(y = (params.arcWidth / 3).dp)
+                .offset(y = 40.dp)
         ) {
             Canvas(
                 modifier = Modifier

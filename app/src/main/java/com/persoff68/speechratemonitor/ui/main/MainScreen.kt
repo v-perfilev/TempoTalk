@@ -83,7 +83,8 @@ fun MainScreen(
         modifier = modifier
             .fillMaxSize()
             .background(backgroundBrush),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
         MainScreenHeader(
             animationState = animationState,
@@ -91,17 +92,17 @@ fun MainScreen(
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Spacer(Modifier.weight(0.2f))
+            Spacer(Modifier.weight(0.5f))
 
             Gauge(
                 value = tempo,
-                maxValue = settings.maxSyllables,
+                maxValue = settings.maxSyllables
             )
 
             Spacer(Modifier.weight(1f))
@@ -118,7 +119,8 @@ fun MainScreen(
         }
 
         MainScreenButtons(
-            modifier = Modifier.alpha(animationState.parameter),
+            modifier = Modifier
+                .alpha(animationState.parameter),
             audioModule = audioModule,
             permissionManager = permissionManager,
             showWaveform = showWaveform!!,
