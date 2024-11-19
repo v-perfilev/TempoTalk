@@ -8,13 +8,9 @@ import kotlinx.coroutines.coroutineScope
 import kotlin.math.sqrt
 
 object FFTUtils {
-    private const val SAMPLE_RATE = Config.SAMPLE_RATE
     private const val N_FFT = Config.N_FFT
     private const val WIN_LENGTH = Config.WIN_LENGTH
     private const val HOP_LENGTH = Config.HOP_LENGTH
-    private const val LOW_CUTOFF_FREQ = Config.LOW_CUTOFF_FREQ
-    private const val HIGH_CUTOFF_FREQ = Config.HIGH_CUTOFF_FREQ
-    private const val NOISE_THRESHOLD = Config.NOISE_THRESHOLD
 
     private val window = FloatArray(WIN_LENGTH) { index ->
         (0.54 - 0.46 * kotlin.math.cos(2.0 * kotlin.math.PI * index / (WIN_LENGTH - 1))).toFloat()
@@ -37,27 +33,7 @@ object FFTUtils {
         val real = applyWindow(input.copyOfRange(0, WIN_LENGTH))
         val imag = FloatArray(N_FFT) { 0f }
         fftRecursive(real, imag, N_FFT)
-        val magnitudeSpectrum = calculateMagnitude(real, imag)
-        reduceNoise(magnitudeSpectrum)
-        cutoffFrequencies(magnitudeSpectrum)
-        return magnitudeSpectrum
-    }
-
-    private fun reduceNoise(magnitudeSpectrum: FloatArray) {
-        for (i in magnitudeSpectrum.indices) {
-            if (magnitudeSpectrum[i] < NOISE_THRESHOLD) {
-                magnitudeSpectrum[i] = 0f
-            }
-        }
-    }
-
-    private fun cutoffFrequencies(magnitudeSpectrum: FloatArray) {
-        for (i in magnitudeSpectrum.indices) {
-            val frequency = i * SAMPLE_RATE / N_FFT
-            if (frequency < LOW_CUTOFF_FREQ || frequency > HIGH_CUTOFF_FREQ) {
-                magnitudeSpectrum[i] = 0f
-            }
-        }
+        return calculateMagnitude(real, imag)
     }
 
     private fun applyWindow(input: FloatArray): FloatArray {
