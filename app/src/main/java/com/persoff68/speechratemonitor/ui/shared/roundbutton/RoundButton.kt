@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -48,7 +50,8 @@ fun RoundButtonPreview() {
                 primaryColor = MaterialTheme.colorScheme.primary,
                 primaryIcon = Icons.Default.Check,
                 iconColor = MaterialTheme.colorScheme.onPrimary,
-                buttonSize = 40.dp
+                buttonSize = 40.dp,
+                description = "Preview"
             ) { }
         }
     }
@@ -65,7 +68,7 @@ fun RoundButton(
     rippleSize: Dp = buttonSize * 1.5f,
     iconColor: Color,
     iconSize: Dp = buttonSize * 0.5f,
-    description: String = "",
+    description: String,
     isPressed: Boolean = false,
     onClick: () -> Unit
 ) {
@@ -82,7 +85,7 @@ fun RoundButton(
     val color by animateColorAsState(
         targetValue = if (showPressed) pressedColor else primaryColor,
         animationSpec = tween(durationMillis = 300),
-        label = ""
+        label = "Round button color animation"
     )
 
     Box(
@@ -113,7 +116,8 @@ fun RoundButton(
                         start = Offset.Zero,
                         end = Offset.Infinite
                     ), shape = RoundedCornerShape(100)
-                ),
+                )
+                .semantics { contentDescription = description },
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
             shape = RoundedCornerShape(100),
@@ -124,7 +128,7 @@ fun RoundButton(
         ) {
             Icon(
                 imageVector = if (showPressed) pressedIcon else primaryIcon,
-                contentDescription = description,
+                contentDescription = null,
                 tint = iconColor,
                 modifier = Modifier.size(iconSize)
             )

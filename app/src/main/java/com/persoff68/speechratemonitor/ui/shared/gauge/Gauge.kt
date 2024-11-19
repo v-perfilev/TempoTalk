@@ -41,6 +41,8 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,16 +73,18 @@ fun Gauge(
     val interpolatedValue by animateFloatAsState(
         targetValue = normalizedValue.coerceIn(0f, 1f),
         animationSpec = tween(durationMillis = 700, easing = EaseOut),
-        label = ""
+        label = "Gauge value animation"
     )
 
     val animationState = createGaugeAnimationState()
 
+    val description = stringResource(R.string.main_gauge_label)
     Box(
         modifier = modifier
             .widthIn(max = 500.dp)
             .aspectRatio(1.4f)
             .scale(animationState.scale)
+            .semantics { contentDescription = description }
     ) {
         GaugeIndicator(
             value = interpolatedValue,

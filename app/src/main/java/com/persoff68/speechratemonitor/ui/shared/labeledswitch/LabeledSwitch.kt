@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +28,7 @@ fun LabeledSwitchPreview() {
                 label = "Slider label",
                 value = true,
                 onValueChange = {},
+                description = "Preview"
             )
         }
     }
@@ -38,6 +41,7 @@ fun LabeledSwitch(
     value: Boolean,
     onValueChange: (Boolean) -> Unit,
     isEnabled: Boolean = true,
+    description: String
 ) {
     Row(
         modifier = modifier
@@ -55,6 +59,7 @@ fun LabeledSwitch(
         Spacer(Modifier.weight(1f))
 
         Switch(
+            modifier = Modifier.semantics { contentDescription = description },
             checked = value,
             onCheckedChange = { onValueChange(it) },
             enabled = isEnabled,

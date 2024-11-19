@@ -14,6 +14,17 @@
     <string name="main_dialog_label_2">IMPORTANT</string>
     <string name="main_dialog_content_3">The app does NOT collect any personal data. All analysis is performed entirely on your device and works seamlessly, even without an internet connection.</string>
 
+    <string name="main_activity_label">Main screen</string>
+    <string name="main_info_dialog_button_label">Open information dialog</string>
+    <string name="main_close_info_dialog_button_label">Close information dialog</string>
+    <string name="main_settings_button_label">Open settings screen</string>
+    <string name="main_gauge_label">Gauge showing speech rate</string>
+    <string name="main_waveform_label">Waveform visualizing audio input</string>
+    <string name="main_spectrogram_label">Spectrogram visualizing audio input</string>
+    <string name="main_waveform_button_label">Switch to waveform view</string>
+    <string name="main_spectrogram_button_label">Switch to spectrogram view</string>
+    <string name="main_start_stop_button_label">Start or stop speech analysis</string>
+
     <!-- SettingsActivity -->
     <string name="settings_activity_title">Settings</string>
     <string name="settings_max_syllables">Max syllables</string>
@@ -39,6 +50,18 @@
     <string name="settings_noise_suppression_description">Additional noise reduction (if supported by the device).</string>
     <string name="settings_default_indicator_description">Choose the default indicator (waveform or spectrogram).</string>
     <string name="settings_theme_description">Select the app theme (light, dark, or system default).</string>
+
+    <string name="settings_activity_label">Settings screen</string>
+    <string name="settings_info_dialog_button_label">Open information dialog</string>
+    <string name="settings_close_info_dialog_button_label">Close information dialog</string>
+    <string name="settings_main_screen_button_label">Return to main screen</string>
+    <string name="settings_max_syllables_slider_label">Adjust maximum syllables slider</string>
+    <string name="settings_warning_threshold_slider_label">Set warning threshold slider</string>
+    <string name="settings_auto_stop_timeout_slider_label">Set auto-stop timeout slider</string>
+    <string name="settings_sound_notification_switch_label">Enable or disable sound notifications</string>
+    <string name="settings_noise_suppression_switch_label">Enable or disable noise suppression</string>
+    <string name="settings_indicator_select_label">Select default indicator (waveform or spectrogram)</string>
+    <string name="settings_theme_select_label">Select app theme (light, dark, or system default)</string>
 
     <!-- Notification-->
     <string name="notification_title">Speech Rate Monitor</string>

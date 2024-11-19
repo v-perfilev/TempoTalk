@@ -78,6 +78,7 @@ fun SettingsScreen(
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_back),
                 primaryColor = MaterialTheme.colorScheme.onSurface,
+                description = stringResource(R.string.settings_main_screen_button_label),
                 onClick = { goBack() }
             )
 
@@ -88,6 +89,7 @@ fun SettingsScreen(
             IconButton(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_info),
                 primaryColor = MaterialTheme.colorScheme.onSurface,
+                description = stringResource(R.string.settings_info_dialog_button_label),
                 onClick = { showInfoDialog = true }
             )
         }
@@ -141,7 +143,8 @@ private fun SettingsInputs(
                     onValueChange = { settingsViewModel.updateMaxSyllables(it.toInt()) },
                     valueRange = Config.BOTTOM_MAX_SYLLABLES_VALUE..Config.TOP_MAX_SYLLABLES_VALUE,
                     unit = stringResource(R.string.settings_syllables_per_second),
-                    isEnabled = !isRecording
+                    isEnabled = !isRecording,
+                    description = stringResource(R.string.settings_max_syllables_slider_label)
                 )
 
                 LabeledSlider(
@@ -150,7 +153,8 @@ private fun SettingsInputs(
                     onValueChange = { settingsViewModel.updateWarningThreshold(it.toInt()) },
                     valueRange = Config.BOTTOM_WARNING_THRESHOLD_VALUE..Config.TOP_WARNING_THRESHOLD_VALUE,
                     unit = stringResource(R.string.settings_syllables_per_second),
-                    isEnabled = !isRecording
+                    isEnabled = !isRecording,
+                    description = stringResource(R.string.settings_warning_threshold_slider_label)
                 )
 
                 LabeledSlider(
@@ -166,21 +170,24 @@ private fun SettingsInputs(
                     unitFormatter = {
                         if (it == 0f) ""
                         else stringResource(R.string.settings_minutes)
-                    }
+                    },
+                    description = stringResource(R.string.settings_auto_stop_timeout_slider_label)
                 )
 
                 LabeledSwitch(
                     label = stringResource(R.string.settings_sound_notification),
                     value = settings.soundNotification,
                     onValueChange = { settingsViewModel.updateSoundNotification(it) },
-                    isEnabled = !isRecording
+                    isEnabled = !isRecording,
+                    description = stringResource(R.string.settings_sound_notification_switch_label)
                 )
 
                 LabeledSwitch(
                     label = stringResource(R.string.settings_noise_suppression),
                     value = settings.noiseSuppression,
                     onValueChange = { settingsViewModel.updateNoiseSuppression(it) },
-                    isEnabled = !isRecording && isNoiseSuppressionAvailable
+                    isEnabled = !isRecording && isNoiseSuppressionAvailable,
+                    description = stringResource(R.string.settings_noise_suppression_switch_label)
                 )
 
             }
@@ -201,7 +208,8 @@ private fun SettingsInputs(
                         )
                     },
                     valueFormatter = { it },
-                    isEnabled = !isRecording
+                    isEnabled = !isRecording,
+                    description = stringResource(R.string.settings_indicator_select_label)
                 )
 
                 LabeledDropdown(
@@ -210,7 +218,8 @@ private fun SettingsInputs(
                     values = ThemeMode.entries.map { it.toString() },
                     onValueChange = { settingsViewModel.updateTheme(ThemeMode.valueOf(it)) },
                     valueFormatter = { it },
-                    isEnabled = !isRecording
+                    isEnabled = !isRecording,
+                    description = stringResource(R.string.settings_theme_select_label)
                 )
             }
         }

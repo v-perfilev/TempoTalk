@@ -30,7 +30,8 @@ fun SettingsInfoDialog(show: Boolean, close: () -> Unit) {
     InfoDialog(
         show = show,
         close = { close() },
-        title = stringResource(R.string.settings_dialog_title)
+        title = stringResource(R.string.settings_dialog_title),
+        closeDescription = stringResource(R.string.settings_close_info_dialog_button_label)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
             Text(

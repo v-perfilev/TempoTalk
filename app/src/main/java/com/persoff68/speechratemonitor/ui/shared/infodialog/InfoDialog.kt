@@ -33,7 +33,8 @@ fun InfoDialogPreview() {
             InfoDialog(
                 show = true,
                 close = {},
-                title = "Dialog title"
+                title = "Dialog title",
+                closeDescription = "Preview"
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
@@ -57,6 +58,7 @@ fun InfoDialog(
     show: Boolean,
     close: () -> Unit,
     title: String,
+    closeDescription: String,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -95,6 +97,7 @@ fun InfoDialog(
                         IconButton(
                             icon = ImageVector.vectorResource(id = R.drawable.ic_close),
                             primaryColor = MaterialTheme.colorScheme.onSurface,
+                            description = closeDescription,
                             onClick = { close() }
                         )
                     }

@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,7 +29,8 @@ fun LabeledSliderPreview() {
                 value = 15f,
                 onValueChange = {},
                 valueRange = 1f..20f,
-                unit = "min."
+                unit = "min.",
+                description = "Preview"
             )
         }
     }
@@ -44,7 +47,8 @@ fun LabeledSlider(
     isEnabled: Boolean = true,
     unit: String? = null,
     valueFormatter: @Composable ((Float) -> String)? = null,
-    unitFormatter: @Composable ((Float) -> String)? = null
+    unitFormatter: @Composable ((Float) -> String)? = null,
+    description: String
 ) {
 
     Column(
@@ -81,6 +85,7 @@ fun LabeledSlider(
         }
 
         Slider(
+            modifier = Modifier.semantics { contentDescription = description },
             value = value,
             onValueChange = onValueChange,
             valueRange = valueRange,

@@ -19,10 +19,14 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
 import com.persoff68.speechratemonitor.Config
+import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import com.persoff68.speechratemonitor.ui.theme.util.extractRatioColorFromValue
 import kotlinx.coroutines.delay
@@ -50,7 +54,10 @@ fun Spectrogram(
     val animatedSpectrogramData = remember { mutableStateListOf(*Config.DEFAULT_SPECTROGRAM) }
     LaunchSpectrogramAnimation(spectrogramData, animatedSpectrogramData, isRecording)
 
-    Box(modifier = modifier.fillMaxWidth()) {
+    val description = stringResource(R.string.main_spectrogram_label)
+    Box(modifier = modifier
+        .fillMaxWidth()
+        .semantics { contentDescription = description }) {
         SpectrogramIndicator(animatedSpectrogramData.toTypedArray())
     }
 }

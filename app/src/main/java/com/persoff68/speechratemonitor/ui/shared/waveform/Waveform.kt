@@ -20,9 +20,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
+import com.persoff68.speechratemonitor.R
 import com.persoff68.speechratemonitor.ui.theme.LocalBrushes
 import com.persoff68.speechratemonitor.ui.theme.SpeechRateMonitorAppTheme
 import kotlinx.coroutines.launch
@@ -46,7 +50,10 @@ fun Waveform(modifier: Modifier = Modifier, audioData: FloatArray) {
     AnimateAudioData(audioData, animatedAudioData)
     val interpolatedAudioData = animatedAudioData.map { it.value }.toFloatArray()
 
-    Box(modifier = modifier.fillMaxWidth()) {
+    val description = stringResource(R.string.main_waveform_label)
+    Box(modifier = modifier
+        .fillMaxWidth()
+        .semantics { contentDescription = description }) {
         WaveformIndicator(interpolatedAudioData)
     }
 }

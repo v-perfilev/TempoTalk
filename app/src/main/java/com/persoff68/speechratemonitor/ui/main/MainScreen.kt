@@ -154,6 +154,7 @@ private fun MainScreenHeader(
             modifier = Modifier.alpha(animationState.parameter),
             icon = ImageVector.vectorResource(id = R.drawable.ic_info),
             primaryColor = MaterialTheme.colorScheme.onSurface,
+            description = stringResource(R.string.main_info_dialog_button_label),
             onClick = { openInfoDialog() }
         )
 
@@ -163,6 +164,7 @@ private fun MainScreenHeader(
             modifier = Modifier.alpha(animationState.parameter),
             icon = ImageVector.vectorResource(id = R.drawable.ic_cog),
             primaryColor = MaterialTheme.colorScheme.onSurface,
+            description = stringResource(R.string.main_settings_button_label),
             onClick = { goToSettings() }
         )
     }
@@ -261,6 +263,7 @@ private fun MainScreenButtons(
             primaryColor = MaterialTheme.colorScheme.onSurface,
             pressedColor = MaterialTheme.colorScheme.onBackground,
             isPressed = showWaveform,
+            description = stringResource(R.string.main_waveform_button_label),
             onClick = { if (!showWaveform) toggleIndicator() }
         )
 
@@ -272,6 +275,7 @@ private fun MainScreenButtons(
             iconColor = MaterialTheme.colorScheme.onPrimary,
             isPressed = isRecording,
             buttonSize = 80.dp,
+            description = stringResource(R.string.main_start_stop_button_label),
             onClick = {
                 if (!isRecording) {
                     permissionManager.checkAndRequestPermissions({
@@ -289,6 +293,7 @@ private fun MainScreenButtons(
             primaryColor = MaterialTheme.colorScheme.onSurface,
             pressedColor = MaterialTheme.colorScheme.onBackground,
             isPressed = !showWaveform,
+            description = stringResource(R.string.main_spectrogram_button_label),
             onClick = { if (showWaveform) toggleIndicator() }
         )
     }

@@ -33,7 +33,8 @@ fun MainInfoDialog(show: Boolean, close: () -> Unit) {
     InfoDialog(
         show = show,
         close = { close() },
-        title = stringResource(R.string.main_dialog_title)
+        title = stringResource(R.string.main_dialog_title),
+        closeDescription = stringResource(R.string.main_close_info_dialog_button_label)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(

@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +46,7 @@ fun LabeledSwitchPreview() {
                 values = listOf("Value 1", "Value 2"),
                 valueFormatter = { "Value 1" },
                 onValueChange = {},
+                description = "Preview"
             )
         }
     }
@@ -57,7 +60,8 @@ fun LabeledDropdown(
     values: List<String>,
     onValueChange: (String) -> Unit,
     valueFormatter: (String) -> String,
-    isEnabled: Boolean = true
+    isEnabled: Boolean = true,
+    description: String
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -74,7 +78,9 @@ fun LabeledDropdown(
 
         Spacer(Modifier.weight(1f))
 
-        Box {
+        Box(
+            modifier = Modifier.semantics { contentDescription = description }
+        ) {
             CurrentValueBox(
                 expanded = expanded,
                 value = value,
@@ -102,7 +108,7 @@ private fun CurrentValueBox(
     val iconDegree by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
         animationSpec = tween(durationMillis = 300),
-        label = ""
+        label = "Dropdown icon rotation animation"
     )
 
     Row(
