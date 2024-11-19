@@ -8,7 +8,7 @@ class BufferAccumulationHandler(
     override suspend fun handle(request: AudioProcessingRequest) {
         synchronized(accumulatedBuffer) {
             accumulatedBuffer += request.buffer
-            if (accumulatedBuffer.size >= Config.CHUNK_SIZE) {
+            if (accumulatedBuffer.size >= Config.AUDIO_CHUNK_SIZE) {
                 request.buffer = accumulatedBuffer.copyOf()
                 accumulatedBuffer = FloatArray(0)
             } else {

@@ -32,7 +32,8 @@ class SyllableCountProcessingHandler(
 
     private fun extractSyllableCount(tensor: Tensor): Int {
         val array = tensor.dataAsFloatArray
-        val seconds = Config.FRAME_COUNT / (Config.SAMPLE_RATE.toFloat() / Config.CHUNK_SIZE)
+        val seconds =
+            Config.FRAME_COUNT / (Config.AUDIO_SAMPLE_RATE.toFloat() / Config.AUDIO_CHUNK_SIZE)
         return (array[0] / seconds).toInt()
     }
 }

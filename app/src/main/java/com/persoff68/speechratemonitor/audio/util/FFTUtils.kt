@@ -8,31 +8,28 @@ import kotlinx.coroutines.coroutineScope
 import kotlin.math.sqrt
 
 object FFTUtils {
-    private const val N_FFT = Config.N_FFT
-    private const val WIN_LENGTH = Config.WIN_LENGTH
-    private const val HOP_LENGTH = Config.HOP_LENGTH
 
-    private val window = FloatArray(WIN_LENGTH) { index ->
-        (0.54 - 0.46 * kotlin.math.cos(2.0 * kotlin.math.PI * index / (WIN_LENGTH - 1))).toFloat()
+    private val window = FloatArray(Config.FFT_WIN_LENGTH) { index ->
+        (0.54 - 0.46 * kotlin.math.cos(2.0 * kotlin.math.PI * index / (Config.FFT_WIN_LENGTH - 1))).toFloat()
     }
 
     suspend fun processSpectrogram(input: FloatArray): Array<FloatArray> = coroutineScope {
         val segments = mutableListOf<Deferred<FloatArray>>()
         var start = 0
-        while (start + WIN_LENGTH <= input.size) {
-            val segment = input.copyOfRange(start, start + WIN_LENGTH)
+        while (start + Config.FFT_WIN_LENGTH <= input.size) {
+            val segment = input.copyOfRange(start, start + Config.FFT_WIN_LENGTH)
             segments.add(async(Dispatchers.Default) {
                 fftMagnitudeSpectrum(segment)
             })
-            start += HOP_LENGTH
+            start += Config.FFT_HOP_LENGTH
         }
         segments.map { it.await() }.toTypedArray()
     }
 
     private fun fftMagnitudeSpectrum(input: FloatArray): FloatArray {
-        val real = applyWindow(input.copyOfRange(0, WIN_LENGTH))
-        val imag = FloatArray(N_FFT) { 0f }
-        fftRecursive(real, imag, N_FFT)
+        val real = applyWindow(input.copyOfRange(0, Config.FFT_WIN_LENGTH))
+        val imag = FloatArray(Config.FFT_SIZE) { 0f }
+        fftRecursive(real, imag, Config.FFT_SIZE)
         return calculateMagnitude(real, imag)
     }
 
@@ -76,7 +73,7 @@ object FFTUtils {
     }
 
     private fun calculateMagnitude(real: FloatArray, imag: FloatArray): FloatArray =
-        FloatArray(N_FFT / 2) { i ->
+        FloatArray(Config.FFT_SIZE / 2) { i ->
             sqrt(real[i] * real[i] + imag[i] * imag[i])
         }
 }

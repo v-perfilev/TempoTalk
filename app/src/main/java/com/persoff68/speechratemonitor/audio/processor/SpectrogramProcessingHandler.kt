@@ -33,7 +33,11 @@ class SpectrogramProcessingHandler(
 
     private fun extractDenoisedSpectrogram(tensor: Tensor): Array<FloatArray> {
         val array = tensor.dataAsFloatArray
-        val spectrogram = ArrayUtils.reshape(array, Config.FREQUENCY_BINS, Config.TIME_STEPS)
+        val spectrogram = ArrayUtils.reshape(
+            array,
+            Config.SPECTROGRAM_FREQUENCY_BINS,
+            Config.SPECTROGRAM_TIME_STEPS
+        )
         return ArrayUtils.transpose(spectrogram)
     }
 }

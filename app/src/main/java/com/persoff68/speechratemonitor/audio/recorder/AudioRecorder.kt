@@ -35,16 +35,16 @@ class AudioRecorder(private val processor: (FloatArray) -> Unit) {
     private fun createAudioRecord(): AudioRecord {
         return AudioRecord(
             MediaRecorder.AudioSource.MIC,
-            Config.SAMPLE_RATE,
+            Config.AUDIO_SAMPLE_RATE,
             AudioFormat.CHANNEL_IN_MONO,
             AudioFormat.ENCODING_PCM_16BIT,
-            Config.BUFFER_SIZE
+            Config.AUDIO_BUFFER_SIZE
         )
     }
 
     private fun createRecordingThread(): Thread {
         return Thread {
-            val buffer = ShortArray(Config.BUFFER_SIZE)
+            val buffer = ShortArray(Config.AUDIO_BUFFER_SIZE)
             while (isRecording) {
                 val readSize = audioRecord?.read(buffer, 0, buffer.size) ?: 0
                 if (readSize > 0) {

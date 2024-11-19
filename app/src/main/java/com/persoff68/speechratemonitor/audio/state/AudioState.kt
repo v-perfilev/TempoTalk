@@ -74,7 +74,7 @@ class AudioState @Inject constructor() {
         val numCols = inputArray[0].size
         val length = Config.SPECTROGRAM_VIEW_LENGTH / Config.FRAME_COUNT
         val height = Config.SPECTROGRAM_VIEW_HEIGHT
-        val radius = Config.SPECTROGRAM_SCALE_PARAMETER
+        val radius = Config.SPECTROGRAM_SCALE_FACTOR
 
         val result = Array(length) { FloatArray(height) }
 

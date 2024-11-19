@@ -74,7 +74,7 @@ fun LaunchSpectrogramAnimation(
 
     LaunchedEffect(spectrogramData) {
         accumulator.addAll(spectrogramData)
-        delayInMs = Config.FRAME_SIZE_IN_MS / accumulator.size
+        delayInMs = Config.FRAME_DURATION_MS / accumulator.size
 
         while (accumulator.isNotEmpty()) {
             val item = accumulator.removeFirstOrNull() ?: break
