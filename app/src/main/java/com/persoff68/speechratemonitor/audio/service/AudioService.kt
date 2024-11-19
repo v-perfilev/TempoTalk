@@ -100,8 +100,8 @@ class AudioService : Service() {
         recorder?.stop()
         recorder = null
 
-        audioState.reset()
         audioState.setRecording(false)
+        audioState.reset()
         notificationManager.updateNotification(false)
 
         signalController.triggerStop()

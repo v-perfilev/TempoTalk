@@ -29,24 +29,30 @@ class AudioState @Inject constructor() {
 
     @Synchronized
     fun setTempoData(value: Int) {
-        _tempoState.value = value
+        if (_isRecordingState.value) {
+            _tempoState.value = value
+        }
     }
 
     @Synchronized
     fun setBufferData(value: FloatArray) {
-        _bufferState.value = scaleBufferData(value)
+        if (_isRecordingState.value) {
+            _bufferState.value = scaleBufferData(value)
+        }
     }
 
     @Synchronized
     fun setSpectrogramData(value: Array<FloatArray>) {
-        _spectrogramState.value = scaleSpectrogramData(value)
+        if (_isRecordingState.value) {
+            _spectrogramState.value = scaleSpectrogramData(value)
+        }
     }
 
     @Synchronized
     fun reset() {
-        setTempoData(Config.DEFAULT_TEMPO)
-        setBufferData(Config.DEFAULT_BUFFER)
-        setSpectrogramData(Config.DEFAULT_SPECTROGRAM)
+        _tempoState.value = Config.DEFAULT_TEMPO
+        _bufferState.value = Config.DEFAULT_BUFFER
+        _spectrogramState.value = Config.DEFAULT_SPECTROGRAM
     }
 
     private fun scaleBufferData(inputArray: FloatArray): FloatArray {
