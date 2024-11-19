@@ -13,7 +13,7 @@ android {
         applicationId = "com.persoff68.speechratemonitor"
         minSdk = 26
         targetSdk = 34
-        versionCode = 6
+        versionCode = 7
         versionName = "1.01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

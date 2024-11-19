@@ -14,7 +14,7 @@
     <string name="main_dialog_label_2">IMPORTANT</string>
     <string name="main_dialog_content_3">The app does NOT collect any personal data. All analysis is performed entirely on your device and works seamlessly, even without an internet connection.</string>
 
-    <string name="main_activity_label">Main screen</string>
+    <string name="main_activity_label">TempoTalk</string>
     <string name="main_info_dialog_button_label">Open information dialog</string>
     <string name="main_close_info_dialog_button_label">Close information dialog</string>
     <string name="main_settings_button_label">Open settings screen</string>

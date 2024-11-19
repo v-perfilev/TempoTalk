@@ -22,7 +22,6 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:label="@string/main_activity_label"
             android:exported="true"
             android:theme="@style/Theme.SpeechRateMonitorApp.Starting">
             <intent-filter>
