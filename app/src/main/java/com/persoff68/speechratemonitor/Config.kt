@@ -3,7 +3,7 @@ package com.persoff68.speechratemonitor
 object Config {
     const val SAMPLE_RATE = 16000
     const val CHUNK_SIZE = 8000
-    const val BUFFER_SIZE = 1000
+    const val BUFFER_SIZE = 2000
     const val N_FFT = 256
     const val HOP_LENGTH = 122
     const val WIN_LENGTH = 256

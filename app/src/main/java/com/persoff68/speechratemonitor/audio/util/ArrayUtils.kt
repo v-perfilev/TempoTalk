@@ -1,7 +1,5 @@
 package com.persoff68.speechratemonitor.audio.util
 
-import kotlin.math.sqrt
-
 object ArrayUtils {
     fun transpose(matrix: Array<FloatArray>): Array<FloatArray> {
         val rowCount = matrix.size
@@ -32,14 +30,5 @@ object ArrayUtils {
             sliced[i - start] = matrix[i]
         }
         return sliced
-    }
-
-    fun normalize(array: FloatArray): FloatArray {
-        val mean = 0f
-        val variance = 40000f
-        val standardDeviation = sqrt(variance)
-        val standardizedArray = array.map { (it - mean) / standardDeviation }.toFloatArray()
-        val max = 40f
-        return standardizedArray.map { it / max }.toFloatArray()
     }
 }

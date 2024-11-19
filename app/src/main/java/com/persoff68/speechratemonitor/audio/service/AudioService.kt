@@ -10,6 +10,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.persoff68.speechratemonitor.audio.ai.SpeechDenoiser
 import com.persoff68.speechratemonitor.audio.ai.SyllableCounter
 import com.persoff68.speechratemonitor.audio.manager.NotificationManager
+import com.persoff68.speechratemonitor.audio.normalizer.AudioNormalizer
 import com.persoff68.speechratemonitor.audio.processor.AudioProcessor
 import com.persoff68.speechratemonitor.audio.recorder.AudioRecorder
 import com.persoff68.speechratemonitor.audio.state.AudioState
@@ -78,8 +79,11 @@ class AudioService : Service() {
         notificationManager.updateNotification(true)
         audioState.setRecording(true)
 
+        val normalizer = AudioNormalizer()
+
         val audioProcessor = AudioProcessor(
             audioState,
+            normalizer,
             speechDenoiser,
             syllableCounter,
             signalController,

@@ -2,6 +2,7 @@ package com.persoff68.speechratemonitor.audio.processor
 
 import com.persoff68.speechratemonitor.audio.ai.SpeechDenoiser
 import com.persoff68.speechratemonitor.audio.ai.SyllableCounter
+import com.persoff68.speechratemonitor.audio.normalizer.AudioNormalizer
 import com.persoff68.speechratemonitor.audio.state.AudioState
 import com.persoff68.speechratemonitor.settings.SettingsRepository
 import com.persoff68.speechratemonitor.signal.SignalController
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 
 class AudioProcessor(
     audioState: AudioState,
+    normalizer: AudioNormalizer,
     speechDenoiser: SpeechDenoiser,
     syllableCounter: SyllableCounter,
     signalController: SignalController,
@@ -26,7 +28,7 @@ class AudioProcessor(
 
     private val processingChain = AudioProcessingChain(
         listOf(
-            BufferNormalizationHandler(),
+            BufferNormalizationHandler(normalizer),
             BufferUIUpdateHandler(audioState),
             BufferAccumulationHandler(accumulatedBuffer),
             SpectrogramProcessingHandler(speechDenoiser),
