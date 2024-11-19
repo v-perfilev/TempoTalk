@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.SpeechRateMonitorApp" parent="Theme.MaterialComponents.DayNight">
-        <item name="android:windowBackground">@color/gray</item>
+
+    <style name="Theme.SpeechRateMonitorApp" parent="Theme.MaterialComponents.DayNight" />
+
+    <style name="Theme.SpeechRateMonitorApp.Starting" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.SpeechRateMonitorApp</item>
     </style>
 </resources>
