@@ -12,7 +12,7 @@ object Config {
     const val FFT_WIN_LENGTH = 256
     const val SPECTROGRAM_FREQUENCY_BINS = 128
     const val SPECTROGRAM_TIME_STEPS = 64
-    const val FRAME_COUNT = 4
+    const val FRAME_COUNT = 3 // Edit this parameter to adjust analysed period, one frame corresponds to 500ms
     const val FRAME_DURATION_MS = 1000L * AUDIO_CHUNK_SIZE / AUDIO_SAMPLE_RATE
 
     /*

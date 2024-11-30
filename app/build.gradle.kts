@@ -13,8 +13,8 @@ android {
         applicationId = "com.persoff68.speechratemonitor"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.01"
+        versionCode = 8
+        versionName = "1.02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
